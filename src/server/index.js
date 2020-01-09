@@ -30,10 +30,15 @@ const initApp = (app, params, cb) => {
 const initEngine = io => {
   io.on('connection', function(socket){
     loginfo("Socket connected: " + socket.id)
+    socket.on('user', (username, room) => {
+      socket.username = username;
+      socket.room = room;
+      socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
+    })
     socket.on('action', (action) => {
-      if(action.type === 'server/ping'){
-        socket.emit('action', {type: 'pong'})
-      }
+      // if(action.type === 'server/ping'){
+      //   socket.emit('action', {type: 'pong'})
+      // }
     })
   })
 }
