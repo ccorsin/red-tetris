@@ -9,7 +9,7 @@ const App = ({message}) => {
   const room = params[1].substring(1);
   const username = params[2].slice(1,-1);
   const socket = io('http://0.0.0.0:3004');
-  socket.emit('user', username, room)
+  socket.emit('room', room, username)
   return (
     <script>{
       socket.on('message', function(message) {
