@@ -10,12 +10,13 @@ const App = ({message}) => {
   const username = params[2].slice(1,-1);
   const socket = io('http://0.0.0.0:3004');
   socket.emit('room', room, username)
+
   return (
-    <script>{
-      socket.on('message', function(message) {
+    <div>
+      {socket.on('message', function(message) {
         alert(message);
-      })
-    }</script>
+      })}
+    </div>
   )
 }
 
