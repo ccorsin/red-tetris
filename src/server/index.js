@@ -31,7 +31,7 @@ const initApp = (app, params, cb) => {
 
 const isRoom = (games, room) => {
   for (var i = 0; i < games.length ; i++) {
-    if (games[i].room = room) {
+    if (games[i].room == room) {
       return i;
     }
   }
@@ -50,6 +50,7 @@ const initEngine = (io, games) => {
         socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
         io.sockets.in(room).emit('message', socket.username + ' has joined the game folks !');
         socket.join(room);
+        io.sockets.in(room).emit('join_game', games[is_room].players.length);
       }
       else if (is_room >= 0 && games[is_room].running == true) {
         socket.emit('message', 'The game is currently running - impossible to join !');

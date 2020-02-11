@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import io from 'socket.io-client'
 
@@ -9,6 +9,7 @@ const App = ({message}) => {
   const params = reg.exec(window.location.href);
   const room = params[1].substring(1);
   const username = params[2].slice(1,-1);
+  const [playerCount, setPlayerCount] = useState(1);
 
   const startGame = () => {
     socket.emit('start', room)
@@ -18,15 +19,18 @@ const App = ({message}) => {
   }
 
   useEffect(() => {
-    socket.emit('room', room, username)
+    socket.emit('room', room, username);
     socket.on('message', function(message) {
       alert(message);
     })
-  })
+    socket.on('join_game', function(count) {
+      setPlayerCount(count)
+    });
+  }, [])
 
   return (
     <div>
-      <h1>Currently x players in the game.</h1>
+      <h1>Currently {playerCount} players in the game.</h1>
       <button onClick={startGame}>
         START
       </button>
