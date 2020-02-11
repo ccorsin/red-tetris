@@ -10,6 +10,13 @@ const App = ({message}) => {
   const room = params[1].substring(1);
   const username = params[2].slice(1,-1);
 
+  const startGame = () => {
+    socket.emit('start', room)
+  }
+  const endGame = () => {
+    socket.emit('end', room)
+  }
+
   useEffect(() => {
     socket.emit('room', room, username)
     socket.on('message', function(message) {
@@ -19,7 +26,13 @@ const App = ({message}) => {
 
   return (
     <div>
-      <h1>Hello</h1>
+      <h1>Currently x players in the game.</h1>
+      <button onClick={startGame}>
+        START
+      </button>
+      <button onClick={endGame}>
+        STOP
+      </button>
     </div>
   )
 }
