@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Tetris from "../components/Tetris";
 import { connect } from 'react-redux'
 import io from 'socket.io-client'
 
@@ -51,8 +52,12 @@ const App = ({message}) => {
       <h1>Currently {playerCount} players in the game.</h1>
       {status}
       {commands}
+
+      <div className="App">
+        <Tetris />
+      </div>
     </div>
-  )
+  );
 }
 
 const mapStateToProps = (state) => {
