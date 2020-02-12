@@ -50,7 +50,7 @@ const initEngine = (io, games) => {
         socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
         io.sockets.in(room).emit('message', socket.username + ' has joined the game folks !');
         socket.join(room);
-        io.sockets.in(room).emit('join_game', games[is_room].players.length);
+        io.sockets.in(room).emit('players_game', games[is_room].players.length, games[is_room].leader);
       }
       else if (is_room >= 0 && games[is_room].running == true) {
         socket.emit('message', 'The game is currently running - impossible to join !');
@@ -66,16 +66,18 @@ const initEngine = (io, games) => {
         socket.leave(room);
         games[is_room].remove_player(username);
         io.sockets.in(room).emit('message', socket.username + ' has left the game');
-        io.sockets.in(room).emit('join_game', games[is_room].players.length);
+        io.sockets.in(room).emit('players_game', games[is_room].players.length, games[is_room].leader);
       });
     });
     socket.on('start', room => {
       let is_room = isRoom (games, room);
       games[is_room].start_game();
+      io.sockets.in(room).emit('toggle_game', true);
     });
     socket.on('end', room => {
       let is_room = isRoom (games, room);
       games[is_room].end_game();
+      io.sockets.in(room).emit('toggle_game', false);
     });
     // socket.on('action', (action) => {
     //   // if(action.type === 'server/ping'){
