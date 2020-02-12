@@ -1,15 +1,15 @@
-// import Player from "./player"
+import Player from "./player"
 
 export default class Game {
-    constructor(leader, room) {
+    constructor(leader, id, room) {
         this.leader = leader
         this.room = room
         this.players = []
-        this.players.push(leader)
+        this.players.push(new Player (leader, id))
         this.running = false
     }
-    add_player(player) {
-        this.players.push(player)
+    add_player(player, id) {
+        this.players.push(new Player (player, id))
     }
 
     remove_player(player) {

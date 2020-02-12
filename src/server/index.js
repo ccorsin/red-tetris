@@ -46,7 +46,7 @@ const initEngine = (io, games) => {
       socket.room = room;
       let is_room = isRoom (games, room);
       if (is_room >= 0 && games[is_room].running == false) {
-        games[is_room].add_player(username);
+        games[is_room].add_player(username, socket.id);
         socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
         io.sockets.in(room).emit('message', socket.username + ' has joined the game folks !');
         socket.join(room);
@@ -56,7 +56,7 @@ const initEngine = (io, games) => {
         socket.emit('message', 'The game is currently running - impossible to join !');
       }
       else {
-        let game = new Game (username, room);
+        let game = new Game (username, socket.id, room);
         games.push(game);
         socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
         socket.join(room);
