@@ -24,15 +24,16 @@ module.exports = {
         use: ["style-loader", "css-loader"]
       },
       {
-        test: /\.(png|jpg|gif|mp3)$/,
+        test: /\.(png|jpe?g|gif)$/i,
         use: [
           {
-            loader: "file-loader",
-            options: {
-              name: "[path][name][hash].[ext]"
-            }
-          }
-        ]
+            loader: [
+            // 'file-loader',
+            'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
+            'image-webpack-loader?bypassOnDebug&optimizationLevel=7&interlaced=false'
+            ],
+          },
+        ],
       }
     ]
   }
