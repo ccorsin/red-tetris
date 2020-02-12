@@ -61,15 +61,22 @@ const initEngine = (io, games) => {
         socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
         socket.join(room);
       }
+      socket.on('disconnect', function(){
+        loginfo("Socket disconnected: " + socket.id)
+        socket.leave(room);
+        games[is_room].remove_player(username);
+        io.sockets.in(room).emit('message', socket.username + ' has left the game');
+        io.sockets.in(room).emit('join_game', games[is_room].players.length);
+      });
     });
     socket.on('start', room => {
       let is_room = isRoom (games, room);
       games[is_room].start_game();
-    })
+    });
     socket.on('end', room => {
       let is_room = isRoom (games, room);
       games[is_room].end_game();
-    })
+    });
     // socket.on('action', (action) => {
     //   // if(action.type === 'server/ping'){
     //   //   socket.emit('action', {type: 'pong'})
