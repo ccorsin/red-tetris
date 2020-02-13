@@ -50,7 +50,7 @@ const initEngine = (io, games) => {
         socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
         io.sockets.in(room).emit('message', socket.username + ' has joined the game folks !');
         socket.join(room);
-        io.sockets.in(room).emit('players_game', games[is_room].players.length, games[is_room].leader);
+        io.sockets.in(room).emit('players_game', games[is_room].players.length, games[is_room].leader.name);
       }
       else if (is_room >= 0 && games[is_room].running == true) {
         socket.emit('message', 'The game is currently running - impossible to join !');
@@ -64,9 +64,14 @@ const initEngine = (io, games) => {
       socket.on('disconnect', function(){
         loginfo("Socket disconnected: " + socket.id)
         socket.leave(room);
-        games[is_room].remove_player(username);
-        io.sockets.in(room).emit('message', socket.username + ' has left the game');
-        io.sockets.in(room).emit('players_game', games[is_room].players.length, games[is_room].leader);
+        games[isRoom (games, room)].remove_player(username, socket.id);
+        if (games[isRoom (games, room)].players.length > 0) {
+          io.sockets.in(room).emit('message', socket.username + ' has left the game');
+          io.sockets.in(room).emit('players_game', games[isRoom (games, room)].players.length, games[isRoom (games, room)].leader.name);
+        }
+        else {
+          games.splice(isRoom (games, room), 1);
+        }
       });
     });
     socket.on('start', room => {

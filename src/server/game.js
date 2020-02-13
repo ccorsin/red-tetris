@@ -2,7 +2,7 @@ import Player from "./player"
 
 export default class Game {
     constructor(leader, id, room) {
-        this.leader = leader
+        this.leader = new Player (leader, id)
         this.room = room
         this.players = []
         this.players.push(new Player (leader, id))
@@ -12,8 +12,8 @@ export default class Game {
         this.players.push(new Player (player, id))
     }
 
-    remove_player(player) {
-        let index = this.players.indexOf(player)
+    remove_player(player, id) {
+        let index = this.players.findIndex(p => p.id === id);
         if (index > -1) {
             this.players.splice(index, 1);        
         }
