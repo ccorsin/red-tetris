@@ -8,6 +8,7 @@ export default class Game {
         this.players.push(new Player (leader, id))
         this.running = false
     }
+
     add_player(player, id) {
         this.players.push(new Player (player, id))
     }
@@ -29,17 +30,5 @@ export default class Game {
 
     end_game() {
         this.running = false
-    }
-
-    is_running() {
-        this.running
-    }
-
-    count_players() {
-        this.players.length
-    }
-
-    display_players() {
-        console.log ("Currently " + this.count_players + " players in the game." )
     }
 }
