@@ -3,10 +3,6 @@ import Game from './game'
 import Player from './player'
 
 export default class Socket {
-    constructor(app) {
-        this.io = require('socket.io')(app)  
-    }
-
     isRoom(games, room) {
         for (var i = 0; i < games.length ; i++) {
             if (games[i].room == room) {
@@ -16,8 +12,8 @@ export default class Socket {
         return (-1);
     }
 
-    initEngine(games) {
-        this.io.sockets.on('connection', (socket) => {
+    initEngine(games, io) {
+        io.sockets.on('connection', (socket) => {
             loginfo("Socket connected: " + socket.id)
 
             socket.on('room', (room, username) => {
@@ -28,9 +24,9 @@ export default class Socket {
                 if (is_room >= 0 && games[is_room].running == false) {
                     games[is_room].add_player(player);
                     socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
-                    this.io.sockets.in(room).emit('message', socket.username + ' has joined the game folks !');
+                    io.sockets.in(room).emit('message', socket.username + ' has joined the game folks !');
                     socket.join(room);
-                    this.io.sockets.in(room).emit('players_game', games[is_room].players.length, games[is_room].leader.name);
+                    io.sockets.in(room).emit('players_game', games[is_room].players.length, games[is_room].leader.name);
                 }
                 else if (is_room >= 0 && games[is_room].running == true) {
                     socket.emit('message', 'The game is currently running - impossible to join !');
@@ -47,8 +43,8 @@ export default class Socket {
                     socket.leave(room);
                     games[this.isRoom (games, room)].remove_player(player);
                     if (games[this.isRoom (games, room)].players.length > 0) {
-                    this.io.sockets.in(room).emit('message', socket.username + ' has left the game');
-                    this.io.sockets.in(room).emit('players_game', games[this.isRoom (games, room)].players.length, games[this.isRoom (games, room)].leader.name);
+                    io.sockets.in(room).emit('message', socket.username + ' has left the game');
+                    io.sockets.in(room).emit('players_game', games[this.isRoom (games, room)].players.length, games[this.isRoom (games, room)].leader.name);
                     }
                     else {
                     games.splice(this.isRoom (games, room), 1);

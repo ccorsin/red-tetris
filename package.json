@@ -86,7 +86,8 @@
     },
     "moduleFileExtensions": [
       "js",
-      "jsx"
+      "jsx",
+      "json"
     ],
     "setupTestFrameworkScriptFile": "<rootDir>/test-conf.js",
     "moduleDirectories": [

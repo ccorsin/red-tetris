@@ -2,7 +2,6 @@ import Game from "../src/server/helpers/game"
 import Player from "../src/server/helpers/player"
 
  describe('Game class is made to represent a game, in a specific room', () => {
-    let game;
     let player1;
     let player2;
 

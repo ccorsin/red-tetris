@@ -42,8 +42,9 @@ export function create(params){
         loginfo(`Engine stopped.`)
         cb()
       }
-      const socket = new Socket (app);
-      socket.initEngine([])
+      const io = require('socket.io')(app)
+      const socket = new Socket ();
+      socket.initEngine([], io)
       resolve({stop})
     })
   })
