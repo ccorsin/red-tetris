@@ -3,7 +3,8 @@ import { StyledApp } from '../components/styles/StyledApp';
 
 import {
   BrowserRouter as Router,
-  Redirect,
+  // Redirect,
+  Switch,
   Route,
   // useRouteMatch
 } from "react-router-dom";
@@ -13,6 +14,7 @@ import history from "../history";
 import { connect } from 'react-redux'
 import io from 'socket.io-client'
 import Playground from "./Playground";
+import NotFound from "../components/NotFound";
 import Menu from "../components/Menu";
 
 const socket = io('http://0.0.0.0:3004');
@@ -53,13 +55,17 @@ const App = ({message}) => {
  
   return (
     <StyledApp>
-      <Router history={history}>
-        <Route path="/tetris/">
-          <Playground socket={socket} room={room} username={username} />
-        </Route>
-        <Route exact path="/">
-          <Menu playerName={setPlayer} roomNb={setRoomNb} goToRoom={setGo} />
-        </Route>
+      <Router>      
+        <Switch>
+          {/* <Route path="/tetris" component={({socket, room, username}) => <Playground socket={socket} room={room} username={username} />}/> */}
+          <Route exact path="/">
+            <Menu playerName={setPlayer} roomNb={setRoomNb} goToRoom={setGo} />
+          </Route>
+          <Route exact path="/tetris">
+            <Playground socket={socket} room={room} username={username} />
+          </Route>
+          {/* <Route component={NotFound} /> */}
+        </Switch>      
       </Router>
     </StyledApp>
   );
