@@ -1,5 +1,6 @@
 import { loginfo } from '../index'
 import Game from './game'
+import Player from './player'
 
 export default class Socket {
     constructor(app) {
@@ -22,9 +23,10 @@ export default class Socket {
             socket.on('room', (room, username) => {
                 socket.username = username;
                 socket.room = room;
+                const player = new Player (username, socket.id);
                 let is_room = this.isRoom (games, room);
                 if (is_room >= 0 && games[is_room].running == false) {
-                    games[is_room].add_player(username, socket.id);
+                    games[is_room].add_player(player);
                     socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
                     this.io.sockets.in(room).emit('message', socket.username + ' has joined the game folks !');
                     socket.join(room);
@@ -34,7 +36,7 @@ export default class Socket {
                     socket.emit('message', 'The game is currently running - impossible to join !');
                 }
                 else {
-                    let game = new Game (username, socket.id, room);
+                    let game = new Game (player, room);
                     games.push(game);
                     socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
                     socket.join(room);
@@ -43,7 +45,7 @@ export default class Socket {
                 socket.on('disconnect', () => {
                     loginfo("Socket disconnected: " + socket.id)
                     socket.leave(room);
-                    games[this.isRoom (games, room)].remove_player(username, socket.id);
+                    games[this.isRoom (games, room)].remove_player(player);
                     if (games[this.isRoom (games, room)].players.length > 0) {
                     this.io.sockets.in(room).emit('message', socket.username + ' has left the game');
                     this.io.sockets.in(room).emit('players_game', games[this.isRoom (games, room)].players.length, games[this.isRoom (games, room)].leader.name);
