@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
   sock: socketReducer
 })
 
-const store = createStore(
+export const store = createStore(
   rootReducer,
   initialState,
   applyMiddleware(thunk, createLogger())

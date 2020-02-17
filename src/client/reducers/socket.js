@@ -1,7 +1,15 @@
 const reducer = (state = {} , action) => {
   switch(action.type){
-    case 'SOCKET_JOIN':
-        return { }
+    case 'START':
+        return {
+          ...state,
+          isRunning: true,
+         };
+    case 'STOP':
+        return {
+          ...state,
+          isRunning: false,
+        };
     default: 
         return state
   }
