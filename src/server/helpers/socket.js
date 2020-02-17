@@ -1,8 +1,13 @@
-import { loginfo } from '../index'
 import Game from './game'
 import Player from './player'
+import socketIO from 'socket.io';
 
 export default class Socket {
+    constructor(http) {
+        this.games = [];
+        this.io = socketIO(http, { pingTimeout: 60000 });
+    }
+
     isRoom(games, room) {
         for (var i = 0; i < games.length ; i++) {
             if (games[i].room == room) {
@@ -12,45 +17,52 @@ export default class Socket {
         return (-1);
     }
 
-    initEngine(games, io) {
-        io.sockets.on('connection', (socket) => {
-            loginfo("Socket connected: " + socket.id)
-
+    initEngine() {
+        this.io.sockets.on('connection', (socket) => {
+            process.stdout.write("Socket connected: " + socket.id + '\n')
             socket.on('room', (room, username) => {
                 socket.username = username;
                 socket.room = room;
                 const player = new Player (username, socket.id);
-                let is_room = this.isRoom (games, room);
-                if (is_room >= 0 && games[is_room].running == false) {
-                    games[is_room].add_player(player);
+                let is_room = this.isRoom (this.games, room);
+                if (is_room >= 0 && this.games[is_room].running == false) {
+                    this.games[is_room].add_player(player);
                     socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
-                    io.sockets.in(room).emit('message', socket.username + ' has joined the game folks !');
+                    this.io.sockets.in(room).emit('message', socket.username + ' has joined the game folks !');
                     socket.join(room);
-                    io.sockets.in(room).emit('players_game', games[is_room].players.length, games[is_room].leader.name);
+                    this.io.sockets.in(room).emit('players_game', this.games[is_room].players.length, this.games[is_room].leader.name);
                 }
-                else if (is_room >= 0 && games[is_room].running == true) {
+                else if (is_room >= 0 && this.games[is_room].running == true) {
                     socket.emit('message', 'The game is currently running - impossible to join !');
                 }
                 else {
                     let game = new Game (player, room);
-                    games.push(game);
+                    this.games.push(game);
                     socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
                     socket.join(room);
                 }
 
                 socket.on('disconnect', () => {
-                    loginfo("Socket disconnected: " + socket.id)
+                    process.stdout.write("Socket disconnected: " + socket.id + '\n')
                     socket.leave(room);
-                    games[this.isRoom (games, room)].remove_player(player);
-                    if (games[this.isRoom (games, room)].players.length > 0) {
-                    io.sockets.in(room).emit('message', socket.username + ' has left the game');
-                    io.sockets.in(room).emit('players_game', games[this.isRoom (games, room)].players.length, games[this.isRoom (games, room)].leader.name);
+                    this.games[this.isRoom (this.games, room)].remove_player(player);
+                    if (this.games[this.isRoom (this.games, room)].players.length > 0) {
+                    this.io.sockets.in(room).emit('message', socket.username + ' has left the game');
+                    this.io.sockets.in(room).emit('players_game', this.games[this.isRoom (this.games, room)].players.length, this.games[this.isRoom (this.games, room)].leader.name);
                     }
                     else {
-                    games.splice(this.isRoom (games, room), 1);
+                    this.games.splice(this.isRoom (this.games, room), 1);
                     }
                 });
-            })
+            });
+            socket.on('start', room => {
+                this.games[this.isRoom(this.games, room)].start_game();
+                this.io.sockets.in(room).emit('toggle_game', true);
+            });
+            socket.on('end', room => {
+                this.games[this.isRoom(this.games, room)].end_game();
+                this.io.sockets.in(room).emit('toggle_game', false);
+            });
         })
     }
 }

@@ -1,54 +1,21 @@
-import fs  from 'fs'
-import debug from 'debug'
+import http from 'http';
+import express from 'express';
 import Socket from "./helpers/socket"
 import params  from '../../params'
-import { getMaxListeners } from 'cluster'
 
-export const logerror = debug('tetris:error')
-  , loginfo = debug('tetris:info')
-
-const initApp = (app, params, cb) => {
-  const {host, port} = params
-  const handler = (req, res) => {
-    const file = req.url === '/bundle.js' ? '/../../build/bundle.js' : '/../../index.html'
-    fs.readFile(__dirname + file, (err, data) => {
-      if (err) {
-        logerror(err)
-        res.writeHead(500)
-        return res.end('Error loading index.html')
-      }
-      res.writeHead(200)
-      res.end(data)
-    })
+class Server {
+  constructor() {
+    this.app = express();
+    this.http = http.Server(this.app);
+    this.sockets = new Socket(this.http).initEngine();
   }
 
-  app.on('request', handler)
-
-  app.listen({host, port}, () =>{
-    loginfo(`tetris listen on ${params.url}`)
-    cb()
-  })
+  listen() {
+    const {host, port} = params.server;
+    this.http.listen(port, host, () => {
+      process.stdout.write(`Listening on http://${host}:${port}\n`);
+    });
+  }
 }
 
-export function create(params){
-  const promise = new Promise( (resolve, reject) => {
-    const app = require('http').createServer()
-    initApp(app, params, () =>{
-      const stop = (cb) => {
-        io.close()
-        app.close( () => {
-          app.unref()
-        })
-        loginfo(`Engine stopped.`)
-        cb()
-      }
-      const io = require('socket.io')(app)
-      const socket = new Socket ();
-      socket.initEngine([], io)
-      resolve({stop})
-    })
-  })
-  return promise
-}
-
-create(params.server).then( () => console.log('not yet ready to play tetris with U ...') )
+new Server().listen();
