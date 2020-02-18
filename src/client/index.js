@@ -4,7 +4,7 @@ import createLogger from 'redux-logger'
 import thunk from 'redux-thunk'
 import { createStore, applyMiddleware, combineReducers } from 'redux'
 import { Provider } from 'react-redux'                                                                                                                                                    
-import {storeStateMiddleWare} from './middleware/storeStateMiddleWare'
+import {ioSocketMiddleWare} from './middleware/ioSocketMiddleWare'
 import alertReducer from './reducers/alert'
 import socketReducer from './reducers/socket'
 import App from './containers/app'
@@ -15,12 +15,14 @@ const rootReducer = combineReducers({
   alert: alertReducer,
   sock: socketReducer
 })
+const middleware = [ ioSocketMiddleWare,
+                    thunk,
+                    createLogger() ]
 
 export const store = createStore(
   rootReducer,
   initialState,
-  applyMiddleware(thunk, createLogger())
-)
+  applyMiddleware(...middleware))
 
 ReactDom.render((
   <Provider store={store}>
