@@ -47,10 +47,10 @@ const App = ({message}) => {
     const [gameLeader, setGameLeader] = useState(username);
     const [runningState, setRunningState] = useState(false);
     const startGame = () => {
-      dispatch({type: 'START', room: room})
+      dispatch({type: 'START', room: room, socket})
     }
     const endGame = () => {
-      dispatch({type: 'END', room: room})
+      dispatch({type: 'END', room: room, socket})
     }
     const isLeader = username == gameLeader
   
