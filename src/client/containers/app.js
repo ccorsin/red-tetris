@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { StyledApp } from '../components/styles/StyledApp';
 
 import { connect } from 'react-redux'
-import { useSelector, useDispatch } from 'react-redux'
 import io from 'socket.io-client'
 const socket = io('http://0.0.0.0:3004');
 
