@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Tetris from "../components/Tetris";
+import Header from "../components/Header";
 import { useSelector, useDispatch } from 'react-redux'
-import io from 'socket.io-client'
 
 const Playground = ({ socket, message }) => {
   let room = "";
@@ -55,9 +55,8 @@ const Playground = ({ socket, message }) => {
   return (
     <div>
       <div>
+        <Header playerCount={playerCount} commands={commands}/>
         {status}
-        {commands}
-        <h1>Currently {playerCount} players in the game.</h1>
       </div>
       <Tetris />
     </div>
