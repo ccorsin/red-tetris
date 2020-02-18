@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import Tetris from "../components/Tetris";
 
-const Playground = ({ socket, room, username }) => {
+const Playground = ({ socket, message }) => {
+  const [playerCount, setPlayerCount] = useState(1);
+  const [gameLeader, setGameLeader] = useState(username);
+  const [runningState, setRunningState] = useState(false);
 
-    const [playerCount, setPlayerCount] = useState(1);
-    const [gameLeader, setGameLeader] = useState(username);
-    const [runningState, setRunningState] = useState(false);
+    let room = "";
+    let username = "";
+
+    const reg = /(\/#[\d]+)(\[\w+\])/;
+    const params = reg.exec(window.location.href);
+    if (params !== null) {
+      room = params[1].slice(9);
+      username = params[2].slice(1, -1);
+    }
 
     const startGame = () => {
       socket.emit("start", room);
@@ -26,7 +35,6 @@ const Playground = ({ socket, room, username }) => {
     } else {
       commands = <h2>Game is ON !</h2>;
     }
-
 
     useEffect(() => {
       socket.emit("room", room, username);

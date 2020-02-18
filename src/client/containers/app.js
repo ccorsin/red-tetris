@@ -1,73 +1,30 @@
 import React, { useEffect, useState } from 'react'
 import { StyledApp } from '../components/styles/StyledApp';
 
-import {
-  BrowserRouter as Router,
-  // Redirect,
-  Switch,
-  Route,
-  // useRouteMatch
-} from "react-router-dom";
-
-import history from "../history";
-
 import { connect } from 'react-redux'
 import io from 'socket.io-client'
-import Playground from "./Playground";
-import NotFound from "../components/NotFound";
-import Menu from "../components/Menu";
-
 const socket = io('http://0.0.0.0:3004');
 
-const App = ({message}) => {
+import Playground from "./Playground";
+import NotFound from '../components/NotFound';
+// import Menu from "../components/Menu";
 
-  // Set menu value
-  const [player, setPlayer] = useState("PLAYER");
-  const [roomNb, setRoomNb] = useState("");
-  const [go, setGo] = useState(false);
-  const [path, setPath] = useState("/");
+const App = ({ message }) => {
+  // let room = "";
+  // let username = "";
 
-  // send ids to socket
-  if (go) {
-    socket.emit("room", roomNb, player);
-    setPath("/tetris/#"+roomNb+"["+player+"]");
-    setPlayer("PLAYER");
-    setRoomNb("");
-    setGo(false);
-    history.push(path);
-  }
+  // const reg = /(\/#[\d]+)(\[\w+\])/;
+  // const params = reg.exec(window.location.href);
+  // if (params !== null) {
+  //   room = params[1].slice(9);
+  //   username = params[2].slice(1, -1);
+  // }
 
-  let room = "";
-  let username = "";
-  useEffect(() => {
-    console.log(path);
-    // SI params dans l'URL => Playground
-    const reg = /(\/tetris\/#[\d]+)(\[\w+\])/;
-    const params = reg.exec(window.location.href);
-    if (params !== null) {
-      room = params[1].slice(9);
-      username = params[2].slice(1, -1);
-
-      // let match = useRouteMatch("/tetris/");
-      // return <Playground socket={socket} room={room} username={username} />;
-    }
-  }, []);
- 
   return (
-    <StyledApp>
-      <Router>      
-        <Switch>
-          {/* <Route path="/tetris" component={({socket, room, username}) => <Playground socket={socket} room={room} username={username} />}/> */}
-          <Route exact path="/">
-            <Menu playerName={setPlayer} roomNb={setRoomNb} goToRoom={setGo} />
-          </Route>
-          <Route exact path="/tetris">
-            <Playground socket={socket} room={room} username={username} />
-          </Route>
-          {/* <Route component={NotFound} /> */}
-        </Switch>      
-      </Router>
-    </StyledApp>
+      <StyledApp>
+        <Playground socket={socket} message={message}/>
+        {/* <NotFound /> */}
+      </StyledApp>
   );
 }
 

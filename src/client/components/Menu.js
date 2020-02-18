@@ -1,17 +1,34 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
-const Menu = ({ playerName, roomNb, goToRoom }) => {
-    const reg = /^([\d]+)$/;
-    const [isValid, setisValid] = useState(false);
-    const checkRoom = value => {
-        if (reg.exec(value)) {
-            setisValid(true);
-            roomNb(value);
-        } else {
-            setisValid(false);
-            roomNb("");
-        }
-    };
+
+const Menu = () => {
+  let history = useHistory();
+  const reg = /^([\d]+)$/;
+  const [isValid, setisValid] = useState(false);
+  const [player, setPlayer] = useState("PLAYER");
+  const [roomNb, setRoomNb] = useState("");
+
+  const checkRoom = value => {
+      if (reg.exec(value)) {
+          setisValid(true);
+          setRoomNb(value);
+      } else {
+          setisValid(false);
+          setRoomNb("");
+      }
+  };
+
+  const goToRoom = () => {
+    if (isValid) {
+      history.push("/playground/#" + roomNb + "[" + player + "]");
+      socket.emit("room", roomNb, player);
+      // setPath("/playground/#" + roomNb + "[" + player + "]");
+      setPlayer("PLAYER");
+      setRoomNb("");
+      setisValid(false);
+    }
+  }
     
   return (
     <div>
