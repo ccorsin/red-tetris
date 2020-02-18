@@ -54,7 +54,15 @@ export default class Socket {
                     this.games.splice(this.isRoom (this.games, room), 1);
                     }
                 });
-            })
+            });
+            socket.on('start', room => {
+                this.games[this.isRoom(this.games, room)].start_game();
+                this.io.sockets.in(room).emit('toggle_game', true);
+            });
+            socket.on('end', room => {
+                this.games[this.isRoom(this.games, room)].end_game();
+                this.io.sockets.in(room).emit('toggle_game', false);
+            });
         })
     }
 }

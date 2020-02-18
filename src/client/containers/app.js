@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { StyledApp } from '../components/styles/StyledApp';
 
 import { connect } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import io from 'socket.io-client'
 // import Playground from "./Playground"
 import Tetris from "../components/Tetris";
 const socket = io('http://0.0.0.0:3004');
 
 const App = ({message}) => {
+  const dispatch = useDispatch()
   
   // point d'entree
   // gerer l'attribution des room
@@ -45,10 +47,10 @@ const App = ({message}) => {
     const [gameLeader, setGameLeader] = useState(username);
     const [runningState, setRunningState] = useState(false);
     const startGame = () => {
-      socket.emit('start', room)
+      dispatch({type: 'START', room: room, socket})
     }
     const endGame = () => {
-      socket.emit('end', room)
+      dispatch({type: 'END', room: room, socket})
     }
     const isLeader = username == gameLeader
   
