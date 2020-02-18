@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from "react";
 
 import { createStage, checkCollision } from '../gameHelpers';
 import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
@@ -14,17 +14,17 @@ import Stage from './Stage';
 import Display from './Display';
 import StartButton from './StartButton';
 
-const Tetris = () => {
+const Tetris = ({ socket }) => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
 
-  const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
+  const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer(socket);
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
     rowsCleared
   );
 
-  console.log('re-render');
+  // console.log('re-render');
 
   const movePlayer = dir => {
     if (!checkCollision(player, stage, { x: dir, y: 0 })) {
@@ -46,9 +46,9 @@ const Tetris = () => {
     setStage(createStage());
     setDropTime(1000);
     resetPlayer();
-    setScore(0);
-    setLevel(0);
-    setRows(0);
+    // setScore(0);
+    // setLevel(0);
+    // setRows(0);
     setGameOver(false);
   };
 
