@@ -6,6 +6,7 @@ export const useStage = (player, resetPlayer) => {
   const [rowsCleared, setRowsCleared] = useState(0);
 
   useEffect(() => {
+    // SOCKET SMASH
     setRowsCleared(0);
     const sweepRows = newStage =>
       newStage.reduce((ack, row) => {
@@ -18,12 +19,13 @@ export const useStage = (player, resetPlayer) => {
         return ack;
       }, []);
 
+    // SOCKET stage
     const updateStage = prevStage => {
       // First flush the stage
       const newStage = prevStage.map(row =>
         row.map(cell => (cell[1] === 'clear' ? [0, 'clear'] : cell))
       );
-
+      
       // Then draw the tetromino
       player.tetromino.forEach((row, y) => {
         row.forEach((value, x) => {
@@ -37,9 +39,15 @@ export const useStage = (player, resetPlayer) => {
       });
       // Then check if we got some score if collided
       if (player.collided) {
+        // SOCKET trigger tetri generator and sync it
+        // TO DO 
+        //  socket.emit("updateGame", player, room);
+        console.log("player");
+        console.log(player);
         resetPlayer();
         return sweepRows(newStage);
       }
+      console.log(newStage)
       return newStage;
     };
 

@@ -13,10 +13,10 @@ const App = ({ message }) => {
   // let room = "";
   // let username = "";
 
-  // const reg = /(\/#[\d]+)(\[\w+\])/;
+  // const reg = /(#[\d]+)(\[\w+\])/;
   // const params = reg.exec(window.location.href);
   // if (params !== null) {
-  //   room = params[1].slice(9);
+  //   room = params[1].substring(1);
   //   username = params[2].slice(1, -1);
   // }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import Tetris from "../components/Tetris";
 import Header from "../components/Header";
 import { useSelector, useDispatch } from 'react-redux'
@@ -7,11 +7,11 @@ const Playground = ({ socket, message }) => {
   let room = "";
   let username = "";
 
-  const reg = /(\/#[\d]+)(\[\w+\])/;
+  const reg = /(#[\d]+)(\[\w+\])/;
   const params = reg.exec(window.location.href);
   if (params !== null) {
-    room = params[1].slice(9);
-    username = params[2].slice(1, -1);
+    room = params[1].substring(1);
+    username = params[2].slice(1,-1);
   }
 
   const [playerCount, setPlayerCount] = useState(1);
@@ -58,7 +58,7 @@ const Playground = ({ socket, message }) => {
         <Header playerCount={playerCount} commands={commands}/>
         {status}
       </div>
-      <Tetris />
+      <Tetris socket={socket}/>
     </div>
   );
 }
