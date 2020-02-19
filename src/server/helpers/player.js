@@ -5,6 +5,7 @@ export default class Player {
         this.line = 0
         this.round = 0
         this.loser = false
+        this.color = (Math.floor(Math.random() * 255) + 1) +','+ (Math.floor(Math.random() * 255) + 1) +','+ (Math.floor(Math.random() * 255) + 1)
     }
 
     add_round() {
