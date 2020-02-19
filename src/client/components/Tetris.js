@@ -18,7 +18,7 @@ const Tetris = ({ socket }) => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
 
-  const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer(socket);
+  const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
     rowsCleared
@@ -68,6 +68,7 @@ const Tetris = ({ socket }) => {
         console.log('GAME OVER!!!');
         setGameOver(true);
         setDropTime(null);
+        // SOCKET GAME OVER
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
     }

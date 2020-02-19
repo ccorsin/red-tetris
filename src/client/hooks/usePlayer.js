@@ -3,7 +3,7 @@ import { useState, useCallback } from 'react';
 import { TETROMINOS, randomTetromino } from '../tetrominos';
 import { STAGE_WIDTH, checkCollision } from '../gameHelpers';
 
-export const usePlayer = (socket) => {
+export const usePlayer = () => {
          const [player, setPlayer] = useState({
            pos: { x: 0, y: 0 },
            tetromino: TETROMINOS[0].shape,
@@ -47,11 +47,7 @@ export const usePlayer = (socket) => {
          };
 
          const resetPlayer = useCallback(() => {
-          // SOCKET trigger tetri generator and sync it
-          // TO DO 
-          //  socket.emit("updateGame", player, room);
-           console.log("player");
-           console.log(player);
+           // TO DO increment position in stored []
            setPlayer({
              pos: { x: STAGE_WIDTH / 2 - 2, y: 0 },
              tetromino: randomTetromino().shape, // change by future state tetromino table with index

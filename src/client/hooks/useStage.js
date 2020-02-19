@@ -6,6 +6,7 @@ export const useStage = (player, resetPlayer) => {
   const [rowsCleared, setRowsCleared] = useState(0);
 
   useEffect(() => {
+    // SOCKET SMASH
     setRowsCleared(0);
     const sweepRows = newStage =>
       newStage.reduce((ack, row) => {
@@ -38,9 +39,15 @@ export const useStage = (player, resetPlayer) => {
       });
       // Then check if we got some score if collided
       if (player.collided) {
+        // SOCKET trigger tetri generator and sync it
+        // TO DO 
+        //  socket.emit("updateGame", player, room);
+        console.log("player");
+        console.log(player);
         resetPlayer();
         return sweepRows(newStage);
       }
+      console.log(newStage)
       return newStage;
     };
 

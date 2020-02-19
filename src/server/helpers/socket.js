@@ -55,12 +55,14 @@ export default class Socket {
                     }
                 });
             });
-            socket.on('updateGame', (player, room) => {
-                const curGame = games[isRoom(this.games, room)];
-                curGame.update_playerState(player);
-                if (check_tetriminos(player)) {
-                    curGame.add_tetriminos();
-                }
+            socket.on('collision', (player, room, line) => {
+                console.log(player, room, line)
+                //
+                // const curGame = games[isRoom(this.games, room)];
+                // curGame.update_playerState(player);
+                // if (check_tetriminos(player)) {
+                //     curGame.add_tetriminos();
+                // }
             // emit event that actualize front tetrominos list
             });
             socket.on('start', room => {
