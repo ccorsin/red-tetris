@@ -43,9 +43,10 @@ const Playground = ({ socket, message }) => {
     socket.on("message", function(message) {
       alert(message);
     });
-    socket.on("players_game", function(count, leader) {
-      setPlayerCount(count);
+    socket.on("players_game", function(leader, players) {
+      setPlayerCount(players.length);
       setGameLeader(leader);
+      dispatch({type: 'UPDATE_PLAYERS', players})
     });
     socket.on("toggle_game", function(isRunning) {
       setRunningState(isRunning);

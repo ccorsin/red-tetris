@@ -8,7 +8,10 @@ export const ioSocketMiddleWare = () => {
     else if (action.type == 'END') {
       action.socket.emit('end', action.room);
       return next(action);
-    }  
+    }
+    else if (action.type == 'UPDATE_PLAYERS') {
+      return next(action)
+    }
     return
   }
 }

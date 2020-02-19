@@ -17,7 +17,7 @@ export const StyledTetris = styled.div`
   margin: 0 auto;
   max-width: 900px;
 
-  block {
+  aside {
     display: flex;
     flex-direction: row;
   }

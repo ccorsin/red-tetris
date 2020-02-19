@@ -113,7 +113,7 @@ const Tetris = ({ socket, playerCount }) => {
       onKeyUp={keyUp}
     >
       <StyledTetris>
-        <block>
+        <aside>
           {gameOver ? (
             <Display gameOver={gameOver} text="Game Over" />
           ) : (
@@ -124,11 +124,11 @@ const Tetris = ({ socket, playerCount }) => {
             </div>
           )}
           <StartButton callback={startGame} />
-        </block>
-        <block>
+        </aside>
+        <aside>
           <Stage stage={stage} title="YOU"/>
           {spectrum}
-        </block>
+        </aside>
       </StyledTetris>
     </StyledTetrisWrapper>
   );

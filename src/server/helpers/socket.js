@@ -30,7 +30,7 @@ export default class Socket {
                     socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
                     this.io.sockets.in(room).emit('message', socket.username + ' has joined the game folks !');
                     socket.join(room);
-                    this.io.sockets.in(room).emit('players_game', this.games[is_room].players.length, this.games[is_room].leader.name);
+                    this.io.sockets.in(room).emit('players_game', this.games[is_room].leader.name, this.games[is_room].players);
                 }
                 else if (is_room >= 0 && this.games[is_room].running == true) {
                     socket.emit('message', 'The game is currently running - impossible to join !');
@@ -48,7 +48,7 @@ export default class Socket {
                     this.games[this.isRoom (this.games, room)].remove_player(player);
                     if (this.games[this.isRoom (this.games, room)].players.length > 0) {
                     this.io.sockets.in(room).emit('message', socket.username + ' has left the game');
-                    this.io.sockets.in(room).emit('players_game', this.games[this.isRoom (this.games, room)].players.length, this.games[this.isRoom (this.games, room)].leader.name);
+                    this.io.sockets.in(room).emit('players_game', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
                     }
                     else {
                     this.games.splice(this.isRoom (this.games, room), 1);

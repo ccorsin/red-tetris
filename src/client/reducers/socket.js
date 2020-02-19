@@ -10,12 +10,14 @@ const reducer = (state = {} , action) => {
           ...state,
           isRunning: false,
         };
+    case 'UPDATE_PLAYERS':
+        return {
+          ...state,
+          players: action.players
+        }
     default: 
         return state
   }
 }
 
 export default reducer
-
-
-
