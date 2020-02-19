@@ -62,7 +62,8 @@ export default class Socket {
                 if (curGame.check_tetriminos(player)) {
                     curGame.add_tetriminos();
                     // refill
-                    socket.emit('refill', curGame.tetriminos);
+                    this.io.sockets.in(room).emit('refill', curGame.tetriminos);
+                    this.io.sockets.in(room).emit('spectre', curGame.players);
                 }
             });
             socket.on('start', room => {
