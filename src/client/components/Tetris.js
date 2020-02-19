@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 
 import { createStage, checkCollision } from '../gameHelpers';
 import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
+import { useSelector, useDispatch } from 'react-redux'
 
 // Custom Hooks
 import { useInterval } from '../hooks/useInterval';
@@ -15,7 +16,7 @@ import Spectrum from './Spectrum';
 import Display from './Display';
 import StartButton from './StartButton';
 
-const Tetris = ({ socket, playerCount }) => {
+const Tetris = ({ socket, room, playerObject, playerCount }) => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
 
@@ -24,8 +25,11 @@ const Tetris = ({ socket, playerCount }) => {
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
     rowsCleared
   );
+  const dispatch = useDispatch()
 
-  // console.log('re-render');
+  const collide = (playerData) => {
+    dispatch({ type: 'COLLISION', player: playerData, room: room, socket })
+  };
 
   const movePlayer = dir => {
     if (!checkCollision(player, stage, { x: dir, y: 0 })) {
@@ -72,6 +76,9 @@ const Tetris = ({ socket, playerCount }) => {
         // SOCKET GAME OVER
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
+      // SOCKET COLLISION
+      const playerData = { ...playerObject, player};
+      collide(playerData);
     }
   };
 

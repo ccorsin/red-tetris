@@ -39,15 +39,10 @@ export const useStage = (player, resetPlayer) => {
       });
       // Then check if we got some score if collided
       if (player.collided) {
-        // SOCKET trigger tetri generator and sync it
-        // TO DO 
-        //  socket.emit("updateGame", player, room);
-        console.log("player");
-        console.log(player);
         resetPlayer();
         return sweepRows(newStage);
       }
-      console.log(newStage)
+      // console.log(newStage)
       return newStage;
     };
 

@@ -9,7 +9,12 @@ export default class Player {
     }
 
     add_round() {
+        console.log("add_round")
         this.round += 1;
+    }
+
+    set_line(n) {
+        this.line = 19 - n;
     }
 
     add_line(n) {

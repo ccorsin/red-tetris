@@ -2,87 +2,89 @@ import Player from "./player";
 import Tetriminos from "./tetriminos"
 
 export default class Game {
-                 constructor(player, room) {
-                   this.leader = player;
-                   this.room = room;
-                   this.players = [];
-                   this.players.push(player);
-                   this.running = false;
-                   this.tetriminos = [];
-                   this.playerStates = [];
-                   this.playerGhosts = [];
-                 }
+    constructor(player, room) {
+        this.leader = player;
+        this.room = room;
+        this.players = [];
+        this.players.push(player);
+        this.running = false;
+        this.tetriminos = [];
+        this.playerGhosts = [];
+    }
 
-                 isPlayer(players, player) {
-                   for (var i = 0; i < players.length; i++) {
-                     if (players[i] == player) {
-                       return i;
-                     }
-                   }
-                   return -1;
-                 }
+    isPlayer(players, player) {
+        for (var i = 0; i < players.length; i++) {
+            if (players[i].id == player.id) {
+              return i;
+            }
+        }
+        return -1;
+    }
 
-                 // nb of tetriminos players collided
-                 update_playerState(player) {
-                   this.playerStates[this.isPlayer(this.players, player)] += 1;
-                 }
+    init_player_round() {
+      for (var i = 0; i < this.players.length; i++) {
+        this.players[i].add_round();
+      }    
+    }
 
-                 clear_tetriminos() {
-                    function minValue(arr) {
-                        let min = arr[0];
+    update_player_round(player) {
+      this.players[this.isPlayer(this.players, player)].add_round();
+    }
 
-                        for (let val of arr) {
-                            if (val < min) {
-                                min = val;
-                            }
-                        }
-                        return min;
-                    }
-                    let doneTetri = minValue(this.playerStates);
-                    for (var i = 0; i < players.length; i++) {
-                        this.playerStates[i] -= doneTetri;
-                    }
-                    this.tetriminos.splice(0, this.tetriminos.length - doneTetri);
-                 }
+    update_player_line(player) {
+        this.players[this.isPlayer(this.players, player)].set_line(player.player.pos.y);
+        // console.log("this.players[this.isPlayer(this.players, player)].line");
+        // console.log(this.players[this.isPlayer(this.players, player)].line);
+    }
 
-                 check_tetriminos(player) {
-                    // count tetriminos // playerState
-                    if (this.playerStates[this.isPlayer(this.players, player)] == this.tetriminos.length) {
-                        // clear tetriminos
-                        this.clear_tetriminos();
-                        return true;
-                    }
-                    return false;
-                 }
+    clear_tetriminos() {
+        let min = this.players[0].round;
+        for (var i = 0; i < this.players.length; i++) {
+            if (this.players[i].round < min) {
+                min = this.players[i].round;
+            }
+        }
+        for (var i = 0; i < this.players.length; i++) {
+            this.players[i].round -= min;
+        }
+        this.tetriminos.splice(0, this.tetriminos.length - min);
+    }
 
-                 // contains list of tetriminos
-                 add_tetriminos() {
-                   // generate random tetriminos
-                   const tetromino = Tetriminos.randomTetromino();
-                   this.tetriminos.push(tetromino);
-                 }
+    check_tetriminos(player) {
+      if (this.players[this.isPlayer(this.players, player)].round >= this.tetriminos.length) {
+          // this.clear_tetriminos();
+          return true;
+      }
+      return false;
+    }
 
-                 // playerGhosts
+    add_tetriminos() {
+      // generate random tetriminos
+      let tetromino = new Tetriminos().randomTetromino();
+      this.tetriminos.push(tetromino);
+      console.log("this.tetriminos");
+      console.log(this.tetriminos);
+    }
 
-                 add_player(player) {
-                   this.players.push(player);
-                 }
+    add_player(player) {
+      this.players.push(player);
+    }
 
-                 remove_player(player) {
-                   let index = this.players.findIndex(p => p.id === player.id);
-                   if (index > -1) {
-                     this.players.splice(index, 1);
-                   }
-                   if ((player = this.leader)) {
-                     this.leader = this.players[0];
-                   }
-                 }
+    remove_player(player) {
+      let index = this.players.findIndex(p => p.id === player.id);
+      if (index > -1) {
+        this.players.splice(index, 1);
+      }
+      if ((player = this.leader)) {
+        this.leader = this.players[0];
+      }
+    }
 
-                 start_game() {
-                   this.running = true;
-                 }
+    start_game() {
+      this.running = true;
+    }
 
-                 end_game() {
-                   this.running = false;
-                 }
-               }
+    end_game() {
+      this.running = false;
+    }
+    }

@@ -41,7 +41,6 @@ export default class Socket {
                     socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
                     socket.join(room);
                 }
-
                 socket.on('disconnect', () => {
                     process.stdout.write("Socket disconnected: " + socket.id + '\n')
                     socket.leave(room);
@@ -54,19 +53,24 @@ export default class Socket {
                     this.games.splice(this.isRoom (this.games, room), 1);
                     }
                 });
+                socket.emit('player', player);
             });
-            socket.on('collision', (player, room, line) => {
-                console.log(player, room, line)
-                //
-                // const curGame = games[isRoom(this.games, room)];
-                // curGame.update_playerState(player);
-                // if (check_tetriminos(player)) {
-                //     curGame.add_tetriminos();
-                // }
-            // emit event that actualize front tetrominos list
+            socket.on('collision', (player, room) => {
+                const curGame = this.games[this.isRoom(this.games, room)];
+                curGame.update_player_line(player);
+                curGame.update_player_round(player);
+                if (curGame.check_tetriminos(player)) {
+                    curGame.add_tetriminos();
+                    // refill
+                    socket.emit('refill', curGame.tetriminos);
+                }
             });
             socket.on('start', room => {
-                this.games[this.isRoom(this.games, room)].start_game();
+                const curGame = this.games[this.isRoom(this.games, room)];
+                curGame.start_game();
+                curGame.add_tetriminos();
+                curGame.init_player_round();
+                this.io.sockets.in(room).emit('refill', curGame.tetriminos);
                 this.io.sockets.in(room).emit('toggle_game', true);
             });
             socket.on('end', room => {

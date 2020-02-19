@@ -17,13 +17,14 @@ const Playground = ({ socket, message }) => {
   const [playerCount, setPlayerCount] = useState(1);
   const [gameLeader, setGameLeader] = useState(username);
   const [runningState, setRunningState] = useState(false);
+  const [currentPlayer, setcurrentPlayer] = useState({});
   const dispatch = useDispatch()
 
   const startGame = () => {
-    dispatch({type: 'START', room: room, socket})
+      dispatch({type: 'START', room: room, socket})
   };
   const endGame = () => {
-    dispatch({type: 'END', room: room, socket})
+      dispatch({type: 'END', room: room, socket})
   };
   const isLeader = username == gameLeader;
 
@@ -54,15 +55,17 @@ const Playground = ({ socket, message }) => {
     socket.on("spectre", function(players) {
       dispatch({type: 'UPDATE_PLAYERS', players});
     })
+    socket.on("player", function (player) {
+      setcurrentPlayer(player);
+    });
   }, []);
 
   return (
     <div>
       <div>
         <Header playerCount={playerCount} commands={commands}/>
-        {status}
       </div>
-      <Tetris socket={socket} playerCount={playerCount}/>
+      <Tetris socket={socket} room={room} playerObject={currentPlayer} playerCount={playerCount}/>
     </div>
   );
 }
