@@ -11,6 +11,7 @@ import { useGameStatus } from '../hooks/useGameStatus';
 
 // Components
 import Stage from './Stage';
+import Spectrum from './Spectrum';
 import Display from './Display';
 import StartButton from './StartButton';
 
@@ -102,7 +103,7 @@ const Tetris = ({ socket, playerCount }) => {
   };
   let spectrum = "";
   if (playerCount > 1) {
-    spectrum = <Stage stage={createStage()} title="SPECTRUM"/>
+    spectrum = <Spectrum stage={createStage()} title="SPECTRUM"/>
   }
 
   return (
