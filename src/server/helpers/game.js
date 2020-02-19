@@ -29,12 +29,12 @@ export default class Game {
 
     update_player_round(player) {
       this.players[this.isPlayer(this.players, player)].add_round();
+      return this.players[this.isPlayer(this.players, player)];
     }
 
     update_player_line(player) {
         this.players[this.isPlayer(this.players, player)].set_line(player.player.pos.y);
-        // console.log("this.players[this.isPlayer(this.players, player)].line");
-        // console.log(this.players[this.isPlayer(this.players, player)].line);
+        return this.players[this.isPlayer(this.players, player)];
     }
 
     clear_tetriminos() {
@@ -52,6 +52,7 @@ export default class Game {
 
     check_tetriminos(player) {
       if (this.players[this.isPlayer(this.players, player)].round >= this.tetriminos.length) {
+        // TO DO > WHEN FRONT OK then reshape
           // this.clear_tetriminos();
           return true;
       }
@@ -62,8 +63,6 @@ export default class Game {
       // generate random tetriminos
       let tetromino = new Tetriminos().randomTetromino();
       this.tetriminos.push(tetromino);
-      console.log("this.tetriminos");
-      console.log(this.tetriminos);
     }
 
     add_player(player) {

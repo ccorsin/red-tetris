@@ -15,6 +15,16 @@ const reducer = (state = {} , action) => {
           ...state,
           players: action.players
         }
+    case 'REFILL':
+        return {
+          ...state,
+          tetriminos: action.tetriminos
+        }
+    case 'CURRENT_PLAYER':
+        return {
+          ...state,
+          currentPlayer: action.currentPlayer
+        }
     default: 
         return state
   }

@@ -15,6 +15,11 @@ export const ioSocketMiddleWare = () => {
       action.socket.emit('collision', action.player, action.room);
       return next(action);
     }
+    else if (action.type == 'REFILL') {
+      return next(action);
+    } else if (action.type == 'CURRENT_PLAYER') {
+      return next(action);
+    }
     return
   }
 }

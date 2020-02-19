@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 
 import { createStage, checkCollision } from '../gameHelpers';
 import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
@@ -16,7 +16,7 @@ import Spectrum from './Spectrum';
 import Display from './Display';
 import StartButton from './StartButton';
 
-const Tetris = ({ socket, room, playerObject, playerCount }) => {
+const Tetris = ({ socket, room, playerCount }) => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
 
@@ -26,6 +26,8 @@ const Tetris = ({ socket, room, playerObject, playerCount }) => {
     rowsCleared
   );
   const dispatch = useDispatch()
+  const currentPlayer = useSelector(state => state.sock.currentPlayer);
+
 
   const collide = (playerData) => {
     dispatch({ type: 'COLLISION', player: playerData, room: room, socket })
@@ -77,7 +79,7 @@ const Tetris = ({ socket, room, playerObject, playerCount }) => {
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
       // SOCKET COLLISION
-      const playerData = { ...playerObject, player};
+      const playerData = { ...currentPlayer, player};
       collide(playerData);
     }
   };
@@ -112,6 +114,13 @@ const Tetris = ({ socket, room, playerObject, playerCount }) => {
   if (playerCount > 1) {
     spectrum = <Spectrum stage={createStage()} title="SPECTRUM"/>
   }
+
+  useEffect(() => { 
+    // TO DO RESOLVE ERROR OF INITIALISATION
+    socket.on('refill', function (tetriminos) {
+      dispatch({ type: 'REFILL', tetriminos });
+    });
+  }, []);
 
   return (
     <StyledTetrisWrapper

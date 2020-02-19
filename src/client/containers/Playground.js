@@ -17,7 +17,6 @@ const Playground = ({ socket, message }) => {
   const [playerCount, setPlayerCount] = useState(1);
   const [gameLeader, setGameLeader] = useState(username);
   const [runningState, setRunningState] = useState(false);
-  const [currentPlayer, setcurrentPlayer] = useState({});
   const dispatch = useDispatch()
 
   const startGame = () => {
@@ -56,7 +55,7 @@ const Playground = ({ socket, message }) => {
       dispatch({type: 'UPDATE_PLAYERS', players});
     })
     socket.on("player", function (player) {
-      setcurrentPlayer(player);
+      dispatch({ type: 'CURRENT_PLAYER', currentPlayer: player});
     });
   }, []);
 
@@ -65,7 +64,7 @@ const Playground = ({ socket, message }) => {
       <div>
         <Header playerCount={playerCount} commands={commands}/>
       </div>
-      <Tetris socket={socket} room={room} playerObject={currentPlayer} playerCount={playerCount}/>
+      <Tetris socket={socket} room={room} playerCount={playerCount}/>
     </div>
   );
 }
