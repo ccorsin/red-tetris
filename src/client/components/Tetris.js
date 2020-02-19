@@ -14,7 +14,7 @@ import Stage from './Stage';
 import Display from './Display';
 import StartButton from './StartButton';
 
-const Tetris = ({ socket }) => {
+const Tetris = ({ socket, playerCount }) => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
 
@@ -100,6 +100,10 @@ const Tetris = ({ socket }) => {
       }
     }
   };
+  let spectrum = "";
+  if (playerCount > 1) {
+    spectrum = <Stage stage={createStage()} title="SPECTRUM"/>
+  }
 
   return (
     <StyledTetrisWrapper
@@ -109,8 +113,7 @@ const Tetris = ({ socket }) => {
       onKeyUp={keyUp}
     >
       <StyledTetris>
-        <Stage stage={stage} />
-        <aside>
+        <block>
           {gameOver ? (
             <Display gameOver={gameOver} text="Game Over" />
           ) : (
@@ -121,7 +124,11 @@ const Tetris = ({ socket }) => {
             </div>
           )}
           <StartButton callback={startGame} />
-        </aside>
+        </block>
+        <block>
+          <Stage stage={stage} title="YOU"/>
+          {spectrum}
+        </block>
       </StyledTetris>
     </StyledTetrisWrapper>
   );

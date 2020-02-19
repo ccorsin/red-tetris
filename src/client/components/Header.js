@@ -8,8 +8,8 @@ const StyledHeader = styled.div`
     margin-right: auto;
     width: 25%;
     filter: grayscale(0.95);
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     font-family: Pixel, Arial, Helvetica, sans-serif;
 `;
 

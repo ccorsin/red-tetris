@@ -8,19 +8,17 @@ export const StyledTetrisWrapper = styled.div`
   background-size: cover;
   overflow: hidden;
   `;
-  // background: url(${bgImage}) #000;
   
 export const StyledTetris = styled.div`
   display: flex;
-  align-items: flex-start;
-  padding: 40px;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
   margin: 0 auto;
   max-width: 900px;
 
-  aside {
-    width: 100%;
-    max-width: 200px;
-    display: block;
-    padding: 0 20px;
+  block {
+    display: flex;
+    flex-direction: row;
   }
 `;

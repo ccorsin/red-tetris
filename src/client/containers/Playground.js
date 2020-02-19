@@ -58,7 +58,7 @@ const Playground = ({ socket, message }) => {
         <Header playerCount={playerCount} commands={commands}/>
         {status}
       </div>
-      <Tetris socket={socket}/>
+      <Tetris socket={socket} playerCount={playerCount}/>
     </div>
   );
 }
