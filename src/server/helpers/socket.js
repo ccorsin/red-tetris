@@ -33,7 +33,7 @@ export default class Socket {
                     this.io.sockets.in(room).emit('players_game', this.games[is_room].leader.name, this.games[is_room].players);
                 }
                 else if (is_room >= 0 && this.games[is_room].running == true) {
-                    socket.emit('message', 'The game is currently running - impossible to join !');
+                    socket.emit('isRunning', 'The game is currently running - impossible to join !');
                 }
                 else {
                     let game = new Game (player, room);
@@ -64,6 +64,12 @@ export default class Socket {
                         this.io.sockets.in(room).emit('spectre', curGame.players);
                     }
                     socket.emit('player', updatedPlayer);
+                });
+                socket.on('game_over', (player, room) => {
+                    const curGame = this.games[this.isRoom(this.games, room)];
+                    let updatedPlayer = curGame.game_over_player(player);
+                    socket.emit('player', updatedPlayer);
+                    this.io.sockets.in(room).emit('spectre', curGame.players);
                 });
             });
             socket.on('start', room => {

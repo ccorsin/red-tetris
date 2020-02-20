@@ -35,6 +35,11 @@ export default class Game {
       return this.players[this.isPlayer(this.players, player)];
     }
 
+    game_over_player(player) {
+      this.players[this.isPlayer(this.players, player)].lose();
+      return this.players[this.isPlayer(this.players, player)];
+    }
+
     clear_tetriminos() {
         let min = this.players[0].round;
         for (var i = 0; i < this.players.length; i++) {

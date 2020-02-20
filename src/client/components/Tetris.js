@@ -30,7 +30,7 @@ const Tetris = ({ socket, room, playerCount }) => {
 
 
   const collide = (playerData) => {
-    dispatch({ type: 'COLLISION', player: playerData, room: room, socket })
+    dispatch({ type: 'COLLISION', player: playerData, room, socket })
   };
 
   const movePlayer = dir => {
@@ -70,12 +70,10 @@ const Tetris = ({ socket, room, playerCount }) => {
     if (!checkCollision(player, stage, { x: 0, y: 1 })) {
       updatePlayerPos({ x: 0, y: 1, collided: false });
     } else {
-      // Game over!
       if (player.pos.y < 1) {
-        console.log('GAME OVER!!!');
         setGameOver(true);
         setDropTime(null);
-        // SOCKET GAME OVER
+        dispatch({ type: 'GAME_OVER', player: currentPlayer, room, socket })
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
       // SOCKET COLLISION

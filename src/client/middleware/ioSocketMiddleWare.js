@@ -17,7 +17,12 @@ export const ioSocketMiddleWare = () => {
     }
     else if (action.type == 'REFILL') {
       return next(action);
-    } else if (action.type == 'CURRENT_PLAYER') {
+    }
+    else if (action.type == 'CURRENT_PLAYER') {
+      return next(action);
+    }
+    else if (action.type == 'GAME_OVER') {
+      action.socket.emit('game_over', action.player, action.room);
       return next(action);
     }
     return
