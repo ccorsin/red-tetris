@@ -54,17 +54,17 @@ export default class Socket {
                     }
                 });
                 socket.emit('player', player);
-            });
-            socket.on('collision', (player, room) => {
-                const curGame = this.games[this.isRoom(this.games, room)];
-                let updatedPlayer = curGame.update_player(player);
-                if (curGame.check_tetriminos(player)) {
-                    curGame.add_tetriminos();
-                    // refill
-                    this.io.sockets.in(room).emit('refill', curGame.tetriminos);
-                    this.io.sockets.in(room).emit('spectre', curGame.players);
-                }
-                socket.emit('player', updatedPlayer);
+                socket.on('collision', (player, room) => {
+                    const curGame = this.games[this.isRoom(this.games, room)];
+                    let updatedPlayer = curGame.update_player(player);
+                    if (curGame.check_tetriminos(player)) {
+                        curGame.add_tetriminos();
+                        // refill
+                        this.io.sockets.in(room).emit('refill', curGame.tetriminos);
+                        this.io.sockets.in(room).emit('spectre', curGame.players);
+                    }
+                    socket.emit('player', updatedPlayer);
+                });
             });
             socket.on('start', room => {
                 const curGame = this.games[this.isRoom(this.games, room)];
