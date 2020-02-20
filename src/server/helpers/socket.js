@@ -57,8 +57,7 @@ export default class Socket {
             });
             socket.on('collision', (player, room) => {
                 const curGame = this.games[this.isRoom(this.games, room)];
-                let updatedPlayer = curGame.update_player_line(player);
-                updatedPlayer = curGame.update_player_round(player);
+                let updatedPlayer = curGame.update_player(player);
                 if (curGame.check_tetriminos(player)) {
                     curGame.add_tetriminos();
                     // refill

@@ -27,14 +27,12 @@ export default class Game {
       }    
     }
 
-    update_player_round(player) {
+    update_player(player) {
       this.players[this.isPlayer(this.players, player)].add_round();
-      return this.players[this.isPlayer(this.players, player)];
-    }
-
-    update_player_line(player) {
+      if ((19 - player.player.pos.y) > this.players[this.isPlayer(this.players, player)].line) {
         this.players[this.isPlayer(this.players, player)].set_line(player.player.pos.y);
-        return this.players[this.isPlayer(this.players, player)];
+      }
+      return this.players[this.isPlayer(this.players, player)];
     }
 
     clear_tetriminos() {
