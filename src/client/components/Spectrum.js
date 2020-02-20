@@ -6,11 +6,12 @@ import Cell from './Cell';
 
 const Spectrum = ({ stage, title }) => {
   const players = useSelector(state => state.sock.players);
+  const currentPlayer = useSelector(state => state.sock.currentPlayer);
     const getColor = (y) => {
-        if (players) {
+        if (players && currentPlayer) {
             let color;
             for (let player of players) {
-                if (y == player.line) {
+                if (y == player.line && player.id !== currentPlayer.id) {
                     color = player.color;
                     break;
                 }
