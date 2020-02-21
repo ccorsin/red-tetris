@@ -4,3 +4,4 @@ server/coverage/
 build/
 dist/
 package-lock.json
+node_modules/

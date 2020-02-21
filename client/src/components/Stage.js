@@ -1,9 +1,11 @@
  import React from 'react';
 import { StyledStage, StyledRow } from './styles/StyledStage';
+import { useSelector } from 'react-redux'
 
 import Cell from './Cell';
 
 const Stage = ({ stage, title, currentPlayer }) => {
+  const winner = useSelector(state => state.sock.winner);
 
   const TETROMINOS = {
     0: { color: "220, 220, 220" },
@@ -21,6 +23,9 @@ const Stage = ({ stage, title, currentPlayer }) => {
     let color;
     if (currentPlayer && currentPlayer.loser) {
       color = '96, 96, 96';
+    }
+    else if (currentPlayer && winner && currentPlayer.id === winner.id) {
+      color = '63, 191, 191'
     }
     else {
       color = TETROMINOS[cell[0]].color;

@@ -38,6 +38,10 @@ class Player {
     lose() {
         this.loser = true;
     }
+
+    win() {
+        this.winner = true
+    }
 }
 
 module.exports = Player;

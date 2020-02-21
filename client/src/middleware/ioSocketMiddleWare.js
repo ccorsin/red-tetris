@@ -38,6 +38,9 @@ export const ioSocketMiddleWare = () => {
       return next(action);
       // set store freeze action to true/false
     }
+    else if (action.type === 'WINNER') {
+      return next(action);
+    }
     return
   }
 }
