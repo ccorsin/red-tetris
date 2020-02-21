@@ -102,5 +102,22 @@ class Game {
     end_game() {
       this.running = false;
     }
+
+    check_winner() {
+      let win = 0;
+      let winner;
+      for (var i = 0; i < this.players.length; i++) {
+        if (!this.players[i].loser) {
+          win += 1;
+          winner = this.players[i];
+        };
+      }
+      if (win == 1) {
+        return winner;
+      }
+      else {
+        return false;
+      }
     }
+  }
 module.exports = Game;

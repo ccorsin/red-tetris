@@ -30,6 +30,11 @@ const reducer = (state = { freeze: false }, action) => {
         ...state,
         freeze: action.freeze,
       }
+    case 'WINNER':
+    return {
+      ...state,
+      winner: action.player
+    }
     default: 
         return state
   }

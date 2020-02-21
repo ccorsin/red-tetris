@@ -44,13 +44,24 @@ class Socket {
                 socket.on('disconnect', () => {
                     process.stdout.write("Socket disconnected: " + socket.id + '\n');
                     socket.leave(room);
-                    this.games[this.isRoom (this.games, room)].remove_player(player);
-                    if (this.games[this.isRoom (this.games, room)].players.length > 0) {
-                    this.io.sockets.in(room).emit('message', socket.username + ' has left the game');
-                    this.io.sockets.in(room).emit('players_game', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
+                    const curGame = this.games[this.isRoom(this.games, room)];
+                    curGame.remove_player(player);
+                    if (curGame.players.length > 0) {
+                        this.io.sockets.in(room).emit('message', socket.username + ' has left the game');
+                        let winner = curGame.check_winner();
+                        if (winner) {
+                            winner.win();
+                            curGame.end_game();
+                            this.io.sockets.in(room).emit('toggle_game', false);
+                            this.io.sockets.in(room).emit('win', winner.name + ' won the game !', winner);
+                            this.io.sockets.in(room).emit('players_game', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
+                        }
+                        else {
+                            this.io.sockets.in(room).emit('players_game', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
+                        }
                     }
                     else {
-                    this.games.splice(this.isRoom (this.games, room), 1);
+                        this.games.splice(this.isRoom (this.games, room), 1);
                     }
                 });
                 socket.emit('player', player);
@@ -69,6 +80,13 @@ class Socket {
                     const curGame = this.games[this.isRoom(this.games, room)];
                     let updatedPlayer = curGame.game_over_player(player);
                     socket.emit('player', updatedPlayer);
+                    let winner = curGame.check_winner();
+                    if (winner) {
+                        winner.win();
+                        curGame.end_game();
+                        this.io.sockets.in(room).emit('toggle_game', false);
+                        this.io.sockets.in(room).emit('win', winner.name + ' won the game !', winner);
+                    }
                     this.io.sockets.in(room).emit('players', curGame.players);
                 });
                 socket.on('smash', (player, room) => {
