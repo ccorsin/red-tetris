@@ -61,8 +61,8 @@ export default class Socket {
                         curGame.add_tetriminos();
                         // refill
                         this.io.sockets.in(room).emit('refill', curGame.tetriminos);
-                        this.io.sockets.in(room).emit('players', curGame.players);
                     }
+                    this.io.sockets.in(room).emit('players', curGame.players);
                     socket.emit('player', updatedPlayer);
                 });
                 socket.on('game_over', (player, room) => {
