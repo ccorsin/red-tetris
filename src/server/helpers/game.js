@@ -24,7 +24,20 @@ export default class Game {
     init_player_round() {
       for (var i = 0; i < this.players.length; i++) {
         this.players[i].add_round();
-      }    
+      }
+      // en generer en avance sinon bug - a resoudre peut etre mieux
+      for (var i = 0; i < 5; i++) {
+        this.add_tetriminos();
+      }
+    }
+
+    // distribuer freeze
+    freeze_players(player) {
+        for (var i = 0; i < this.players.length; i++) {
+            if (i != this.isPlayer(this.players, player)) {
+              this.players[i].add_freeze();
+            }
+        }
     }
 
     update_player(player) {

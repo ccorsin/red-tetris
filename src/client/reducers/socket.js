@@ -25,6 +25,11 @@ const reducer = (state = {} , action) => {
           ...state,
           currentPlayer: action.currentPlayer
         }
+    case 'SET_SMASH':
+      return {
+        ...state,
+        up: action.up,
+      }
     default: 
         return state
   }

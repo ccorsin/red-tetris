@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
 import { STAGE_WIDTH, checkCollision } from '../gameHelpers';
 
 export const usePlayer = () => {

@@ -71,11 +71,14 @@ export default class Socket {
                     socket.emit('player', updatedPlayer);
                     this.io.sockets.in(room).emit('players', curGame.players);
                 });
+                socket.on('smash', (player, room) => {
+                    const curGame = this.games[this.isRoom(this.games, room)];
+                    curGame.freeze_players(player);
+                });
             });
             socket.on('start', room => {
                 const curGame = this.games[this.isRoom(this.games, room)];
                 curGame.start_game();
-                curGame.add_tetriminos();
                 curGame.init_player_round();
                 this.io.sockets.in(room).emit('refill', curGame.tetriminos);
                 this.io.sockets.in(room).emit('toggle_game', true);
