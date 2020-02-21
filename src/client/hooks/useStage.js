@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react';
 import { createStage } from '../gameHelpers';
+import { useSelector, useDispatch } from 'react-redux'
+
 
 export const useStage = (player, resetPlayer) => {
   const [stage, setStage] = useState(createStage());
   const [rowsCleared, setRowsCleared] = useState(0);
+  const currentPlayer = useSelector(state => state.sock.currentPlayer);
+  const tetriminos = useSelector(state => state.sock.tetriminos);
 
   useEffect(() => {
     // SOCKET SMASH
@@ -39,7 +43,7 @@ export const useStage = (player, resetPlayer) => {
       });
       // Then check if we got some score if collided
       if (player.collided) {
-        resetPlayer();
+        resetPlayer(currentPlayer, tetriminos);
         return sweepRows(newStage);
       }
       // console.log(newStage)

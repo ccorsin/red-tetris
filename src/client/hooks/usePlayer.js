@@ -1,16 +1,15 @@
 import { useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { TETROMINOS, randomTetromino } from '../tetrominos';
+// import { TETROMINOS, randomTetromino } from '../tetrominos';
 import { STAGE_WIDTH, checkCollision } from '../gameHelpers';
 
 export const usePlayer = () => {
-    const currentPlayer = useSelector(state => state.sock.currentPlayer);
-    const tetriminos = useSelector(state => state.sock.tetriminos);
+    // const currentPlayer = useSelector(state => state.sock.currentPlayer);
     // TO DO RESOLVE ERROR OF INITIALISATION
-
+    const init = { shape: [[0]], color: '220, 220, 220' };
     const [player, setPlayer] = useState({
         pos: { x: 0, y: 0 },
-        tetromino: TETROMINOS[0].shape, // TO CHANGE
+        tetromino: init.shape, // TO CHANGE
         collided: false
       });
 
@@ -50,10 +49,10 @@ export const usePlayer = () => {
         }));
       };
 
-      const resetPlayer = useCallback(() => {
+      const resetPlayer = useCallback((currentPlayer, tetriminos) => {
         setPlayer({
           pos: { x: STAGE_WIDTH / 2 - 2, y: 0 },
-          tetromino: randomTetromino().shape, // TO CHANGE
+          tetromino: tetriminos[currentPlayer.round].shape, // TO CHANGE
           collided: false
         });
       }, []);

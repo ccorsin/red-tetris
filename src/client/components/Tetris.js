@@ -27,6 +27,7 @@ const Tetris = ({ socket, room, playerCount }) => {
   );
   const dispatch = useDispatch()
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
+  const tetriminos = useSelector(state => state.sock.tetriminos);
 
 
   const collide = (playerData) => {
@@ -52,7 +53,7 @@ const Tetris = ({ socket, room, playerCount }) => {
     // Reset everything
     setStage(createStage());
     setDropTime(1000);
-    resetPlayer();
+    resetPlayer(currentPlayer, tetriminos);
     // setScore(0);
     // setLevel(0);
     // setRows(0);
