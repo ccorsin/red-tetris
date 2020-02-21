@@ -115,7 +115,6 @@ const Tetris = ({ socket, room, playerCount }) => {
   }
 
   useEffect(() => { 
-    // TO DO RESOLVE ERROR OF INITIALISATION
     socket.on('refill', function (tetriminos) {
       dispatch({ type: 'REFILL', tetriminos });
     });

@@ -32,8 +32,8 @@ const App = ({ message }) => {
 
       // let match = useRouteMatch("/tetris/");
       // return <Playground socket={socket} room={room} username={username} />;
-    }
-  }, []);
+  //   }
+  // }, []);
  
   return (
       <StyledApp>
