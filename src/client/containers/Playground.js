@@ -51,7 +51,7 @@ const Playground = ({ socket, message }) => {
     socket.on("toggle_game", function(isRunning) {
       setRunningState(isRunning);
     });
-    socket.on("spectre", function(players) {
+    socket.on("players", function(players) {
       dispatch({type: 'UPDATE_PLAYERS', players});
     })
     socket.on("player", function (player) {

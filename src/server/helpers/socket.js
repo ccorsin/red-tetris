@@ -61,7 +61,7 @@ export default class Socket {
                         curGame.add_tetriminos();
                         // refill
                         this.io.sockets.in(room).emit('refill', curGame.tetriminos);
-                        this.io.sockets.in(room).emit('spectre', curGame.players);
+                        this.io.sockets.in(room).emit('players', curGame.players);
                     }
                     socket.emit('player', updatedPlayer);
                 });
@@ -69,7 +69,7 @@ export default class Socket {
                     const curGame = this.games[this.isRoom(this.games, room)];
                     let updatedPlayer = curGame.game_over_player(player);
                     socket.emit('player', updatedPlayer);
-                    this.io.sockets.in(room).emit('spectre', curGame.players);
+                    this.io.sockets.in(room).emit('players', curGame.players);
                 });
             });
             socket.on('start', room => {
