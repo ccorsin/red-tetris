@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { StyledApp } from '../components/styles/StyledApp';
 
+import {
+  BrowserRouter as Router,
+  // Redirect,
+  Switch,
+  Route,
+  // useRouteMatch
+} from "react-router-dom";
+
+import history from "../history";
+
 import { connect } from 'react-redux'
 import io from 'socket.io-client'
 const socket = io('http://0.0.0.0:3004');
@@ -20,6 +30,11 @@ const App = ({ message }) => {
   //   username = params[2].slice(1, -1);
   // }
 
+      // let match = useRouteMatch("/tetris/");
+      // return <Playground socket={socket} room={room} username={username} />;
+    }
+  }, []);
+ 
   return (
       <StyledApp>
         <Playground socket={socket} message={message}/>
