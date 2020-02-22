@@ -1,4 +1,4 @@
-import Player from "../src/server/helpers/player"
+const Player = require('../src/server/helpers/player');
 
  describe('Player class is made to represent a player, store its name and socket id', () => {
     let player;
@@ -11,8 +11,8 @@ import Player from "../src/server/helpers/player"
             line: 0,
             round: 0,
             loser: false
-        })
-    })
+        });
+    });
 
     it('should increment player round', () => {
         player.add_round();
@@ -22,8 +22,8 @@ import Player from "../src/server/helpers/player"
             line: 0,
             round: 1,
             loser: false
-        })
-    })
+        });
+    });
 
     it('should add 1 line to player', () => {
         player.add_line(1);
@@ -33,8 +33,8 @@ import Player from "../src/server/helpers/player"
             line: 1,
             round: 0,
             loser: false
-        })
-    })
+        });
+    });
 
     it('should remove 1 line to player', () => {
         player.add_line(5);
@@ -45,8 +45,8 @@ import Player from "../src/server/helpers/player"
             line: 3,
             round: 0,
             loser: false
-        })
-    })
+        });
+    });
 
     it('should be a loser', () => {
         player.lose();
@@ -56,6 +56,6 @@ import Player from "../src/server/helpers/player"
             line: 0,
             round: 0,
             loser: true
-        })
-    })
- })
+        });
+    });
+ });

@@ -1,8 +1,8 @@
-import Game from './game'
-import Player from './player'
-import socketIO from 'socket.io';
+const Game = require('./game');
+const Player = require('./player');
+const socketIO = require('socket.io');
 
-export default class Socket {
+class Socket {
     constructor(http) {
         this.games = [];
         this.io = socketIO(http, { pingTimeout: 60000 });
@@ -19,7 +19,7 @@ export default class Socket {
 
     initEngine() {
         this.io.sockets.on('connection', (socket) => {
-            process.stdout.write("Socket connected: " + socket.id + '\n')
+            process.stdout.write("Socket connected: " + socket.id + '\n');
             socket.on('room', (room, username) => {
                 socket.username = username;
                 socket.room = room;
@@ -42,7 +42,7 @@ export default class Socket {
                     socket.join(room);
                 }
                 socket.on('disconnect', () => {
-                    process.stdout.write("Socket disconnected: " + socket.id + '\n')
+                    process.stdout.write("Socket disconnected: " + socket.id + '\n');
                     socket.leave(room);
                     this.games[this.isRoom (this.games, room)].remove_player(player);
                     if (this.games[this.isRoom (this.games, room)].players.length > 0) {
@@ -87,6 +87,8 @@ export default class Socket {
                 this.games[this.isRoom(this.games, room)].end_game();
                 this.io.sockets.in(room).emit('toggle_game', false);
             });
-        })
+        });
     }
 }
+
+module.exports = Socket;

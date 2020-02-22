@@ -1,15 +1,13 @@
-import Socket from "../src/server/helpers/socket"
-import Player from "../src/server/helpers/player"
-import Game from "../src/server/helpers/game"
-import io from 'socket.io-client';
-import params  from '../params'
-import http from 'http';
+const Socket = require('../helpers/socket');
+const io = require('socket.io-client');
+const params = require( '../config/params');
+const http = require('http');
 
 let httpServer;
 let httpServerAddr;
 let ClientSocket;
 let sockets;
-const {host, port} = params
+const {host, port} = params;
 
 beforeAll((done) => {
     jest.setTimeout(20000);
@@ -46,7 +44,7 @@ afterEach((done) => {
 });
 
 describe('basic socket.io example', () => {
-    it('should communicate between client and server', (done) => {
+    it('should communicate between client and server', () => {return new Promise((done) => {
         sockets.io.emit('echo', 'Hello World');
         ClientSocket.on('echo', (message) => {
             expect(message).toBe('Hello World');
@@ -57,5 +55,5 @@ describe('basic socket.io example', () => {
             done();
         });
         done();
-    });  
-})
+    });});  
+});

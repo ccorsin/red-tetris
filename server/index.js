@@ -1,7 +1,7 @@
-import http from 'http';
-import express from 'express';
-import Socket from "./helpers/socket"
-import params  from '../../params'
+const http = require('http');
+const express = require('express');
+const Socket = require("./helpers/socket");
+const params = require('./config/params').default;
 
 class Server {
   constructor() {
@@ -13,7 +13,7 @@ class Server {
   listen() {
     const {host, port} = params.server;
     this.http.listen(port, host, () => {
-      process.stdout.write(`Listening on http://${host}:${port}\n`);
+      console.log(`Listening on http://${host}:${port}\n`);
     });
   }
 }

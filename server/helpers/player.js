@@ -1,12 +1,12 @@
-export default class Player {
+class Player {
     constructor (name, id) {
-        this.name = name
-        this.id = id
-        this.line = 0
-        this.round = 0
-        this.freeze = 0
-        this.loser = false
-        this.color = (Math.floor(Math.random() * 255) + 1) +','+ (Math.floor(Math.random() * 255) + 1) +','+ (Math.floor(Math.random() * 255) + 1)
+        this.name = name;
+        this.id = id;
+        this.line = 0;
+        this.round = 0;
+        this.freeze = 0;
+        this.loser = false;
+        this.color = (Math.floor(Math.random() * 255) + 1) +','+ (Math.floor(Math.random() * 255) + 1) +','+ (Math.floor(Math.random() * 255) + 1);
     }
 
     add_round() {
@@ -36,6 +36,8 @@ export default class Player {
     }
 
     lose() {
-        this.loser = true
+        this.loser = true;
     }
 }
+
+module.exports = Player;

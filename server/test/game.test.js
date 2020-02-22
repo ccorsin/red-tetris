@@ -1,5 +1,5 @@
-import Game from "../src/server/helpers/game"
-import Player from "../src/server/helpers/player"
+const Game = require("../helpers/game");
+const Player = require("../helpers/player");
 
  describe('Game class is made to represent a game, in a specific room', () => {
     let player1;
@@ -19,7 +19,7 @@ import Player from "../src/server/helpers/player"
         };
         const game = new Game(player1, 42);
         expect(game).toMatchObject(values);
-    })
+    });
 
     it('should launch game', () => {
         const values = {
@@ -31,7 +31,7 @@ import Player from "../src/server/helpers/player"
         const game = new Game(player1, 42);
         game.start_game();
         expect(game).toMatchObject(values);
-    })
+    });
 
     it('should stop game', () => {
         const values = {
@@ -43,7 +43,7 @@ import Player from "../src/server/helpers/player"
         const game = new Game(player1, 42);
         game.end_game();
         expect(game).toMatchObject(values);
-    })
+    });
 
     it('should add player 2', () => {
         const values = {
@@ -55,7 +55,7 @@ import Player from "../src/server/helpers/player"
         const game = new Game(player1, 42);
         game.add_player(player2);
         expect(game).toMatchObject(values);
-    })
+    });
 
     it('should remove player 1 and update leader', () => {
         const values = {
@@ -68,5 +68,5 @@ import Player from "../src/server/helpers/player"
         game.add_player(player2);
         game.remove_player(player1);
         expect(game).toMatchObject(values);
-    })
- })
+    });
+ });

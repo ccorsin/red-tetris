@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from 'react'
+import { connect } from "react-redux";
+
+import io from "socket.io-client";
+
 import { StyledApp } from '../components/styles/StyledApp';
 
-import {
-  BrowserRouter as Router,
-  // Redirect,
-  Switch,
-  Route,
-  // useRouteMatch
-} from "react-router-dom";
+import Playground from "./Playground";
+// import {
+//   BrowserRouter as Router,
+//   // Redirect,
+//   Switch,
+//   Route,
+//   // useRouteMatch
+// } from "react-router-dom";
 
-import history from "../history";
+// import history from "../history";
 
-import { connect } from 'react-redux'
-import io from 'socket.io-client'
+
+
 const socket = io('http://0.0.0.0:3004');
 
-import Playground from "./Playground";
-import NotFound from '../components/NotFound';
+// import NotFound from '../components/NotFound';
 // import Menu from "../components/Menu";
 
 const App = ({ message }) => {

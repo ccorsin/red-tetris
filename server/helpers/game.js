@@ -1,7 +1,6 @@
-import Player from "./player";
-import Tetriminos from "./tetriminos"
+const Tetriminos = require('./tetriminos');
 
-export default class Game {
+class Game {
     constructor(player, room) {
         this.leader = player;
         this.room = room;
@@ -13,7 +12,7 @@ export default class Game {
     }
 
     isPlayer(players, player) {
-        for (var i = 0; i < players.length; i++) {
+        for (let i = 0; i < players.length; i++) {
             if (players[i].id == player.id) {
               return i;
             }
@@ -22,18 +21,18 @@ export default class Game {
     }
 
     init_player_round() {
-      for (var i = 0; i < this.players.length; i++) {
+      for (let i = 0; i < this.players.length; i++) {
         this.players[i].add_round();
       }
       // en generer en avance sinon bug - a resoudre peut etre mieux
-      for (var i = 0; i < 5; i++) {
+      for (let i = 0; i < 5; i++) {
         this.add_tetriminos();
       }
     }
 
     // distribuer freeze
     freeze_players(player) {
-        for (var i = 0; i < this.players.length; i++) {
+        for (let i = 0; i < this.players.length; i++) {
             if (i != this.isPlayer(this.players, player)) {
               this.players[i].add_freeze();
             }
@@ -55,12 +54,12 @@ export default class Game {
 
     clear_tetriminos() {
         let min = this.players[0].round;
-        for (var i = 0; i < this.players.length; i++) {
+        for (let i = 0; i < this.players.length; i++) {
             if (this.players[i].round < min) {
                 min = this.players[i].round;
             }
         }
-        for (var i = 0; i < this.players.length; i++) {
+        for (let i = 0; i < this.players.length; i++) {
             this.players[i].round -= min;
         }
         this.tetriminos.splice(0, this.tetriminos.length - min);
@@ -103,3 +102,4 @@ export default class Game {
       this.running = false;
     }
     }
+module.exports = Game;

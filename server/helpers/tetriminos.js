@@ -1,4 +1,4 @@
-export default class Tetriminos {
+class Tetriminos {
     constructor() {
         this.TETROMINOS = {
             0: { shape: [[0]], color: "0, 0, 0" },
@@ -68,3 +68,5 @@ export default class Tetriminos {
         return this.TETROMINOS[randTetromino];
     }
 }
+
+module.exports = Tetriminos;
