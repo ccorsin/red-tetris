@@ -22,8 +22,9 @@ const Tetris = ({ socket, room, playerCount }) => {
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, room);
-  // const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
-  const [rows, level, setLevel] = useGameStatus(
+  // eslint-disable-next-line no-unused-vars
+  const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
+  // const [rows, level, setLevel] = useGameStatus( // GROS BUG SUR useInterval si on retire le score
     rowsCleared
   );
   const dispatch = useDispatch()
@@ -37,6 +38,7 @@ const Tetris = ({ socket, room, playerCount }) => {
   }
 
   const collide = (playerData) => {
+    console.log("COLLISION")
     dispatch({ type: 'COLLISION', player: playerData, room, socket })
   };
 
@@ -50,6 +52,8 @@ const Tetris = ({ socket, room, playerCount }) => {
     if (!gameOver) {
       // Activate the interval again when user releases down arrow.
       if (keyCode === 40) {
+        console.log("level")
+        console.log(level)
         setDropTime(1000 / (level + 1));
       }
     }
@@ -99,8 +103,9 @@ const Tetris = ({ socket, room, playerCount }) => {
   // This one starts the game
   // Custom hook by Dan Abramov
   useInterval(() => {
-    drop();
+    console.log("dropTime")
     console.log(dropTime)
+    drop();
   }, dropTime);
 
   const move = ({ keyCode }) => {
