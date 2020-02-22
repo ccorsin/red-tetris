@@ -1,7 +1,7 @@
 const http = require('http');
 const express = require('express');
 const Socket = require("./helpers/socket");
-const params = require('./config/params').default;
+const params = require('./config/params');
 
 class Server {
   constructor() {
