@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyledSpectrum, StyledRow } from './styles/StyledSpectrum';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import Cell from './Cell';
 
@@ -11,7 +11,7 @@ const Spectrum = ({ stage, title }) => {
         if (players && currentPlayer) {
             let color;
             for (let player of players) {
-                if (y == player.line && player.id !== currentPlayer.id) {
+                if (y === player.line && player.id !== currentPlayer.id) {
                     color = player.color;
                     break;
                 }

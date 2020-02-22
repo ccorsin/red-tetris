@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { connect } from "react-redux";
-
 import io from "socket.io-client";
-
 import { StyledApp } from '../components/styles/StyledApp';
 
 import Playground from "./Playground";
+// import NotFound from '../components/NotFound';
+// import Menu from "../components/Menu";
+
 // import {
 //   BrowserRouter as Router,
 //   // Redirect,
@@ -13,30 +14,23 @@ import Playground from "./Playground";
 //   Route,
 //   // useRouteMatch
 // } from "react-router-dom";
-
 // import history from "../history";
-
-
 
 const socket = io('http://0.0.0.0:3004');
 
-// import NotFound from '../components/NotFound';
-// import Menu from "../components/Menu";
 
 const App = ({ message }) => {
   // let room = "";
   // let username = "";
-
   // const reg = /(#[\d]+)(\[\w+\])/;
   // const params = reg.exec(window.location.href);
   // if (params !== null) {
   //   room = params[1].substring(1);
   //   username = params[2].slice(1, -1);
   // }
-
-      // let match = useRouteMatch("/tetris/");
-      // return <Playground socket={socket} room={room} username={username} />;
-  //   }
+  //   let match = useRouteMatch("/tetris/");
+  //   return <Playground socket={socket} room={room} username={username} />;
+  // }
   // }, []);
  
   return (

@@ -22,12 +22,13 @@ const Tetris = ({ socket, room, playerCount }) => {
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, room);
-  const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
+  // const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
+  const [rows, level, setLevel] = useGameStatus(
     rowsCleared
   );
   const dispatch = useDispatch()
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
-  const tetriminos = useSelector(state => state.sock.tetriminos);
+  const tetriminos = useSelector(state => state.tetriminos.tetriminos);
   const smashing = useSelector(state => state.sock.up);
 
   if (smashing) {
@@ -99,6 +100,7 @@ const Tetris = ({ socket, room, playerCount }) => {
   // Custom hook by Dan Abramov
   useInterval(() => {
     drop();
+    console.log(dropTime)
   }, dropTime);
 
   const move = ({ keyCode }) => {
@@ -108,6 +110,7 @@ const Tetris = ({ socket, room, playerCount }) => {
       } else if (keyCode === 39) {
         movePlayer(1);
       } else if (keyCode === 40) {
+        console.log("40");
         dropPlayer();
       } else if (keyCode === 38) {
         playerRotate(stage, 1);
@@ -123,6 +126,7 @@ const Tetris = ({ socket, room, playerCount }) => {
     socket.on('refill', function (tetriminos) {
       dispatch({ type: 'REFILL', tetriminos });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -146,7 +150,7 @@ const Tetris = ({ socket, room, playerCount }) => {
           <StartButton callback={startGame} />
         </aside>
         <aside>
-          <Stage stage={stage} title="YOU"/>
+          <Stage stage={stage} currentPlayer={currentPlayer} title="YOU" />
           {spectrum}
         </aside>
       </StyledTetris>

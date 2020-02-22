@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { STAGE_WIDTH, checkCollision } from '../gameHelpers';
 
 export const usePlayer = () => {
-    const init = { shape: [[0]], color: '220, 220, 220' };
+    const init = { shape: [[0]], color: '220, 220, 220' }; // TO CHANGE
     const [player, setPlayer] = useState({
         pos: { x: 0, y: 0 },
         tetromino: init.shape,

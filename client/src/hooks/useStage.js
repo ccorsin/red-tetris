@@ -7,19 +7,19 @@ export const useStage = (player, resetPlayer) => {
   const [stage, setStage] = useState(createStage());
   const [rowsCleared, setRowsCleared] = useState(0);
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
-  const tetriminos = useSelector(state => state.sock.tetriminos);
+  const tetriminos = useSelector(state => state.tetriminos.tetriminos);
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    setRowsCleared(0);
-    const sweepRows = newStage =>
-    newStage.reduce((ack, row) => {
-      if (row.findIndex(cell => cell[0] === 0) === -1) {
-        setRowsCleared(prev => prev + 1);
-        ack.unshift(new Array(newStage[0].length).fill([0, 'clear']));
-        // SOCKET SMASH
-        dispatch({ type: 'SET_SMASH', up: true});
-        return ack;
+    useEffect(() => {
+      setRowsCleared(0);
+      const sweepRows = newStage =>
+      newStage.reduce((ack, row) => {
+        if (row.findIndex(cell => cell[0] === 0) === -1) {
+          setRowsCleared(prev => prev + 1);
+          ack.unshift(new Array(newStage[0].length).fill([0, 'clear']));
+          // SOCKET SMASH
+          dispatch({ type: 'SET_SMASH', up: true});
+          return ack;
         }
         ack.push(row);
         return ack;
@@ -47,12 +47,12 @@ export const useStage = (player, resetPlayer) => {
         resetPlayer(currentPlayer, tetriminos);
         return sweepRows(newStage);
       }
-      // console.log(newStage)
       return newStage;
     };
 
     // Here are the updates
     setStage(prev => updateStage(prev));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     player.collided,
     player.pos.x,

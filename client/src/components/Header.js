@@ -22,7 +22,7 @@ const Header = ({ playerCount, commands }) => {
     }
       return (
         <StyledHeader>
-            <img src ="https://www.pngkit.com/png/full/273-2736039_517-name-of-tetris-shapes-263-colorfulness.png" width="100%"/>
+            <img src ="https://www.pngkit.com/png/full/273-2736039_517-name-of-tetris-shapes-263-colorfulness.png" width="100%" alt="tetris_title"/>
             <h1>{count}</h1>
             {commands}
         </StyledHeader>

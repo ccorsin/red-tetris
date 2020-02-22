@@ -1,21 +1,28 @@
 import React from 'react';
 import { StyledStage, StyledRow } from './styles/StyledStage';
-// import { TETROMINOS } from '../tetrominos';
-import { useSelector } from 'react-redux'
-
 
 import Cell from './Cell';
 
-const Stage = ({ stage, title }) => {
-  const currentPlayer = useSelector(state => state.sock.currentPlayer);
+const Stage = ({ stage, title, currentPlayer }) => {
 
+  const TETROMINOS = {
+    0: { color: "220, 220, 220" },
+    I: { color: "80, 227, 230" },
+    J: { color: "36, 95, 223" },
+    L: { color: "223, 173, 36" },
+    O: { color: "223, 217, 36" },
+    S: { color: "48, 211, 56" },
+    T: { color: "132, 61, 198" },
+    Z: { color: "227, 78, 78" }
+  };
+  
   const color = (cell) => {
     let color;
     if (currentPlayer && currentPlayer.loser) {
       color = '96, 96, 96';
     }
     else {
-      // color = TETROMINOS[cell[0]].color;
+      color = TETROMINOS[cell[0]].color;
     }
     return color;
   }

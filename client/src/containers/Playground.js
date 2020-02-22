@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Tetris from "../components/Tetris";
 import Header from "../components/Header";
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 const Playground = ({ socket, message }) => {
   let room = "";
@@ -25,7 +25,7 @@ const Playground = ({ socket, message }) => {
   const endGame = () => {
       dispatch({type: 'END', room: room, socket})
   };
-  const isLeader = username == gameLeader;
+  const isLeader = username === gameLeader;
 
   let commands = "";
   if (isLeader && !runningState) {
@@ -46,17 +46,18 @@ const Playground = ({ socket, message }) => {
     socket.on("players_game", function(leader, players) {
       setPlayerCount(players.length);
       setGameLeader(leader);
-      dispatch({type: 'UPDATE_PLAYERS', players})
+      dispatch({ type: "UPDATE_PLAYERS", players });
     });
     socket.on("toggle_game", function(isRunning) {
       setRunningState(isRunning);
     });
     socket.on("players", function(players) {
-      dispatch({type: 'UPDATE_PLAYERS', players});
-    })
-    socket.on("player", function (player) {
-      dispatch({ type: 'CURRENT_PLAYER', currentPlayer: player});
+      dispatch({ type: "UPDATE_PLAYERS", players });
     });
+    socket.on("player", function(player) {
+      dispatch({ type: "CURRENT_PLAYER", currentPlayer: player });
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
