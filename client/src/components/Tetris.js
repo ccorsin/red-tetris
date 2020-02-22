@@ -38,7 +38,6 @@ const Tetris = ({ socket, room, playerCount }) => {
   }
 
   const collide = (playerData) => {
-    console.log("COLLISION")
     dispatch({ type: 'COLLISION', player: playerData, room, socket })
   };
 
@@ -52,8 +51,6 @@ const Tetris = ({ socket, room, playerCount }) => {
     if (!gameOver) {
       // Activate the interval again when user releases down arrow.
       if (keyCode === 40) {
-        console.log("level")
-        console.log(level)
         setDropTime(1000 / (level + 1));
       }
     }
@@ -103,8 +100,6 @@ const Tetris = ({ socket, room, playerCount }) => {
   // This one starts the game
   // Custom hook by Dan Abramov
   useInterval(() => {
-    console.log("dropTime")
-    console.log(dropTime)
     drop();
   }, dropTime);
 
@@ -115,7 +110,6 @@ const Tetris = ({ socket, room, playerCount }) => {
       } else if (keyCode === 39) {
         movePlayer(1);
       } else if (keyCode === 40) {
-        console.log("40");
         dropPlayer();
       } else if (keyCode === 38) {
         playerRotate(stage, 1);
