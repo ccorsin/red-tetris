@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import { StyledStage, StyledRow } from './styles/StyledStage';
 
 import Cell from './Cell';
@@ -7,6 +7,7 @@ const Stage = ({ stage, title, currentPlayer }) => {
 
   const TETROMINOS = {
     0: { color: "220, 220, 220" },
+    1: { color: "0, 0, 0" },
     I: { color: "80, 227, 230" },
     J: { color: "36, 95, 223" },
     L: { color: "223, 173, 36" },

@@ -1,14 +1,23 @@
 import { useState, useEffect } from 'react';
 import { createStage } from '../gameHelpers';
 import { useSelector, useDispatch } from 'react-redux'
+import { STAGE_WIDTH, STAGE_HEIGHT } from '../gameHelpers';
 
 
-export const useStage = (player, resetPlayer) => {
+export const useStage = (player, resetPlayer, socket) => {
   const [stage, setStage] = useState(createStage());
   const [rowsCleared, setRowsCleared] = useState(0);
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
   const tetriminos = useSelector(state => state.tetriminos.tetriminos);
   const dispatch = useDispatch()
+  const setFrozenLine = () => {
+    let line = [];
+    for (let i = 0; i < STAGE_WIDTH; i++) {
+      line.push([1, 'frozen']);
+    }
+    return line;
+  }
+  const frozenLine = setFrozenLine();
 
     useEffect(() => {
       setRowsCleared(0);
@@ -28,9 +37,26 @@ export const useStage = (player, resetPlayer) => {
     // SOCKET stage
     const updateStage = prevStage => {
       // First flush the stage
-      const newStage = prevStage.map(row =>
-        row.map(cell => (cell[1] === 'clear' ? [0, 'clear'] : cell))
-        );
+      const newStage = prevStage.map((row) => {
+        return row.map(cell => (cell[1] === 'clear' ? [0, 'clear'] : cell))
+      });
+
+      socket.on('freeze', function (player) {
+        console.log("player")
+        console.log(player)
+        console.log("currentPlayer")
+        console.log(currentPlayer)
+        if (currentPlayer && currentPlayer.freeze) {
+          // remonter le tout d'une ligne
+          newStage.splice(0, currentPlayer.freeze);
+          // reecrire le bas
+          for (let i = (STAGE_HEIGHT - currentPlayer.freeze - 1); i < STAGE_HEIGHT; i++) {
+            console.log(i)
+            newStage.push(frozenLine);
+          }
+        }
+      });
+
         // Then draw the tetromino
         player.tetromino.forEach((row, y) => {
           row.forEach((value, x) => {
@@ -52,6 +78,7 @@ export const useStage = (player, resetPlayer) => {
 
     // Here are the updates
     setStage(prev => updateStage(prev));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     player.collided,

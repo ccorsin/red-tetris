@@ -21,7 +21,7 @@ const Tetris = ({ socket, room, playerCount }) => {
   const [gameOver, setGameOver] = useState(false);
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
-  const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, room);
+  const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, socket);
   // eslint-disable-next-line no-unused-vars
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
   // const [rows, level, setLevel] = useGameStatus( // GROS BUG SUR useInterval si on retire le score
@@ -121,7 +121,7 @@ const Tetris = ({ socket, room, playerCount }) => {
     spectrum = <Spectrum stage={createStage()} title="SPECTRUM"/>
   }
 
-  useEffect(() => { 
+  useEffect(() => {
     socket.on('refill', function (tetriminos) {
       dispatch({ type: 'REFILL', tetriminos });
     });

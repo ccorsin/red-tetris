@@ -72,8 +72,10 @@ class Socket {
                     this.io.sockets.in(room).emit('players', curGame.players);
                 });
                 socket.on('smash', (player, room) => {
+                    console.log('smash')
                     const curGame = this.games[this.isRoom(this.games, room)];
                     curGame.freeze_players(player);
+                    this.io.sockets.in(room).emit('freeze', player);
                 });
             });
             socket.on('start', room => {
