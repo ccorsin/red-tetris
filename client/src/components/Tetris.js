@@ -16,7 +16,7 @@ import Spectrum from './Spectrum';
 import Display from './Display';
 import StartButton from './StartButton';
 
-const Tetris = ({ socket, room, playerCount }) => {
+const Tetris = ({ socket, room, playerCount, isLeader }) => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
 
@@ -57,14 +57,19 @@ const Tetris = ({ socket, room, playerCount }) => {
 
   const startGame = () => {
     // Reset everything
+    // const tmp = store.getState().tetriminos.tetriminos
     setStage(createStage());
     setDropTime(1000);
-    resetPlayer(currentPlayer, tetriminos);
+    resetPlayer(currentPlayer, store.getState().tetriminos.tetriminos);
     // setScore(0);
     // setLevel(0);
     // setRows(0);
     setGameOver(false);
   };
+
+  const clickStart = () => {
+    dispatch({type: 'START', room: room, socket})
+  }
 
   const drop = () => {
     // Increase level when player has cleared 10 rows
@@ -120,6 +125,11 @@ const Tetris = ({ socket, room, playerCount }) => {
     spectrum = <Spectrum stage={createStage()} title="SPECTRUM"/>
   }
 
+  let button = "";
+  if (isLeader === true) {
+    button = <StartButton callback={clickStart} />
+  }
+
   useEffect(() => {
     socket.on('freeze', function () {
       dispatch({ type: 'DO_FREEZE', freeze: true });
@@ -127,8 +137,14 @@ const Tetris = ({ socket, room, playerCount }) => {
     socket.on('refill', function (tetriminos) {
       dispatch({ type: 'REFILL', tetriminos });
     });
+    socket.on('start_game', function(tetriminos) {
+      dispatch({ type: 'START_INIT', tetriminos });
+      if (currentPlayer) {
+        startGame();
+      }
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [currentPlayer]);
 
   return (
     <StyledTetrisWrapper
@@ -148,7 +164,7 @@ const Tetris = ({ socket, room, playerCount }) => {
               <Display text={`Level: ${level}`} /> */}
             </div>
           )}
-          <StartButton callback={startGame} />
+          {button}
         </aside>
         <aside>
           <Stage stage={stage} currentPlayer={currentPlayer} title="YOU" />

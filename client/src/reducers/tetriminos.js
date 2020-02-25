@@ -3,6 +3,11 @@ const reducer = (
   action
 ) => {
   switch (action.type) {
+    case "START_INIT":
+      return {
+        ...state,
+        tetriminos: action.tetriminos,
+      };
     case "REFILL":
       return {
         ...state,

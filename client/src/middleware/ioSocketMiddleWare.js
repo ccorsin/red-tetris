@@ -41,6 +41,9 @@ export const ioSocketMiddleWare = () => {
     else if (action.type === 'WINNER') {
       return next(action);
     }
+    else if (action.type === 'START_INIT') {
+      return next(action);
+    }
     return
   }
 }
