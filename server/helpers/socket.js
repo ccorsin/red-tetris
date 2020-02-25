@@ -70,7 +70,6 @@ class Socket {
                     let updatedPlayer = curGame.update_player(player);
                     if (curGame.check_tetriminos(player)) {
                         curGame.add_tetriminos();
-                        // refill
                         this.io.sockets.in(room).emit('refill', curGame.tetriminos);
                     }
                     this.io.sockets.in(room).emit('players', curGame.players);
@@ -101,6 +100,7 @@ class Socket {
                 curGame.start_game();
                 curGame.init_player_round();
                 this.io.sockets.in(room).emit('refill', curGame.tetriminos);
+                this.io.sockets.in(room).emit('start_game', curGame.tetriminos);
                 this.io.sockets.in(room).emit('toggle_game', true);
             });
             socket.on('end', room => {

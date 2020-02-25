@@ -19,19 +19,11 @@ const Playground = ({ socket, message }) => {
   const store = useStore();
   const dispatch = useDispatch()
 
-  const startGame = () => {
-      dispatch({type: 'START', room: room, socket})
-  };
-  const endGame = () => {
-      dispatch({type: 'END', room: room, socket})
-  };
   const isLeader = username === gameLeader;
 
   let commands = "";
   if (isLeader && !runningState) {
-    commands = <button onClick={startGame}>START</button>;
-  } else if (isLeader && runningState) {
-    commands = <button onClick={endGame}>STOP</button>;
+    commands = <h2>You can start the game !</h2>;
   } else if (!runningState) {
     commands = <h2>Wait for {gameLeader} to start the game !</h2>;
   } else {
@@ -76,7 +68,7 @@ const Playground = ({ socket, message }) => {
       <div>
         <Header playerCount={playerCount} commands={commands}/>
       </div>
-      <Tetris socket={socket} room={room} playerCount={playerCount}/>
+      <Tetris socket={socket} room={room} playerCount={playerCount} isLeader={isLeader}/>
     </div>
   );
 }
