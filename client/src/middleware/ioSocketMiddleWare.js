@@ -25,10 +25,6 @@ export const ioSocketMiddleWare = () => {
       action.socket.emit('game_over', action.player, action.room);
       return next(action);
     }
-    else if (action.type === 'SET_SMASH') {
-      console.log('SET_SMASH')
-      return next(action);
-    }
     else if (action.type === 'SMASH') {
       console.log('SMASH')
       action.socket.emit('smash', action.player, action.room);

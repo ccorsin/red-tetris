@@ -66,6 +66,7 @@ class Socket {
                     socket.emit('player', updatedPlayer);
                 });
                 socket.on('game_over', (player, room) => {
+                    console.log("GAME OVER")
                     const curGame = this.games[this.isRoom(this.games, room)];
                     let updatedPlayer = curGame.game_over_player(player);
                     socket.emit('player', updatedPlayer);

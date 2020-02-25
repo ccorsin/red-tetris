@@ -21,7 +21,7 @@ const Tetris = ({ socket, room, playerCount }) => {
   const [gameOver, setGameOver] = useState(false);
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
-  const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, socket);
+  const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, socket, room, gameOver);
   // eslint-disable-next-line no-unused-vars
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
   // const [rows, level, setLevel] = useGameStatus( // GROS BUG SUR useInterval si on retire le score
@@ -30,12 +30,6 @@ const Tetris = ({ socket, room, playerCount }) => {
   const dispatch = useDispatch()
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
   const tetriminos = useSelector(state => state.tetriminos.tetriminos);
-  const smashing = useSelector(state => state.sock.up);
-
-  if (smashing) {
-    dispatch({ type: 'SMASH', player: currentPlayer, room: room, socket });
-    dispatch({ type: 'SET_SMASH', up: false });
-  }
 
   const collide = (playerData) => {
     dispatch({ type: 'COLLISION', player: playerData, room, socket })
@@ -75,7 +69,7 @@ const Tetris = ({ socket, room, playerCount }) => {
       setDropTime(1000 / (level + 1) + 200);
     }
 
-    if (!checkCollision(player, stage, { x: 0, y: 1 })) { // 1 + currentPlayer.freeze
+    if (!checkCollision(player, stage, { x: 0, y: 1 })) {
       updatePlayerPos({ x: 0, y: 1, collided: false });
     } else {
       if (player.pos.y < 1) {
