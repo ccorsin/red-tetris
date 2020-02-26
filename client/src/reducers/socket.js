@@ -5,7 +5,7 @@ const reducer = (state = { freeze: false }, action) => {
           ...state,
           isRunning: true,
          };
-    case 'STOP':
+    case 'END':
         return {
           ...state,
           isRunning: false,
