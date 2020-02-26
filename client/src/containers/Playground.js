@@ -58,7 +58,8 @@ const Playground = ({ socket, message }) => {
     });
     socket.on("win", function(message, player) {
       alert(message);
-      dispatch({ type: 'WINNER', player});
+      dispatch({ type: 'WINNER', player });
+      dispatch({ type: 'END', socket, room });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

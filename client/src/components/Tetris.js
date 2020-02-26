@@ -33,8 +33,9 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
   );
   const dispatch = useDispatch();
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
-  // const smashing = useSelector(state => state.sock.smashing);
   const tetriminos = useSelector(state => state.tetriminos.tetriminos);
+  const isRunning = useSelector(state => state.sock.isRunning);
+  const store = useStore();
 
   const collide = (playerData) => {
     dispatch({ type: 'COLLISION', player: playerData, room, socket })
@@ -126,7 +127,7 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
   }
 
   let button = "";
-  if (isLeader === true) {
+  if (isLeader === true && isRunning !== true) {
     button = <StartButton callback={clickStart} />
   }
 
@@ -138,7 +139,7 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
       dispatch({ type: 'REFILL', tetriminos });
     });
     socket.on('start_game', function(tetriminos) {
-      dispatch({ type: 'START_INIT', tetriminos });
+      dispatch({ type: 'REFILL', tetriminos });
       if (currentPlayer) {
         startGame();
       }
