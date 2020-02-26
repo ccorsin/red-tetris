@@ -66,17 +66,16 @@ class Socket {
                     socket.emit('player', updatedPlayer);
                 });
                 socket.on('game_over', (player, room) => {
-                    console.log("GAME OVER")
                     const curGame = this.games[this.isRoom(this.games, room)];
                     let updatedPlayer = curGame.game_over_player(player);
                     socket.emit('player', updatedPlayer);
                     this.io.sockets.in(room).emit('players', curGame.players);
                 });
                 socket.on('smash', (player, room) => {
-                    console.log('smash')
                     const curGame = this.games[this.isRoom(this.games, room)];
                     curGame.freeze_players(player);
-                    this.io.sockets.in(room).emit('freeze');
+                    this.io.sockets.in(room).emit('players', curGame.players);
+                    socket.broadcast.to(room).emit('freeze');
                 });
             });
             socket.on('start', room => {

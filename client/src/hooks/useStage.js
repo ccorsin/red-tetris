@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { createStage } from '../gameHelpers';
 import { useSelector, useDispatch } from 'react-redux'
-import { STAGE_WIDTH, STAGE_HEIGHT } from '../gameHelpers';
+import { STAGE_WIDTH, STAGE_HEIGHT, checkCollision } from '../gameHelpers';
 
 export const useStage = (player, resetPlayer, gameOver, room, socket) => {
   const [stage, setStage] = useState(createStage());
@@ -23,6 +23,8 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
   useEffect(() => {
     setRowsCleared(0);
 
+    // TO DO gerer la collision au meme moment que l'update
+
     const sweepRows = newStage =>
       newStage.reduce((ack, row) => {
         if (row.findIndex(cell => cell[0] === 0) === -1 && row.findIndex(cell => cell[0] === 1) === -1) {
@@ -39,13 +41,12 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
       }, []);
 
     const updateStage = prevStage => {
-      console.log("UPDATE")
       let newStage = [];
       let tmpStage = [];
       // SOCKET stagepar intermitance
       if (currentPlayer && currentPlayer.freeze >= 0) {
         if (freeze) {
-          // TODO PB DE SYNC ou d'async
+          // putain de merde si les freeze sont trop rapporches y a le decalage au debut
           tmpStage = prevStage.slice((currentPlayer.freeze - frozen), STAGE_HEIGHT);
           setFrozen(currentPlayer.freeze);
           dispatch({ type: 'DO_FREEZE', freeze: false });
@@ -72,29 +73,50 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
           if (y < STAGE_HEIGHT - currentPlayer.freeze) {
             row.forEach((value, x) => {
               if (value !== 0) {
-                newStage[y + player.pos.y][x + player.pos.x] = [
-                  value,
-                  `${player.collided ? 'merged' : 'clear'}`,
-                ];
+              // TO DO : le decallage vient au coup d'apres
+              let offset = 0;
+                let ok = true;
+                for (let i = 0; i <= player.tetromino.length; i++) {
+                  if (ok) {
+                    if (checkCollision(player, newStage, { x: 0, y: i })) {
+                      if (y + player.pos.y - offset - 1 >= 0)
+                        offset++;
+                      ok = false;
+                    }
+                  }
+                }
+                if (freeze) {
+                  // console.log("********freezing*******")
+                  let yay = (y + player.pos.y - offset - 1 >= 0) ? y + player.pos.y - offset - 1 : y + player.pos.y - offset
+                  // console.log(newStage[yay][x + player.pos.x]);
+                  // console.log(yay);
+                  if (y + player.pos.y - currentPlayer.freeze >= 0) {
+                    // check content case
+                    newStage[yay][x + player.pos.x] = [
+                      value,
+                      `${player.collided ? 'merged' : 'clear'}`,
+                    ];
+                  } 
+                } else {
+                  // console.log("****else****");
+                  // console.log(newStage[y + player.pos.y][x + player.pos.x]);
+                  // console.log(y + player.pos.y);
+                  newStage[y + player.pos.y][x + player.pos.x] = [
+                    value,
+                    `${player.collided ? 'merged' : 'clear'}`,
+                  ];
+                }
               }
             });
           }
         }
       });
 
-       // Then draw the tetromino
-      player.tetromino.forEach((row, y) => {
-        row.forEach((value, x) => {
-          if (value !== 0) {
-            newStage[y + player.pos.y][x + player.pos.x] = [
-              value,
-              `${player.collided ? 'merged' : 'clear'}`,
-            ];
-          }
-        });
-      });
       // Then check if we got some score if collided
       if (player.collided) {
+        console.log("****************  collided")
+        console.log("freeze")
+        console.log(freeze)
         resetPlayer(currentPlayer, tetriminos);
         return sweepRows(newStage);
       }
@@ -112,7 +134,8 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
     player.pos.y,
     player.tetromino,
     resetPlayer,
-    freeze
+    freeze,
+    // prevFrozen
   ]);
 
   return [stage, setStage, rowsCleared];

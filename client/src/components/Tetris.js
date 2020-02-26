@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { createStage, checkCollision } from '../gameHelpers';
 import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, useStore } from 'react-redux'
 
 // Custom Hooks
 import { useInterval } from '../hooks/useInterval';
@@ -19,6 +19,9 @@ import StartButton from './StartButton';
 const Tetris = ({ socket, room, playerCount }) => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
+
+  // WIP
+  const store = useStore();
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, gameOver, room, socket);
@@ -70,7 +73,6 @@ const Tetris = ({ socket, room, playerCount }) => {
       // Also increase speed
       setDropTime(1000 / (level + 1) + 200);
     }
-
     if (!checkCollision(player, stage, { x: 0, y: 1 })) {
       updatePlayerPos({ x: 0, y: 1, collided: false });
     } else {
@@ -79,6 +81,7 @@ const Tetris = ({ socket, room, playerCount }) => {
         setDropTime(null);
         dispatch({ type: 'GAME_OVER', player: currentPlayer, room, socket })
       }
+      const freeze = store.getState().sock.freeze;
       updatePlayerPos({ x: 0, y: 0, collided: true });
       // SOCKET COLLISION
       const playerData = { ...currentPlayer, player};

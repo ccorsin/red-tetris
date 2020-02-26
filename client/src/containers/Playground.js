@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Tetris from "../components/Tetris";
 import Header from "../components/Header";
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch, useStore } from 'react-redux'
 
 const Playground = ({ socket, message }) => {
   let room = "";
@@ -13,10 +13,10 @@ const Playground = ({ socket, message }) => {
     room = params[1].substring(1);
     username = params[2].slice(1,-1);
   }
-
   const [playerCount, setPlayerCount] = useState(1);
   const [gameLeader, setGameLeader] = useState(username);
   const [runningState, setRunningState] = useState(false);
+  const store = useStore();
   const dispatch = useDispatch()
 
   const startGame = () => {
@@ -53,6 +53,13 @@ const Playground = ({ socket, message }) => {
     });
     socket.on("players", function(players) {
       dispatch({ type: "UPDATE_PLAYERS", players });
+      let currentPlayer = store.getState().sock.currentPlayer;
+      let tmp = {};
+      if (currentPlayer && currentPlayer.id) {
+        tmp = players.filter(e => (e.id === currentPlayer.id ? true : false))[0];
+        dispatch({ type: "CURRENT_PLAYER", currentPlayer:tmp });
+      }
+
     });
     socket.on("player", function(player) {
       dispatch({ type: "CURRENT_PLAYER", currentPlayer: player });

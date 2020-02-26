@@ -1,4 +1,4 @@
-const reducer = (state = {} , action) => {
+const reducer = (state = { freeze: false }, action) => {
   switch(action.type){
     case 'START':
         return {
