@@ -33,9 +33,7 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
   );
   const dispatch = useDispatch();
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
-  const tetriminos = useSelector(state => state.tetriminos.tetriminos);
   const isRunning = useSelector(state => state.sock.isRunning);
-  const store = useStore();
 
   const collide = (playerData) => {
     dispatch({ type: 'COLLISION', player: playerData, room, socket })
@@ -56,20 +54,26 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
     }
   };
 
-  const startGame = () => {
+  const startGame = (currentPlayer, tetriminos) => {
     // Reset everything
-    // const tmp = store.getState().tetriminos.tetriminos
     setStage(createStage());
     setDropTime(1000);
-    resetPlayer(currentPlayer, store.getState().tetriminos.tetriminos);
+    resetPlayer(currentPlayer, tetriminos);
     // setScore(0);
     // setLevel(0);
     // setRows(0);
     setGameOver(false);
   };
 
+  let isRestart = store.getState().sock.winner !== undefined
+
   const clickStart = () => {
-    dispatch({type: 'START', room: room, socket})
+    if (isRestart) {
+      dispatch({type: 'RESET', room, socket })
+    }
+    else {
+      dispatch({type: 'START', room, socket })
+    }
   }
 
   const drop = () => {
@@ -86,8 +90,10 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
         setGameOver(true);
         setDropTime(null);
         dispatch({ type: 'GAME_OVER', player: currentPlayer, room, socket })
+        if (playerCount === 1) {
+          dispatch({ type: 'END', socket, room });
+        }
       }
-      const freeze = store.getState().sock.freeze;
       updatePlayerPos({ x: 0, y: 0, collided: true });
       // SOCKET COLLISION
       const playerData = { ...currentPlayer, player};
@@ -135,17 +141,29 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
     socket.on('freeze', function () {
       dispatch({ type: 'DO_FREEZE', freeze: true });
     });
+    socket.on('start_game', function() {
+      const currentPlayer = store.getState().sock.currentPlayer
+      const tetriminos = store.getState().tetriminos.tetriminos
+      dispatch({ type: 'REFILL', tetriminos });
+      if (currentPlayer) {
+        startGame(currentPlayer, tetriminos);
+      }
+    });
+    socket.on('restart_game', function(players) {
+      dispatch({ type: "UPDATE_PLAYERS", players });
+      let currentPlayer = store.getState().sock.currentPlayer;
+      let tmp = {};
+      if (currentPlayer && currentPlayer.id) {
+        tmp = players.filter(e => (e.id === currentPlayer.id ? true : false))[0];
+        dispatch({ type: "CURRENT_PLAYER", currentPlayer:tmp });
+      }
+      dispatch({type: 'START', room, socket })
+    })
     socket.on('refill', function (tetriminos) {
       dispatch({ type: 'REFILL', tetriminos });
     });
-    socket.on('start_game', function(tetriminos) {
-      dispatch({ type: 'REFILL', tetriminos });
-      if (currentPlayer) {
-        startGame();
-      }
-    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPlayer]);
+  }, []);
 
   return (
     <StyledTetrisWrapper

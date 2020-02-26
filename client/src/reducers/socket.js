@@ -9,6 +9,7 @@ const reducer = (state = { freeze: false }, action) => {
         return {
           ...state,
           isRunning: false,
+          winner: {}
         };
     case 'UPDATE_PLAYERS':
         return {
@@ -33,8 +34,14 @@ const reducer = (state = { freeze: false }, action) => {
     case 'WINNER':
     return {
       ...state,
+      isRunning: false,
       winner: action.player
     }
+    case 'RESET':
+        return {
+          ...state,
+          winner: undefined
+        }
     default: 
         return state
   }

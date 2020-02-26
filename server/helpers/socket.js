@@ -82,8 +82,6 @@ class Socket {
                     let winner = curGame.check_winner();
                     if (winner) {
                         winner.win();
-                        curGame.end_game();
-                        this.io.sockets.in(room).emit('toggle_game', false);
                         this.io.sockets.in(room).emit('win', winner.name + ' won the game !', winner);
                     }
                     this.io.sockets.in(room).emit('players', curGame.players);
@@ -100,12 +98,16 @@ class Socket {
                 curGame.start_game();
                 curGame.init_player_round();
                 this.io.sockets.in(room).emit('refill', curGame.tetriminos);
-                this.io.sockets.in(room).emit('start_game', curGame.tetriminos);
+                this.io.sockets.in(room).emit('start_game');
                 this.io.sockets.in(room).emit('toggle_game', true);
             });
             socket.on('end', room => {
                 this.games[this.isRoom(this.games, room)].end_game();
                 this.io.sockets.in(room).emit('toggle_game', false);
+            });
+            socket.on('reset', room => {
+                this.games[this.isRoom(this.games, room)].reset_game();
+                this.io.sockets.in(room).emit('restart_game', this.games[this.isRoom (this.games, room)].players);
             });
         });
     }
