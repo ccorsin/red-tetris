@@ -30,7 +30,6 @@ export const ioSocketMiddleWare = () => {
       // set store smash action to true/false
     }
     else if (action.type === 'SMASH') {
-      console.log('SMASH')
       action.socket.emit('smash', action.player, action.room);
       return next(action);
     }
@@ -39,6 +38,11 @@ export const ioSocketMiddleWare = () => {
       // set store freeze action to true/false
     }
     else if (action.type === 'WINNER') {
+      action.socket.emit('end', action.room);
+      return next(action);
+    }
+    else if (action.type === 'RESET') {
+      action.socket.emit('reset', action.room);
       return next(action);
     }
     return

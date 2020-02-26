@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Tetris from "../components/Tetris";
 import Header from "../components/Header";
-import { useSelector, useDispatch, useStore } from 'react-redux'
+import { useDispatch, useStore } from 'react-redux'
 
 const Playground = ({ socket, message }) => {
   let room = "";
@@ -31,6 +31,7 @@ const Playground = ({ socket, message }) => {
   }
 
   useEffect(() => {
+    let currentPlayer = store.getState().sock.currentPlayer;
     socket.emit("room", room, username);
     socket.on("message", function(message) {
       alert(message);
@@ -51,15 +52,13 @@ const Playground = ({ socket, message }) => {
         tmp = players.filter(e => (e.id === currentPlayer.id ? true : false))[0];
         dispatch({ type: "CURRENT_PLAYER", currentPlayer:tmp });
       }
-
     });
     socket.on("player", function(player) {
       dispatch({ type: "CURRENT_PLAYER", currentPlayer: player });
     });
     socket.on("win", function(message, player) {
       alert(message);
-      dispatch({ type: 'WINNER', player });
-      dispatch({ type: 'END', socket, room });
+      dispatch({ type: 'WINNER', player, socket, room });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

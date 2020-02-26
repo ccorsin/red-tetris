@@ -42,6 +42,11 @@ class Player {
     win() {
         this.winner = true
     }
+
+    reset_player() {
+        const player = new Player(this.name, this.id);
+        return player;
+    }
 }
 
 module.exports = Player;

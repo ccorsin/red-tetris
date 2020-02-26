@@ -8,7 +8,6 @@ class Game {
         this.players.push(player);
         this.running = false;
         this.tetriminos = [];
-        this.playerGhosts = [];
     }
 
     isPlayer(players, player) {
@@ -118,6 +117,17 @@ class Game {
       else {
         return false;
       }
+    }
+
+    reset_game() {
+      const new_leader = this.leader.reset_player();
+      this.leader = new_leader;
+      const new_players = this.players.map(function(p) { 
+        p = p.reset_player(); 
+        return p;
+      });
+      this.players = new_players;
+      this.tetriminos = [];
     }
   }
 module.exports = Game;
