@@ -20,6 +20,16 @@ const reducer = (state = {} , action) => {
           ...state,
           currentPlayer: action.currentPlayer
         }
+    case 'DO_SMASH':
+      return {
+        ...state,
+        smashing: action.smash
+      }
+    case 'DO_FREEZE':
+      return {
+        ...state,
+        freeze: action.freeze,
+      }
     default: 
         return state
   }

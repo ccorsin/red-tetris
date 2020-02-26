@@ -21,14 +21,16 @@ const Tetris = ({ socket, room, playerCount }) => {
   const [gameOver, setGameOver] = useState(false);
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
-  const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, socket, room, gameOver);
+  const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, gameOver, room, socket);
+  // const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, socket, room, gameOver);
   // eslint-disable-next-line no-unused-vars
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
   // const [rows, level, setLevel] = useGameStatus( // GROS BUG SUR useInterval si on retire le score
     rowsCleared
   );
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
+  // const smashing = useSelector(state => state.sock.smashing);
   const tetriminos = useSelector(state => state.tetriminos.tetriminos);
 
   const collide = (playerData) => {
@@ -116,6 +118,9 @@ const Tetris = ({ socket, room, playerCount }) => {
   }
 
   useEffect(() => {
+    socket.on('freeze', function () {
+      dispatch({ type: 'DO_FREEZE', freeze: true });
+    });
     socket.on('refill', function (tetriminos) {
       dispatch({ type: 'REFILL', tetriminos });
     });

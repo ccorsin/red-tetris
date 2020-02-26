@@ -25,10 +25,18 @@ export const ioSocketMiddleWare = () => {
       action.socket.emit('game_over', action.player, action.room);
       return next(action);
     }
+    else if (action.type === 'DO_SMASH') {
+      return next(action);
+      // set store smash action to true/false
+    }
     else if (action.type === 'SMASH') {
       console.log('SMASH')
       action.socket.emit('smash', action.player, action.room);
       return next(action);
+    }
+    else if (action.type === 'DO_FREEZE') {
+      return next(action);
+      // set store freeze action to true/false
     }
     return
   }
