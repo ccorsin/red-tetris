@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react';
 import { createStage } from '../gameHelpers';
 import { useSelector, useDispatch } from 'react-redux'
-import { STAGE_WIDTH, STAGE_HEIGHT, checkCollision } from '../gameHelpers';
+import {
+  STAGE_WIDTH,
+  STAGE_HEIGHT,
+  checkCollision,
+  tetriminosHeight
+} from "../gameHelpers";
 
 export const useStage = (player, resetPlayer, gameOver, room, socket) => {
   const [stage, setStage] = useState(createStage());
   const [rowsCleared, setRowsCleared] = useState(0);
   const [frozen, setFrozen] = useState(0);
+  const [froze, setFroze] = useState(false);
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
   const tetriminos = useSelector(state => state.tetriminos.tetriminos);
   const freeze = useSelector(state => state.sock.freeze);
@@ -20,10 +26,10 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
   }
   const frozenLine = setFrozenLine();
 
+  // TO DO gerer la collision au meme moment que l'update
   useEffect(() => {
-    setRowsCleared(0);
 
-    // TO DO gerer la collision au meme moment que l'update
+    setRowsCleared(0);
 
     const sweepRows = newStage =>
       newStage.reduce((ack, row) => {
@@ -49,6 +55,7 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
           // putain de merde si les freeze sont trop rapporches y a le decalage au debut
           tmpStage = prevStage.slice((currentPlayer.freeze - frozen), STAGE_HEIGHT);
           setFrozen(currentPlayer.freeze);
+          setFroze(true);
           dispatch({ type: 'DO_FREEZE', freeze: false });
         } else {
           tmpStage = prevStage;
@@ -68,55 +75,39 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
       }
 
       // Then draw the tetromino
+      // TO DO : le decallage vient au coup d'apres
+      // trouver la bonne hauteur du tetro
+      let height = tetriminosHeight(player.tetromino);
       player.tetromino.forEach((row, y) => {
-        if (currentPlayer && currentPlayer.freeze >= 0) {
-          if (y < STAGE_HEIGHT - currentPlayer.freeze) {
-            row.forEach((value, x) => {
-              if (value !== 0) {
-              // TO DO : le decallage vient au coup d'apres
-              let offset = 0;
-                let ok = true;
-                for (let i = 0; i <= player.tetromino.length; i++) {
-                  if (ok) {
-                    if (checkCollision(player, newStage, { x: 0, y: i })) {
-                      if (y + player.pos.y - offset - 1 >= 0)
-                        offset++;
-                      ok = false;
-                    }
-                  }
-                }
-                if (freeze) {
-                  // console.log("********freezing*******")
-                  let yay = (y + player.pos.y - offset - 1 >= 0) ? y + player.pos.y - offset - 1 : y + player.pos.y - offset
-                  // console.log(newStage[yay][x + player.pos.x]);
-                  // console.log(yay);
-                  if (y + player.pos.y - currentPlayer.freeze >= 0) {
-                    // check content case
-                    newStage[yay][x + player.pos.x] = [
-                      value,
-                      `${player.collided ? 'merged' : 'clear'}`,
-                    ];
-                  } 
-                } else {
-                  // console.log("****else****");
-                  // console.log(newStage[y + player.pos.y][x + player.pos.x]);
-                  // console.log(y + player.pos.y);
-                  newStage[y + player.pos.y][x + player.pos.x] = [
-                    value,
-                    `${player.collided ? 'merged' : 'clear'}`,
-                  ];
-                }
-              }
-            });
+        let offset = 0;
+        let ok = true;
+        for (let i = 0; i <= height; i++) {
+          if (ok) {
+            if (checkCollision(player, newStage, { x: 0, y: i })) {
+              if (player.tetromino.length + player.pos.y - offset >= 0) offset++;
+              ok = false;
+            }
           }
         }
+        if (froze) {
+          player.pos.y -= offset; // nie
+          setFroze(false);
+        }
+        row.forEach((value, x) => {
+          if (value !== 0) {
+            if (!freeze) {
+              if (player.tetromino.length + player.pos.y >= 0 || player.tetromino.length + player.pos.y < STAGE_HEIGHT) {
+                newStage[y + player.pos.y][x + player.pos.x] = [
+                  value,
+                  `${player.collided ? 'merged' : 'clear'}`,
+                ];
+              }
+            }
+          }
+        });
       });
-
       // Then check if we got some score if collided
       if (player.collided) {
-        console.log("****************  collided")
-        console.log("freeze")
-        console.log(freeze)
         resetPlayer(currentPlayer, tetriminos);
         return sweepRows(newStage);
       }
