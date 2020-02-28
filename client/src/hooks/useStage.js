@@ -26,7 +26,6 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
   }
   const frozenLine = setFrozenLine();
 
-  // TO DO gerer la collision au meme moment que l'update
   useEffect(() => {
 
     setRowsCleared(0);
@@ -75,7 +74,7 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
       }
 
       // Then draw the tetromino
-      // TO DO : le decallage vient au coup d'apres
+      // le decallage vient au coup d'apres
       // trouver la bonne hauteur du tetro
       let height = tetriminosHeight(player.tetromino);
       player.tetromino.forEach((row, y) => {
@@ -126,7 +125,6 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
     player.tetromino,
     resetPlayer,
     freeze,
-    // prevFrozen
   ]);
 
   return [stage, setStage, rowsCleared];
