@@ -15,16 +15,16 @@ const Playground = ({ socket, message }) => {
   }
   const [playerCount, setPlayerCount] = useState(1);
   const [gameLeader, setGameLeader] = useState(username);
-  const [runningState, setRunningState] = useState(false);
   const store = useStore();
   const dispatch = useDispatch()
 
   const isLeader = username === gameLeader;
 
   let commands = "";
-  if (isLeader && !runningState) {
+  const isRunning = store.getState().sock.isRunning;
+  if (isLeader && !isRunning) {
     commands = <h2>You can start the game !</h2>;
-  } else if (!runningState) {
+  } else if (!isRunning) {
     commands = <h2>Wait for {gameLeader} to start the game !</h2>;
   } else {
     commands = <h2>Game is ON !</h2>;
@@ -40,9 +40,6 @@ const Playground = ({ socket, message }) => {
       setPlayerCount(players.length);
       setGameLeader(leader);
       dispatch({ type: "UPDATE_PLAYERS", players });
-    });
-    socket.on("toggle_game", function(isRunning) {
-      setRunningState(isRunning);
     });
     socket.on("players", function(players) {
       dispatch({ type: "UPDATE_PLAYERS", players });
