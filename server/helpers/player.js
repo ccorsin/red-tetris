@@ -28,11 +28,11 @@ class Player {
         }
     }
 
-    remove_line(n) {
-        this.line -= n;
+    remove_line() {
+        this.line -= 1;
         if (this.line < 0) {
             this.line = 0;
-        }
+        } 
     }
 
     lose() {

@@ -33,8 +33,10 @@ class Game {
     freeze_players(player) {
         for (let i = 0; i < this.players.length; i++) {
             if (i != this.isPlayer(this.players, player)) {
-              console.log(player)
               this.players[i].add_freeze();
+            }
+            else {
+              this.players[i].remove_line();
             }
         }
     }
