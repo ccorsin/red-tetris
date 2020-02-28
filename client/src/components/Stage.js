@@ -24,7 +24,7 @@ const Stage = ({ stage, title, currentPlayer }) => {
     if (currentPlayer && currentPlayer.loser) {
       color = '96, 96, 96';
     }
-    else if (currentPlayer && winner && currentPlayer.id === winner.id) {
+    else if (currentPlayer && winner && currentPlayer.id === winner.id && currentPlayer.winner) {
       color = '63, 191, 191'
     }
     else {
