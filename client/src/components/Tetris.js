@@ -162,6 +162,11 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
     socket.on('refill', function (tetriminos) {
       dispatch({ type: 'REFILL', tetriminos });
     });
+    socket.on("win", function(message, player) {
+      alert(message);
+      dispatch({ type: 'WINNER', player, socket, room });
+      setDropTime(null);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
