@@ -89,7 +89,6 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
     }
   }
 
-  const drop = () => {
   const drop = (dist) => {
     // Increase level when player has cleared 10 rows
     if (rows > (level + 1) * 10) {
