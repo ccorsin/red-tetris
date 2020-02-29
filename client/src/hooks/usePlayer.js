@@ -38,11 +38,13 @@ export const usePlayer = () => {
       }
 
       const updatePlayerPos = ({ x, y, collided }) => {
+        console.log("updatePlayerPos")
         setPlayer(prev => ({
           ...prev,
           pos: { x: (prev.pos.x += x), y: (prev.pos.y += y) },
           collided
         }));
+        console.log(player)
       };
 
       const resetPlayer = useCallback((currentPlayer, tetriminos) => {
