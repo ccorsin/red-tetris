@@ -21,12 +21,12 @@ class Player {
         this.line = 19 - n;
     }
 
-    add_line(n) {
-        this.line += n;
-        if (this.line > 19) {
-            this.line = 19;
-        }
-    }
+    // add_line(n) {
+    //     this.line += n;
+    //     if (this.line > 19) {
+    //         this.line = 19;
+    //     }
+    // }
 
     remove_line() {
         this.line -= 1;

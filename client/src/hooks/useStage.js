@@ -110,6 +110,7 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
         resetPlayer(currentPlayer, tetriminos);
         return sweepRows(newStage);
       }
+      console.log(">>>>>>>>>> newStage")
       return newStage;
     };
 
