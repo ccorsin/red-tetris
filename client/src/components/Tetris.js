@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { createStage, checkCollision } from '../gameHelpers';
+import { STAGE_HEIGHT, createStage, checkCollision, tetriminosHeight } from '../gameHelpers';
 import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
 import { useSelector, useDispatch, useStore } from 'react-redux'
 
@@ -25,7 +25,6 @@ const Tetris = ({ socket, room, playerCount }) => {
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, gameOver, room, socket);
-  // const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, socket, room, gameOver);
   // eslint-disable-next-line no-unused-vars
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
   // const [rows, level, setLevel] = useGameStatus( // GROS BUG SUR useInterval si on retire le score
@@ -33,7 +32,6 @@ const Tetris = ({ socket, room, playerCount }) => {
   );
   const dispatch = useDispatch();
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
-  // const smashing = useSelector(state => state.sock.smashing);
   const tetriminos = useSelector(state => state.tetriminos.tetriminos);
 
   const collide = (playerData) => {
@@ -44,6 +42,19 @@ const Tetris = ({ socket, room, playerCount }) => {
     if (!checkCollision(player, stage, { x: dir, y: 0 })) {
       updatePlayerPos({ x: dir, y: 0 });
     }
+  };
+
+  // emboiter direct tetriminos si possible
+  const teleportPlayer = () => {
+    // calculer le nombre de ligne
+    let i = STAGE_HEIGHT - player.pos.y - tetriminosHeight(player.tetromino);
+    // TO DO line pas mis a jour
+    let dist = i - store.getState().sock.currentPlayer.line;
+    // console.log(i)
+    // console.log(store.getState().sock.currentPlayer.line)
+    // console.log(dist)
+    // setDropTime(1000);
+    drop(dist);
   };
 
   const keyUp = ({ keyCode }) => {
@@ -66,22 +77,21 @@ const Tetris = ({ socket, room, playerCount }) => {
     setGameOver(false);
   };
 
-  const drop = () => {
+  const drop = (dist) => {
     // Increase level when player has cleared 10 rows
     if (rows > (level + 1) * 10) {
       setLevel(prev => prev + 1);
       // Also increase speed
       setDropTime(1000 / (level + 1) + 200);
     }
-    if (!checkCollision(player, stage, { x: 0, y: 1 })) {
-      updatePlayerPos({ x: 0, y: 1, collided: false });
+    if (!checkCollision(player, stage, { x: 0, y: dist })) {
+      updatePlayerPos({ x: 0, y: dist, collided: false });
     } else {
       if (player.pos.y < 1) {
         setGameOver(true);
         setDropTime(null);
         dispatch({ type: 'GAME_OVER', player: currentPlayer, room, socket })
       }
-      const freeze = store.getState().sock.freeze;
       updatePlayerPos({ x: 0, y: 0, collided: true });
       // SOCKET COLLISION
       const playerData = { ...currentPlayer, player};
@@ -89,17 +99,17 @@ const Tetris = ({ socket, room, playerCount }) => {
     }
   };
 
-  const dropPlayer = () => {
+  const dropPlayer = (dist) => {
     // We don't need to run the interval when we use the arrow down to
     // move the tetromino downwards. So deactivate it for now.
     setDropTime(null);
-    drop();
+    drop(dist);
   };
 
   // This one starts the game
   // Custom hook by Dan Abramov
   useInterval(() => {
-    drop();
+    drop(1);
   }, dropTime);
 
   const move = (e) => {
@@ -110,14 +120,15 @@ const Tetris = ({ socket, room, playerCount }) => {
       } else if (e.keyCode === 39) {
         movePlayer(1);
       } else if (e.keyCode === 40) {
-        dropPlayer();
+        dropPlayer(1);
       } else if (e.keyCode === 38) {
         playerRotate(stage, 1);
       } else if (e.keyCode === 32) {
-        console.log("SPACE");
+        teleportPlayer();
       }
     }
   };
+
   let spectrum = "";
   if (playerCount > 1) {
     spectrum = <Spectrum stage={createStage()} title="SPECTRUM"/>

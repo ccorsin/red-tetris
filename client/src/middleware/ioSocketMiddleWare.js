@@ -30,7 +30,6 @@ export const ioSocketMiddleWare = () => {
       // set store smash action to true/false
     }
     else if (action.type === 'SMASH') {
-      console.log('SMASH')
       action.socket.emit('smash', action.player, action.room);
       return next(action);
     }
