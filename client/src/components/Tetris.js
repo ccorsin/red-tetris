@@ -45,6 +45,15 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
     if (isRestart) {
       dispatch({ type: 'RESET', room, socket })
     }
+  };
+
+  const keyUp = ({ keyCode }) => {
+    if (!gameOver) {
+      // Activate the interval again when user releases down arrow.
+      if (keyCode === 40) {
+        setDropTime(1000 / (level + 1));
+      }
+    }
     else {
       dispatch({ type: 'START', room, socket })
     }
@@ -116,7 +125,7 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
     for (let i = 0; i < tabCount.length; i++) {
       if (count < tabCount[i]) {
         count = tabCount[i];
-        console.log("count :  " + count)
+        // console.log("count :  " + count)
       }
     }
     dist = count - height;

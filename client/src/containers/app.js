@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from "react-redux";
 import io from "socket.io-client";
 import { StyledApp } from '../components/styles/StyledApp';
@@ -32,10 +32,26 @@ const App = ({ message }) => {
   //   return <Playground socket={socket} room={room} username={username} />;
   // }
   // }, []);
+  const [isRunning, setIsRunning] = useState(false);
+  let playground = "";
+  if (isRunning !== true) {
+    playground = <Playground socket={socket} message={message}/>
+  }
+  else {
+    playground = <h1>Game is currently running in this room.</h1>
+  }
+
+  useEffect(() => {
+    socket.on("isRunning", function() {
+      alert("Game is currently running !");
+      setIsRunning(true)
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
  
   return (
       <StyledApp>
-        <Playground socket={socket} message={message}/>
+        {playground}
         {/* <NotFound /> */}
       </StyledApp>
   );

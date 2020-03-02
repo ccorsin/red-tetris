@@ -30,10 +30,10 @@ class Socket {
                     socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
                     this.io.sockets.in(room).emit('message', socket.username + ' has joined the game folks !');
                     socket.join(room);
-                    this.io.sockets.in(room).emit('players_game', this.games[is_room].leader.name, this.games[is_room].players);
+                    this.io.sockets.in(room).emit('players', this.games[is_room].leader.name, this.games[is_room].players);
                 }
                 else if (is_room >= 0 && this.games[is_room].running == true) {
-                    socket.emit('isRunning', 'The game is currently running - impossible to join !');
+                    socket.emit('isRunning')
                 }
                 else {
                     let game = new Game (player, room);
@@ -41,55 +41,54 @@ class Socket {
                     socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
                     socket.join(room);
                 }
-                socket.on('disconnect', () => {
-                    process.stdout.write("Socket disconnected: " + socket.id + '\n');
-                    socket.leave(room);
-                    const curGame = this.games[this.isRoom(this.games, room)];
-                    curGame.remove_player(player);
-                    if (curGame.players.length > 0) {
-                        this.io.sockets.in(room).emit('message', socket.username + ' has left the game');
-                        let winner = curGame.check_winner();
-                        if (winner) {
-                            winner.win();
-                            curGame.end_game();
-                            this.io.sockets.in(room).emit('toggle_game', false);
-                            this.io.sockets.in(room).emit('win', winner.name + ' won the game !', winner);
-                            this.io.sockets.in(room).emit('players_game', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
+                if(this.io.sockets.adapter.rooms[room]['sockets'][socket.id] !== undefined) {
+                    socket.on('disconnect', () => {
+                        process.stdout.write("Socket disconnected: " + socket.id + '\n');
+                        socket.leave(room);
+                        const curGame = this.games[this.isRoom(this.games, room)];
+                        curGame.remove_player(player);
+                        if (curGame.players.length > 0) {
+                            this.io.sockets.in(room).emit('message', socket.username + ' has left the game');
+                            let winner = curGame.check_winner();
+                            if (winner && curGame.running === true) {
+                                winner.win();
+                                curGame.end_game();
+                                this.io.sockets.in(room).emit('win', winner.name + ' won the game !', winner);
+                                this.io.sockets.in(room).emit('players', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
+                            }
+                            else {
+                                this.io.sockets.in(room).emit('players', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
+                            }
                         }
                         else {
-                            this.io.sockets.in(room).emit('players_game', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
+                            this.games.splice(this.isRoom (this.games, room), 1);
                         }
-                    }
-                    else {
-                        this.games.splice(this.isRoom (this.games, room), 1);
-                    }
-                });
+                    });
+                }
                 socket.emit('player', player);
                 socket.on('collision', (player, room) => {
                     const curGame = this.games[this.isRoom(this.games, room)];
-                    let updatedPlayer = curGame.update_player(player);
+                    curGame.update_player(player);
                     if (curGame.check_tetriminos(player)) {
                         curGame.add_tetriminos();
                         this.io.sockets.in(room).emit('refill', curGame.tetriminos);
                     }
-                    this.io.sockets.in(room).emit('players', curGame.players);
-                    socket.emit('player', updatedPlayer);
+                    this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
                 });
                 socket.on('game_over', (player, room) => {
                     const curGame = this.games[this.isRoom(this.games, room)];
-                    let updatedPlayer = curGame.game_over_player(player);
-                    socket.emit('player', updatedPlayer);
+                    curGame.game_over_player(player);
                     let winner = curGame.check_winner();
                     if (winner) {
                         winner.win();
                         this.io.sockets.in(room).emit('win', winner.name + ' won the game !', winner);
                     }
-                    this.io.sockets.in(room).emit('players', curGame.players);
+                    this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
                 });
                 socket.on('smash', (player, room) => {
                     const curGame = this.games[this.isRoom(this.games, room)];
                     curGame.freeze_players(player);
-                    this.io.sockets.in(room).emit('players', curGame.players);
+                    this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
                     socket.broadcast.to(room).emit('freeze');
                 });
             });
@@ -99,11 +98,9 @@ class Socket {
                 curGame.init_player_round();
                 this.io.sockets.in(room).emit('refill', curGame.tetriminos);
                 this.io.sockets.in(room).emit('start_game');
-                this.io.sockets.in(room).emit('toggle_game', true);
             });
             socket.on('end', room => {
                 this.games[this.isRoom(this.games, room)].end_game();
-                this.io.sockets.in(room).emit('toggle_game', false);
             });
             socket.on('reset', room => {
                 this.games[this.isRoom(this.games, room)].reset_game();
