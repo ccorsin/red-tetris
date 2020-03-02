@@ -31,17 +31,13 @@ const Playground = ({ socket, message }) => {
   }
 
   useEffect(() => {
-    let currentPlayer = store.getState().sock.currentPlayer;
     socket.emit("room", room, username);
     socket.on("message", function(message) {
       alert(message);
     });
-    socket.on("players_game", function(leader, players) {
+    socket.on("players", function(leader, players) {
       setPlayerCount(players.length);
       setGameLeader(leader);
-      dispatch({ type: "UPDATE_PLAYERS", players });
-    });
-    socket.on("players", function(players) {
       dispatch({ type: "UPDATE_PLAYERS", players });
       let currentPlayer = store.getState().sock.currentPlayer;
       let tmp = {};
