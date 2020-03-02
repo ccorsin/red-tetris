@@ -1,7 +1,9 @@
 import { useState, useCallback } from 'react';
 import { STAGE_WIDTH, checkCollision } from '../gameHelpers';
+import { useSelector, useDispatch, useStore } from 'react-redux'
 
 export const usePlayer = () => {
+    const store = useStore();
     const init = { shape: [[0]], color: '220, 220, 220' };
     const [player, setPlayer] = useState({
         pos: { x: 0, y: 0 },
@@ -47,6 +49,8 @@ export const usePlayer = () => {
       };
 
       const resetPlayer = useCallback((currentPlayer, tetriminos) => {
+        const round = store.getState().sock.currentPlayer.round;
+        console.log ("TETR", tetriminos[currentPlayer.round].shape, currentPlayer.round, round)
         setPlayer({
           pos: { x: STAGE_WIDTH / 2 - 2, y: 0 },
           tetromino: tetriminos[currentPlayer.round].shape,

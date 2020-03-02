@@ -170,6 +170,7 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
     })
     socket.on('refill', function (tetriminos) {
       dispatch({ type: 'REFILL', tetriminos });
+      console.log ("T", tetriminos, store.getState().tetriminos.tetriminos)
     });
     socket.on("win", function (message, player) {
       alert(message);
