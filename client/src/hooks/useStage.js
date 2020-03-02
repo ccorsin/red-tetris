@@ -96,6 +96,8 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
           if (value !== 0) {
             if (!freeze) {
               if (player.tetromino.length + player.pos.y >= 0 || player.tetromino.length + player.pos.y < STAGE_HEIGHT) {
+                // console.log(">>>>>>>>>> y + player.pos.y")
+                // console.log(y + player.pos.y)
                 newStage[y + player.pos.y][x + player.pos.x] = [
                   value,
                   `${player.collided ? 'merged' : 'clear'}`,
@@ -111,6 +113,7 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
         return sweepRows(newStage);
       }
       console.log(">>>>>>>>>> newStage")
+      console.log(newStage)
       return newStage;
     };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { STAGE_HEIGHT, createStage, checkCollision, tetriminosHeight } from '../gameHelpers';
+import { STAGE_HEIGHT, STAGE_WIDTH, createStage, checkCollision, tetriminosHeight } from '../gameHelpers';
 import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
 import { useSelector, useDispatch, useStore } from 'react-redux'
 
@@ -19,10 +19,6 @@ import StartButton from './StartButton';
 const Tetris = ({ socket, room, playerCount, isLeader }) => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
-
-  // WIP
-  const store = useStore();
-
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, gameOver, room, socket);
   // eslint-disable-next-line no-unused-vars
@@ -33,26 +29,17 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
   const dispatch = useDispatch();
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
   const isRunning = useSelector(state => state.sock.isRunning);
-  const tetriminos = useSelector(state => state.tetriminos.tetriminos);
+  const store = useStore();
 
   const collide = (playerData) => {
     dispatch({ type: 'COLLISION', player: playerData, room, socket })
   };
 
-  let isRestart = store.getState().sock.winner !== undefined
+  let isRestart = store.getState().sock.winner !== undefined;
 
   const clickStart = () => {
     if (isRestart) {
       dispatch({ type: 'RESET', room, socket })
-    }
-  };
-
-  const keyUp = ({ keyCode }) => {
-    if (!gameOver) {
-      // Activate the interval again when user releases down arrow.
-      if (keyCode === 40) {
-        setDropTime(1000 / (level + 1));
-      }
     }
     else {
       dispatch({ type: 'START', room, socket })
@@ -73,7 +60,6 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
   const keyUp = ({ keyCode }) => {
     if (!gameOver) {
       // Activate the interval again when user releases down arrow.
-      // console.log("key up")
       if (keyCode === 40) {
         setDropTime(1000 / (level + 1));
       }
@@ -89,62 +75,70 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
   // emboiter direct tetriminos si possible
   const teleportPlayer = () => {
     // calculer le nombre de ligne
-    // console.log("++++player++++");
-    // console.log(player);
-    // console.log("+stage++++");
-    // console.log(stage);
-    let count = 0;
+    let count = STAGE_HEIGHT;
+    let zero = new Array(player.tetromino[0].length);
+    let col = 0;
+    zero.fill(0, 0, player.tetromino[0].length);// 1 2 3 4
+    const height = tetriminosHeight(player.tetromino);
+    // noter la place de column de 0
+    player.tetromino.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (cell === 0) {
+          zero[x] +=1;
+        }
+      });
+    });
+    // nb de colone de 0
+    for (let i = 0; i < player.tetromino[0].length; i++) {
+      if (zero[i] === player.tetromino.length) { // == colone de 0
+        col += 1;
+      }
+    }
     let tabCount = new Array(player.tetromino.length);
     tabCount.fill(0, 0, player.tetromino.length);
-    let dist = 0;
-    let ok = new Array(player.tetromino.length);
-    ok.fill(true, 0, player.tetromino.length);
-    const height = tetriminosHeight(player.tetromino);
+    let stopHigh = new Array(player.tetromino[0].length);
+    stopHigh.fill(true, 0, player.tetromino[0].length);
+    // console.log("col")
+    // console.log(col)
     stage.forEach((row, y) => {
-      if (y >= player.pos.y + player.tetromino.length) {
-        // console.log("y : " + y)
-        // console.log(ok)
-        // TO DO RESOLVE PAR ICI
-        for (let i = player.pos.x; i < player.pos.x + player.tetromino.length; i++) {
-          if (row[i][0] === 0) {
-            // console.log(row[i][0])
-            if (ok[i - player.pos.x]) {
-              // console.log(i)
-              tabCount[i - player.pos.x] += 1;
+      // compte apres la hauteur du tetro
+      if (y >= player.pos.y + player.tetromino.length) { // tab[0] // height
+        for (let i = 0; i < player.tetromino[0].length; i++) {
+          // TO DO  check count si bien aligne
+          if (i + player.pos.x < STAGE_WIDTH && i + player.pos.x > 0) {
+            // compter la largeur du tetro
+            // savoir la place de la colone de 0
+            // console.log("zero")
+            // console.log(zero)
+            // console.log("stopHigh")
+            // console.log(stopHigh)
+            if (zero[i] !== player.tetromino.length) {
+              // console.log("i", i)
+              if (row[i][0] === 0) {
+                // console.log("AIGHT", stopHigh[i])
+                if (stopHigh[i]) {
+                  tabCount[i] += 1;
+                }
+              } else {
+                stopHigh[i] = false;
+              }
             }
-          } else {
-            // console.log("else")
-            // console.log(row[i][0])
-            ok = false;
           }
         }
       }
     });
-    // console.log("tabCount :  ")
-    // console.log(tabCount)
+    console.log("tabCount :  ")
+    console.log(tabCount)
     for (let i = 0; i < tabCount.length; i++) {
-      if (count < tabCount[i]) {
-        count = tabCount[i];
-        // console.log("count :  " + count)
+      if (count > tabCount[i]) {
+        if (zero[i] != player.tetromino.length) {
+          count = tabCount[i];
+        }
       }
     }
-    dist = count - height;
-    // console.log("count :  " + count)
-    // console.log("height :  " + height)
-    // console.log("player.pos.y :  " + player.pos.y)
-    // console.log("count - height")
-    // console.log("dist :  " + dist)
-    if (checkCollision(player, stage, { x: player.pos.x, y: count })) {
-      updatePlayerPos({ x: 0, y: dist, collided: true });
-      // console.log("COLLIDE")
-      // console.log("collided : " + true)
-      // SOCKET COLLISION
-      const playerData = { ...currentPlayer, player };
-      collide(playerData);
-      // console.log("+++++++++++stage++++");
-      // console.log(stage);
-    } else {
-      // console.log("PAS COLLIDE")
+    console.log("count :  " + count)
+    for (let i = 0; i < count; i++) {
+      drop();
     }
   };
 
@@ -155,10 +149,6 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
       // Also increase speed
       setDropTime(1000 / (level + 1) + 200);
     }
-    // console.log("++++++++player");
-    // console.log(player);
-    // console.log("++++++++stage");
-    // console.log(stage);
     if (!checkCollision(player, stage, { x: 0, y: 1 })) {
       updatePlayerPos({ x: 0, y: 1, collided: false });
     } else {
@@ -171,7 +161,6 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
         }
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
-      // console.log("collided : " + true)
       // SOCKET COLLISION
       const playerData = { ...currentPlayer, player };
       collide(playerData);
