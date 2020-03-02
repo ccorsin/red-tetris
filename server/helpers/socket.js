@@ -66,7 +66,7 @@ class Socket {
                 socket.emit('player', player);
                 socket.on('collision', (player, room) => {
                     const curGame = this.games[this.isRoom(this.games, room)];
-                    let updatedPlayer = curGame.update_player(player);
+                    curGame.update_player(player);
                     if (curGame.check_tetriminos(player)) {
                         curGame.add_tetriminos();
                         this.io.sockets.in(room).emit('refill', curGame.tetriminos);
@@ -75,8 +75,7 @@ class Socket {
                 });
                 socket.on('game_over', (player, room) => {
                     const curGame = this.games[this.isRoom(this.games, room)];
-                    let updatedPlayer = curGame.game_over_player(player);
-                    socket.emit('player', updatedPlayer);
+                    curGame.game_over_player(player);
                     let winner = curGame.check_winner();
                     if (winner) {
                         winner.win();

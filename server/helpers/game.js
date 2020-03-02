@@ -46,12 +46,10 @@ class Game {
       if ((19 - player.player.pos.y) > this.players[this.isPlayer(this.players, player)].line) {
         this.players[this.isPlayer(this.players, player)].set_line(player.player.pos.y);
       }
-      return this.players[this.isPlayer(this.players, player)];
     }
 
     game_over_player(player) {
       this.players[this.isPlayer(this.players, player)].lose();
-      return this.players[this.isPlayer(this.players, player)];
     }
 
     clear_tetriminos() {
