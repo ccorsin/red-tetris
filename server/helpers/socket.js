@@ -50,7 +50,7 @@ class Socket {
                         if (curGame.players.length > 0) {
                             this.io.sockets.in(room).emit('message', socket.username + ' has left the game');
                             let winner = curGame.check_winner();
-                            if (winner) {
+                            if (winner && curGame.running === true) {
                                 winner.win();
                                 curGame.end_game();
                                 this.io.sockets.in(room).emit('win', winner.name + ' won the game !', winner);
