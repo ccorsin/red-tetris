@@ -33,7 +33,7 @@ class Socket {
                     this.io.sockets.in(room).emit('players', this.games[is_room].leader.name, this.games[is_room].players);
                 }
                 else if (is_room >= 0 && this.games[is_room].running == true) {
-                    socket.emit('isRunning', 'The game is currently running - impossible to join !');
+                    socket.emit('isRunning')
                 }
                 else {
                     let game = new Game (player, room);
@@ -41,28 +41,30 @@ class Socket {
                     socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
                     socket.join(room);
                 }
-                socket.on('disconnect', () => {
-                    process.stdout.write("Socket disconnected: " + socket.id + '\n');
-                    socket.leave(room);
-                    const curGame = this.games[this.isRoom(this.games, room)];
-                    curGame.remove_player(player);
-                    if (curGame.players.length > 0) {
-                        this.io.sockets.in(room).emit('message', socket.username + ' has left the game');
-                        let winner = curGame.check_winner();
-                        if (winner) {
-                            winner.win();
-                            curGame.end_game();
-                            this.io.sockets.in(room).emit('win', winner.name + ' won the game !', winner);
-                            this.io.sockets.in(room).emit('players', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
+                if(this.io.sockets.adapter.rooms[room]['sockets'][socket.id] !== undefined) {
+                    socket.on('disconnect', () => {
+                        process.stdout.write("Socket disconnected: " + socket.id + '\n');
+                        socket.leave(room);
+                        const curGame = this.games[this.isRoom(this.games, room)];
+                        curGame.remove_player(player);
+                        if (curGame.players.length > 0) {
+                            this.io.sockets.in(room).emit('message', socket.username + ' has left the game');
+                            let winner = curGame.check_winner();
+                            if (winner) {
+                                winner.win();
+                                curGame.end_game();
+                                this.io.sockets.in(room).emit('win', winner.name + ' won the game !', winner);
+                                this.io.sockets.in(room).emit('players', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
+                            }
+                            else {
+                                this.io.sockets.in(room).emit('players', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
+                            }
                         }
                         else {
-                            this.io.sockets.in(room).emit('players', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
+                            this.games.splice(this.isRoom (this.games, room), 1);
                         }
-                    }
-                    else {
-                        this.games.splice(this.isRoom (this.games, room), 1);
-                    }
-                });
+                    });
+                }
                 socket.emit('player', player);
                 socket.on('collision', (player, room) => {
                     const curGame = this.games[this.isRoom(this.games, room)];
