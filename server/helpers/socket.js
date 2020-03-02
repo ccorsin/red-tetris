@@ -30,7 +30,7 @@ class Socket {
                     socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
                     this.io.sockets.in(room).emit('message', socket.username + ' has joined the game folks !');
                     socket.join(room);
-                    this.io.sockets.in(room).emit('players_game', this.games[is_room].leader.name, this.games[is_room].players);
+                    this.io.sockets.in(room).emit('players', this.games[is_room].leader.name, this.games[is_room].players);
                 }
                 else if (is_room >= 0 && this.games[is_room].running == true) {
                     socket.emit('isRunning', 'The game is currently running - impossible to join !');
@@ -53,10 +53,10 @@ class Socket {
                             winner.win();
                             curGame.end_game();
                             this.io.sockets.in(room).emit('win', winner.name + ' won the game !', winner);
-                            this.io.sockets.in(room).emit('players_game', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
+                            this.io.sockets.in(room).emit('players', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
                         }
                         else {
-                            this.io.sockets.in(room).emit('players_game', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
+                            this.io.sockets.in(room).emit('players', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
                         }
                     }
                     else {
@@ -71,8 +71,7 @@ class Socket {
                         curGame.add_tetriminos();
                         this.io.sockets.in(room).emit('refill', curGame.tetriminos);
                     }
-                    this.io.sockets.in(room).emit('players', curGame.players);
-                    socket.emit('player', updatedPlayer);
+                    this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
                 });
                 socket.on('game_over', (player, room) => {
                     const curGame = this.games[this.isRoom(this.games, room)];
@@ -83,12 +82,12 @@ class Socket {
                         winner.win();
                         this.io.sockets.in(room).emit('win', winner.name + ' won the game !', winner);
                     }
-                    this.io.sockets.in(room).emit('players', curGame.players);
+                    this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
                 });
                 socket.on('smash', (player, room) => {
                     const curGame = this.games[this.isRoom(this.games, room)];
                     curGame.freeze_players(player);
-                    this.io.sockets.in(room).emit('players', curGame.players);
+                    this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
                     socket.broadcast.to(room).emit('freeze');
                 });
             });
