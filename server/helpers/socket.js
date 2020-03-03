@@ -69,11 +69,11 @@ class Socket {
                 socket.on('collision', (player, room) => {
                     const curGame = this.games[this.isRoom(this.games, room)];
                     curGame.update_player(player);
+                    this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
                     if (curGame.check_tetriminos(player)) {
                         curGame.add_tetriminos();
                         this.io.sockets.in(room).emit('refill', curGame.tetriminos);
                     }
-                    this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
                 });
                 socket.on('game_over', (player, room) => {
                     const curGame = this.games[this.isRoom(this.games, room)];
@@ -95,9 +95,11 @@ class Socket {
             socket.on('start', room => {
                 const curGame = this.games[this.isRoom(this.games, room)];
                 curGame.start_game();
-                curGame.init_player_round();
+                curGame.init_players_tetriminos();
+                this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
                 this.io.sockets.in(room).emit('refill', curGame.tetriminos);
                 this.io.sockets.in(room).emit('start_game');
+                curGame.update_players_round();
             });
             socket.on('end', room => {
                 this.games[this.isRoom(this.games, room)].end_game();

@@ -8,6 +8,7 @@ class Game {
         this.players.push(player);
         this.running = false;
         this.tetriminos = [];
+        this.round = 0;
     }
 
     isPlayer(players, player) {
@@ -19,11 +20,12 @@ class Game {
         return -1;
     }
 
-    init_player_round() {
-      for (let i = 0; i < this.players.length; i++) {
-        this.players[i].add_round();
-      }
-      // en generer en avance sinon bug - a resoudre peut etre mieux
+    add_tetriminos() {
+      let tetromino = new Tetriminos().randomTetromino();
+      this.tetriminos.push(tetromino);
+    }
+
+    init_players_tetriminos() {
       for (let i = 0; i < 5; i++) {
         this.add_tetriminos();
       }
@@ -45,6 +47,12 @@ class Game {
       this.players[this.isPlayer(this.players, player)].add_round();
       if ((19 - player.player.pos.y) > this.players[this.isPlayer(this.players, player)].line) {
         this.players[this.isPlayer(this.players, player)].set_line(player.player.pos.y);
+      }
+    }
+
+    update_players_round() {
+      for (let i = 0; i < this.players.length; i++) {
+        this.players[i].add_round();
       }
     }
 
@@ -72,12 +80,6 @@ class Game {
           return true;
       }
       return false;
-    }
-
-    add_tetriminos() {
-      // generate random tetriminos
-      let tetromino = new Tetriminos().randomTetromino();
-      this.tetriminos.push(tetromino);
     }
 
     add_player(player) {
