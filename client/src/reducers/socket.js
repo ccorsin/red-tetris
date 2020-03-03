@@ -37,6 +37,11 @@ const reducer = (state = { freeze: false }, action) => {
           ...state,
           winner: undefined
         }
+    case 'ADD_ROUND':
+      return {
+        ...state,
+        currentPlayer: action.currentPlayer
+      }
     default: 
         return state
   }

@@ -41,6 +41,9 @@ export const ioSocketMiddleWare = () => {
       action.socket.emit('reset', action.room);
       return next(action);
     }
+    else if (action.type === 'ADD_ROUND') {
+      return next(action);
+    }
     return
   }
 }

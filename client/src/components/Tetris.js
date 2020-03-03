@@ -156,6 +156,8 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
       dispatch({ type: 'REFILL', tetriminos });
       if (currentPlayer) {
         startGame(currentPlayer, tetriminos);
+        const newCurrentPlayer = {...currentPlayer, round: currentPlayer.round + 1}
+        dispatch({ type: "ADD_ROUND", currentPlayer: newCurrentPlayer });
       }
     });
     socket.on('restart_game', function (players) {
@@ -170,7 +172,6 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
     })
     socket.on('refill', function (tetriminos) {
       dispatch({ type: 'REFILL', tetriminos });
-      console.log ("T", tetriminos, store.getState().tetriminos.tetriminos)
     });
     socket.on("win", function (message, player) {
       alert(message);

@@ -107,6 +107,8 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
       // Then check if we got some score if collided
       if (player.collided) {
         resetPlayer(currentPlayer, tetriminos);
+        const newCurrentPlayer = {...currentPlayer, round: currentPlayer.round + 1}
+        dispatch({ type: "ADD_ROUND", currentPlayer: newCurrentPlayer });
         return sweepRows(newStage);
       }
       return newStage;
