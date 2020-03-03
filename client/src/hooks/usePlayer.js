@@ -49,7 +49,6 @@ export const usePlayer = () => {
       };
 
       const resetPlayer = useCallback((currentPlayer, tetriminos) => {
-        const round = store.getState().sock.currentPlayer.round;
         setPlayer({
           pos: { x: STAGE_WIDTH / 2 - 2, y: 0 },
           tetromino: tetriminos[currentPlayer.round].shape,
