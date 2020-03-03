@@ -74,7 +74,7 @@ class Game {
     }
 
     check_tetriminos(player) {
-      if (this.players[this.isPlayer(this.players, player)].round >= this.tetriminos.length) {
+      if (this.players[this.isPlayer(this.players, player)].round >= this.tetriminos.length - 4) {
         // TO DO > WHEN FRONT OK then reshape
           // this.clear_tetriminos();
           return true;
