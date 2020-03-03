@@ -21,11 +21,6 @@ const reducer = (state = { freeze: false }, action) => {
           ...state,
           currentPlayer: action.currentPlayer
         }
-    case 'DO_SMASH':
-      return {
-        ...state,
-        smashing: action.smash
-      }
     case 'DO_FREEZE':
       return {
         ...state,

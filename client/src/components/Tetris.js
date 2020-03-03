@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { STAGE_HEIGHT, STAGE_WIDTH, createStage, checkCollision, tetriminosHeight } from '../gameHelpers';
+import { createStage, checkCollision } from '../gameHelpers';
 import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
 import { useSelector, useDispatch, useStore } from 'react-redux'
 
@@ -72,76 +72,6 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
     }
   };
 
-  // emboiter direct tetriminos si possible
-  const teleportPlayer = () => {
-    // calculer le nombre de ligne
-    let count = STAGE_HEIGHT;
-    let zero = new Array(player.tetromino[0].length);
-    let col = 0;
-    zero.fill(0, 0, player.tetromino[0].length);// 1 2 3 4
-    const height = tetriminosHeight(player.tetromino);
-    // noter la place de column de 0
-    player.tetromino.forEach((row, y) => {
-      row.forEach((cell, x) => {
-        if (cell === 0) {
-          zero[x] +=1;
-        }
-      });
-    });
-    // nb de colone de 0
-    for (let i = 0; i < player.tetromino[0].length; i++) {
-      if (zero[i] === player.tetromino.length) { // == colone de 0
-        col += 1;
-      }
-    }
-    let tabCount = new Array(player.tetromino.length);
-    tabCount.fill(0, 0, player.tetromino.length);
-    let stopHigh = new Array(player.tetromino[0].length);
-    stopHigh.fill(true, 0, player.tetromino[0].length);
-    // console.log("col")
-    // console.log(col)
-    stage.forEach((row, y) => {
-      // compte apres la hauteur du tetro
-      if (y >= player.pos.y + player.tetromino.length) { // tab[0] // height
-        for (let i = 0; i < player.tetromino[0].length; i++) {
-          // TO DO  check count si bien aligne
-          if (i + player.pos.x < STAGE_WIDTH && i + player.pos.x > 0) {
-            // compter la largeur du tetro
-            // savoir la place de la colone de 0
-            // console.log("zero")
-            // console.log(zero)
-            // console.log("stopHigh")
-            // console.log(stopHigh)
-            if (zero[i] !== player.tetromino.length) {
-              // console.log("i", i)
-              if (row[i][0] === 0) {
-                // console.log("AIGHT", stopHigh[i])
-                if (stopHigh[i]) {
-                  tabCount[i] += 1;
-                }
-              } else {
-                stopHigh[i] = false;
-              }
-            }
-          }
-        }
-      }
-    });
-    console.log("tabCount :  ")
-    console.log(tabCount)
-    for (let i = 0; i < tabCount.length; i++) {
-      if (count > tabCount[i]) {
-        if (zero[i] != player.tetromino.length) {
-          count = tabCount[i];
-        }
-      }
-    }
-    console.log("count :  " + count)
-    for (let i = 0; i < count; i++) {
-      drop();
-    }
-  };
-
   const drop = () => {
     // Increase level when player has cleared 10 rows
     if (rows > (level + 1) * 10) {
@@ -164,6 +94,9 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
       // SOCKET COLLISION
       const playerData = { ...currentPlayer, player };
       collide(playerData);
+      if (player.pos.y > 1) {
+        setDropTime(1000);
+      }
     }
   };
 
@@ -174,7 +107,12 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
     drop();
   };
 
-  // This one starts the game
+  function dropFallPlayer () {
+      setDropTime(1);
+      drop();
+  }
+  
+  // This one  the game
   // Custom hook by Dan Abramov
   useInterval(() => {
     drop();
@@ -188,11 +126,11 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
       } else if (e.keyCode === 39) {
         movePlayer(1);
       } else if (e.keyCode === 40) {
-        dropPlayer();
+        dropFallPlayer();
       } else if (e.keyCode === 38) {
         playerRotate(stage, 1);
       } else if (e.keyCode === 32) {
-        teleportPlayer();
+        dropPlayer();
       }
     }
   };

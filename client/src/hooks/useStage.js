@@ -51,7 +51,6 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
       // SOCKET stagepar intermitance
       if (currentPlayer && currentPlayer.freeze >= 0) {
         if (freeze) {
-          // putain de merde si les freeze sont trop rapporches y a le decalage au debut
           tmpStage = prevStage.slice((currentPlayer.freeze - frozen), STAGE_HEIGHT);
           setFrozen(currentPlayer.freeze);
           setFroze(true);
@@ -89,15 +88,13 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
           }
         }
         if (froze) {
-          player.pos.y -= offset; // nie
+          player.pos.y -= offset;
           setFroze(false);
         }
         row.forEach((value, x) => {
           if (value !== 0) {
             if (!freeze) {
               if (player.tetromino.length + player.pos.y >= 0 || player.tetromino.length + player.pos.y < STAGE_HEIGHT) {
-                // console.log(">>>>>>>>>> y + player.pos.y")
-                // console.log(y + player.pos.y)
                 newStage[y + player.pos.y][x + player.pos.x] = [
                   value,
                   `${player.collided ? 'merged' : 'clear'}`,
@@ -112,8 +109,6 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
         resetPlayer(currentPlayer, tetriminos);
         return sweepRows(newStage);
       }
-      console.log(">>>>>>>>>> newStage")
-      console.log(newStage)
       return newStage;
     };
 
