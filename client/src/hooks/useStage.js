@@ -48,7 +48,6 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
     const updateStage = prevStage => {
       let newStage = [];
       let tmpStage = [];
-      // SOCKET stagepar intermitance
       if (currentPlayer && currentPlayer.freeze >= 0) {
         if (freeze) {
           tmpStage = prevStage.slice((currentPlayer.freeze - frozen), STAGE_HEIGHT);
