@@ -32,6 +32,7 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
   const store = useStore();
 
   const collide = (playerData) => {
+    // socket.emit('test',  playerData);
     dispatch({ type: 'COLLISION', player: playerData, room, socket })
   };
 
@@ -60,7 +61,7 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
   const keyUp = ({ keyCode }) => {
     if (!gameOver) {
       // Activate the interval again when user releases down arrow.
-      if (keyCode === 40) {
+      if (keyCode === 32 || keyCode === 40) {
         setDropTime(1000 / (level + 1));
       }
     }
@@ -80,7 +81,6 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
       setDropTime(1000 / (level + 1) + 200);
     }
     if (!checkCollision(player, stage, { x: 0, y: 1 })) {
-      console.log ("player", player)
       updatePlayerPos({ x: 0, y: 1, collided: false });
     } else {
       if (player.pos.y < 1) {
@@ -92,7 +92,6 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
         }
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
-      // SOCKET COLLISION
       const playerData = { ...currentPlayer, player };
       collide(playerData);
     }
@@ -108,10 +107,8 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
   function dropFallPlayer () {
     let i = 0;
     while (!checkCollision(player, stage, { x: 0, y: i })) i++;
-    updatePlayerPos({ x: 0, y: i - 1, collided: true });
-    // SOCKET COLLISION
-    const playerData = { ...currentPlayer, player };
-    collide(playerData);
+    updatePlayerPos({ x: 0, y: i - 2, collided: false });
+    setDropTime(1);
   }
   
   // This one  the game
