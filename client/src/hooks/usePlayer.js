@@ -3,7 +3,6 @@ import { STAGE_WIDTH, checkCollision } from '../gameHelpers';
 import { useSelector, useDispatch, useStore } from 'react-redux'
 
 export const usePlayer = () => {
-    const store = useStore();
     const init = { shape: [[0]], color: '220, 220, 220' };
     const [player, setPlayer] = useState({
         pos: { x: 0, y: 0 },
