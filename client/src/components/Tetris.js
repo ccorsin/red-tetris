@@ -108,8 +108,8 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
   function dropFallPlayer () {
     let i = 0;
     while (!checkCollision(player, stage, { x: 0, y: i })) i++;
-    updatePlayerPos({ x: 0, y: i - 2, collided: false });
-    setDropTime(1);
+    updatePlayerPos({ x: 0, y: i - 1, collided: false });
+    setDropTime(100);
   }
   
   // This one  the game
