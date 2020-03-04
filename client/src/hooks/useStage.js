@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
 import { createStage } from '../gameHelpers';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, useStore } from 'react-redux'
 import {
   STAGE_WIDTH,
-  STAGE_HEIGHT,
-  checkCollision,
-  tetriminosHeight
 } from "../gameHelpers";
 
 export const useStage = (player, resetPlayer, gameOver, room, socket) => {
@@ -15,7 +12,7 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
   const [froze, setFroze] = useState(false);
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
   const tetriminos = useSelector(state => state.tetriminos.tetriminos);
-  const freeze = useSelector(state => state.sock.freeze);
+  const store = useStore();
   const dispatch = useDispatch()
   const setFrozenLine = () => {
     let line = [];
@@ -45,64 +42,23 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
           return ack;
       }, []);
 
-    const updateStage = prevStage => {
-      let newStage = [];
-      let tmpStage = [];
-      if (currentPlayer && currentPlayer.freeze >= 0) {
-        if (freeze) {
-          tmpStage = prevStage.slice((currentPlayer.freeze - frozen), STAGE_HEIGHT);
-          setFrozen(currentPlayer.freeze);
-          setFroze(true);
-          dispatch({ type: 'DO_FREEZE', freeze: false });
-        } else {
-          tmpStage = prevStage;
-        }
-        for (let i = 0; i < STAGE_HEIGHT; i++) {
-          if (i < tmpStage.length) {
-            newStage.push(tmpStage[i].map(cell => (cell[1] === 'clear' ? [0, 'clear'] : cell)));
-          } else {
-            newStage.push(frozenLine);
-          }
-        }
-      } else {
+      const updateStage = prevStage => {
         // First flush the stage
-        newStage = prevStage.map(row =>
+        const newStage = prevStage.map(row =>
           row.map(cell => (cell[1] === 'clear' ? [0, 'clear'] : cell))
         );
-      }
-
-      // Then draw the tetromino
-      // le decallage vient au coup d'apres
-      // trouver la bonne hauteur du tetro
-      let height = tetriminosHeight(player.tetromino);
-      player.tetromino.forEach((row, y) => {
-        let offset = 0;
-        let ok = true;
-        for (let i = 0; i <= height; i++) {
-          if (ok) {
-            if (checkCollision(player, newStage, { x: 0, y: i })) {
-              if (player.tetromino.length + player.pos.y - offset >= 0) offset++;
-              ok = false;
+        // Then draw the tetromino
+        player.tetromino.forEach((row, y) => {
+          row.forEach((value, x) => {
+            if (value !== 0) {
+              newStage[y + player.pos.y][x + player.pos.x] = [
+                value,
+                `${player.collided ? 'merged' : 'clear'}`,
+              ];
             }
-          }
-        }
-        if (froze) {
-          player.pos.y -= offset;
-          setFroze(false);
-        }
-        row.forEach((value, x) => {
-          if (value !== 0) {
-            if (!freeze) {
-              if (player.tetromino.length + player.pos.y >= 0 || player.tetromino.length + player.pos.y < STAGE_HEIGHT) {
-                newStage[y + player.pos.y][x + player.pos.x] = [
-                  value,
-                  `${player.collided ? 'merged' : 'clear'}`,
-                ];
-              }
-            }
-          }
+          });
         });
-      });
+
       // Then check if we got some score if collided
       if (player.collided) {
         resetPlayer(currentPlayer, tetriminos);
@@ -124,8 +80,20 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
     player.pos.y,
     player.tetromino,
     resetPlayer,
-    freeze,
   ]);
+
+  useEffect((currentPlayer) => {
+    console.log("in the hOok")
+    const addLine = prev => {
+      // const currPlayer = store.getState().currentPlayer;
+      for (let i = 0; i < currentPlayer.freeze; i++) {
+        prev.shift()
+        prev.push(new Array(prev[0].length).fill([1, 'frozen']))
+      }
+      return prev
+    } 
+    if (currentPlayer && currentPlayer.freeze > 0 && !gameOver) setStage(prev => addLine(prev))
+  }, [currentPlayer]);
 
   return [stage, setStage, rowsCleared];
 };
