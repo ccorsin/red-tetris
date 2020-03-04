@@ -10,6 +10,7 @@ export const usePlayer = () => {
         tetromino: init.shape,
         collided: false
       });
+      console.log("player0", player)
 
       function rotate(matrix, dir) {
         // Make the rows to become cols (transpose)
@@ -40,7 +41,6 @@ export const usePlayer = () => {
       }
 
       const updatePlayerPos = ({ x, y, collided }) => {
-        // console.log("updatePlayerPos")
         setPlayer(prev => ({
           ...prev,
           pos: { x: (prev.pos.x += x), y: (prev.pos.y += y) },
@@ -49,6 +49,7 @@ export const usePlayer = () => {
       };
 
       const resetPlayer = useCallback((currentPlayer, tetriminos) => {
+        console.log ("TETR", tetriminos[currentPlayer.round].shape, currentPlayer.round)
         setPlayer({
           pos: { x: STAGE_WIDTH / 2 - 2, y: 0 },
           tetromino: tetriminos[currentPlayer.round].shape,
