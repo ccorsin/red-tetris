@@ -82,6 +82,7 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
       setDropTime(1000 / (level + 1) + 200);
     }
     if (!checkCollision(player, stage, { x: 0, y: 1 })) {
+      console.log ("player", player)
       updatePlayerPos({ x: 0, y: 1, collided: false });
     } else {
       if (player.pos.y < 1) {
