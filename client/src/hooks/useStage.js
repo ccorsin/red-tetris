@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
 import { createStage } from '../gameHelpers';
 import { useSelector, useDispatch, useStore } from 'react-redux'
-import {
-  STAGE_WIDTH,
-} from "../gameHelpers";
 
 export const useStage = (player, resetPlayer, gameOver, room, socket) => {
   const [stage, setStage] = useState(createStage());
