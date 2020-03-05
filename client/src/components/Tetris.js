@@ -146,9 +146,6 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
   }
 
   useEffect(() => {
-    socket.on('freeze', function () {
-      dispatch({ type: 'DO_FREEZE', freeze: true });
-    });
     socket.on('start_game', function () {
       const currentPlayer = store.getState().sock.currentPlayer
       const tetriminos = store.getState().tetriminos.tetriminos

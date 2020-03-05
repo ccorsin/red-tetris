@@ -8,20 +8,22 @@ import {
 export const useStage = (player, resetPlayer, gameOver, room, socket) => {
   const [stage, setStage] = useState(createStage());
   const [rowsCleared, setRowsCleared] = useState(0);
-  const [frozen, setFrozen] = useState(0);
-  const [froze, setFroze] = useState(false);
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
   const tetriminos = useSelector(state => state.tetriminos.tetriminos);
   const store = useStore();
-  const dispatch = useDispatch()
-  const setFrozenLine = () => {
-    let line = [];
-    for (let i = 0; i < STAGE_WIDTH; i++) {
-      line.push([1, 'frozen']);
-    }
-    return line;
-  }
-  const frozenLine = setFrozenLine();
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    socket.on('freeze', function () {
+      const currPlayer = store.getState().sock.currentPlayer;
+      const addLine = prev => {
+        prev.shift()
+        prev.push(new Array(prev[0].length).fill([1, 'frozen']))
+      return prev
+    } 
+    if (currPlayer.freeze > 0 && !gameOver) setStage(prev => addLine(prev))
+    });
+  }, []);
 
   useEffect(() => {
 
@@ -33,7 +35,6 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
             if (!gameOver) {
               setRowsCleared(prev => prev + 1);
               ack.unshift(new Array(newStage[0].length).fill([0, 'clear']));
-              // SOCKET SMASH
               dispatch({ type: 'SMASH', player: currentPlayer, room: room, socket });
             }
             return ack;
@@ -71,7 +72,6 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
     if (!gameOver) {
       setStage(prev => updateStage(prev));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     player.collided,
     player.pos.x,
@@ -79,19 +79,6 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
     player.tetromino,
     resetPlayer,
   ]);
-
-  useEffect((currentPlayer) => {
-    console.log("in the hOok")
-    const addLine = prev => {
-      // const currPlayer = store.getState().currentPlayer;
-      for (let i = 0; i < currentPlayer.freeze; i++) {
-        prev.shift()
-        prev.push(new Array(prev[0].length).fill([1, 'frozen']))
-      }
-      return prev
-    } 
-    if (currentPlayer && currentPlayer.freeze > 0 && !gameOver) setStage(prev => addLine(prev))
-  }, [currentPlayer]);
 
   return [stage, setStage, rowsCleared];
 };

@@ -31,11 +31,11 @@ class Game {
       }
     }
 
-    // distribuer freeze
     freeze_players(player) {
         for (let i = 0; i < this.players.length; i++) {
             if (i != this.isPlayer(this.players, player)) {
               this.players[i].add_freeze();
+              this.players[i].add_line();
             }
             else {
               this.players[i].remove_line();

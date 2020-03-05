@@ -29,10 +29,6 @@ export const ioSocketMiddleWare = () => {
       action.socket.emit('smash', action.player, action.room);
       return next(action);
     }
-    else if (action.type === 'DO_FREEZE') {
-      return next(action);
-      // set store freeze action to true/false
-    }
     else if (action.type === 'WINNER') {
       action.socket.emit('end', action.room);
       return next(action);

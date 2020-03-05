@@ -21,11 +21,6 @@ const reducer = (state = { freeze: false }, action) => {
           ...state,
           currentPlayer: action.currentPlayer
         }
-    case 'DO_FREEZE':
-      return {
-        ...state,
-        freeze: action.freeze,
-      }
     case 'WINNER':
     return {
       ...state,
