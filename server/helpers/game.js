@@ -60,24 +60,9 @@ class Game {
       this.players[this.isPlayer(this.players, player)].lose();
     }
 
-    clear_tetriminos() {
-        let min = this.players[0].round;
-        for (let i = 0; i < this.players.length; i++) {
-            if (this.players[i].round < min) {
-                min = this.players[i].round;
-            }
-        }
-        for (let i = 0; i < this.players.length; i++) {
-            this.players[i].round -= min;
-        }
-        this.tetriminos.splice(0, this.tetriminos.length - min);
-    }
-
     check_tetriminos(player) {
       if (this.players[this.isPlayer(this.players, player)].round >= this.tetriminos.length - 4) {
-        // TO DO > WHEN FRONT OK then reshape
-          // this.clear_tetriminos();
-          return true;
+        return true;
       }
       return false;
     }
