@@ -1,33 +1,48 @@
 import React, { useEffect, useState } from "react";
-import Tetris from "../components/Tetris";
-import Header from "../components/Header";
-import { useDispatch, useStore } from 'react-redux'
+import { useDispatch, useStore } from 'react-redux';
+import { useHistory } from "react-router-dom";
 
-const Playground = ({ socket, message }) => {
+import { createStage } from '../gameHelpers';
+import { regex } from "../utils/regex";
+
+import Header from "./Header";
+import Tetris from "./Tetris";
+import Spectrum from './Spectrum';
+
+const Playground = ({ socket }) => {
+  const params = regex.url.exec(window.location.href);
+  let history = useHistory();
+
+  let commands = "";
   let room = "";
   let username = "";
 
-  const reg = /(#[\d]+)(\[\w+\])/;
-  const params = reg.exec(window.location.href);
   if (params !== null) {
     room = params[1].substring(1);
-    username = params[2].slice(1,-1);
+    username = params[2].slice(1, -1);
+  } else {
+    history.push("/");
   }
+
   const [playerCount, setPlayerCount] = useState(1);
   const [gameLeader, setGameLeader] = useState(username);
-  const store = useStore();
   const dispatch = useDispatch()
+  const store = useStore();
+  const isRunning = store.getState().sock.isRunning;
 
   const isLeader = username === gameLeader;
 
-  let commands = "";
-  const isRunning = store.getState().sock.isRunning;
   if (isLeader && !isRunning) {
     commands = <h2>You can start the game !</h2>;
   } else if (!isRunning) {
     commands = <h2>Wait for {gameLeader} to start the game !</h2>;
   } else {
     commands = <h2>Game is ON !</h2>;
+  }
+
+  let spectrum = "";
+  if (playerCount > 1) {
+    spectrum = <Spectrum stage={createStage()} title="SPECTRUM" />
   }
 
   useEffect(() => {
@@ -55,9 +70,12 @@ const Playground = ({ socket, message }) => {
   return (
     <div>
       <div>
-        <Header playerCount={playerCount} commands={commands}/>
+        <Header playerCount={playerCount} commands={commands} />
       </div>
-      <Tetris socket={socket} room={room} playerCount={playerCount} isLeader={isLeader}/>
+      <div>
+        <Tetris socket={socket} room={room} isLeader={isLeader}/>
+        {spectrum}
+      </div>
     </div>
   );
 }

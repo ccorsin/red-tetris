@@ -1,42 +1,49 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-
+import { regex } from "../utils/regex";
 
 const Menu = () => {
-  let history = useHistory();
-  const reg = /^([\d]+)$/;
-  const [isValid, setisValid] = useState(false);
+  const [isValid, setIsValid] = useState(false);
   const [player, setPlayer] = useState("PLAYER");
   const [roomNb, setRoomNb] = useState("");
+  let history = useHistory();
 
   const checkRoom = value => {
-      if (reg.exec(value)) {
-          setisValid(true);
+      if (regex.room.exec(value)) {
+          setIsValid(true);
           setRoomNb(value);
       } else {
-          setisValid(false);
+          setIsValid(false);
           setRoomNb("");
       }
   };
 
+  const checkPlayer = value => {
+    if (regex.username.exec(value) && regex.room.exec(value)) {
+      setIsValid(true);
+      setPlayer(value);
+    } else {
+      setIsValid(false);
+      setPlayer("PLAYER");
+    }
+  };
+
   const goToRoom = () => {
     if (isValid) {
-      history.push("/playground/#" + roomNb + "[" + player + "]");
-      socket.emit("room", roomNb, player);
-      // setPath("/playground/#" + roomNb + "[" + player + "]");
+      history.push("/room/#" + roomNb + "[" + player + "]");
       setPlayer("PLAYER");
       setRoomNb("");
-      setisValid(false);
+      setIsValid(false);
     }
   }
-    
+
   return (
     <div>
       <div>
         <input
           type="text"
           placeholder="PLAYER"
-          onChange={e => playerName(e.target.value)}
+          onChange={e => checkPlayer(e.target.value)}
         />
       </div>
       <div>

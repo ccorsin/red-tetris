@@ -9,7 +9,7 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
   const tetriminos = useSelector(state => state.tetriminos.tetriminos);
   const store = useStore();
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     socket.on('freeze', function () {
       const currPlayer = store.getState().sock.currentPlayer;
@@ -17,13 +17,13 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
         prev.shift()
         prev.push(new Array(prev[0].length).fill([1, 'frozen']))
       return prev
-    } 
+    }
     if (currPlayer.freeze > 0 && !gameOver) setStage(prev => addLine(prev))
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-
     setRowsCleared(0);
 
     const sweepRows = newStage =>
@@ -69,6 +69,8 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
     if (!gameOver) {
       setStage(prev => updateStage(prev));
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     player.collided,
     player.pos.x,

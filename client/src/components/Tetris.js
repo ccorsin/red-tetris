@@ -12,11 +12,10 @@ import { useGameStatus } from '../hooks/useGameStatus';
 
 // Components
 import Stage from './Stage';
-import Spectrum from './Spectrum';
 import Display from './Display';
 import StartButton from './StartButton';
 
-const Tetris = ({ socket, room, playerCount, isLeader }) => {
+const Tetris = ({ socket, room, isLeader }) => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
@@ -88,7 +87,7 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
         setGameOver(true);
         setDropTime(null);
         dispatch({ type: 'GAME_OVER', player: currentPlayer, room, socket })
-        if (playerCount === 1) {
+        if (store.getState().sock.players.length === 1) {
           dispatch({ type: 'END', socket, room });
         }
       }
@@ -111,7 +110,7 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
     updatePlayerPos({ x: 0, y: i - 1, collided: false });
     setDropTime(100);
   }
-  
+
   // This one  the game
   // Custom hook by Dan Abramov
   useInterval(() => {
@@ -134,11 +133,6 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
       }
     }
   };
-
-  let spectrum = "";
-  if (playerCount > 1) {
-    spectrum = <Spectrum stage={createStage()} title="SPECTRUM" />
-  }
 
   let button = "";
   if (isLeader === true && isRunning !== true) {
@@ -199,7 +193,6 @@ const Tetris = ({ socket, room, playerCount, isLeader }) => {
         </aside>
         <aside>
           <Stage stage={stage} currentPlayer={currentPlayer} title="YOU" />
-          {spectrum}
         </aside>
       </StyledTetris>
     </StyledTetrisWrapper>

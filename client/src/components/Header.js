@@ -14,18 +14,20 @@ const StyledHeader = styled.div`
 `;
 
 const Header = ({ playerCount, commands }) => {
-    let count;
+		let count;
+
     if (playerCount > 1) {
         count = playerCount + " players in the game.";
     } else {
         count = playerCount + " player in the game.";
-    }
-      return (
-        <StyledHeader>
-            <img src ="https://www.pngkit.com/png/full/273-2736039_517-name-of-tetris-shapes-263-colorfulness.png" width="100%" alt="tetris_title"/>
-            <h1>{count}</h1>
-            {commands}
-        </StyledHeader>
+		}
+
+    return (
+			<StyledHeader>
+					<img src ="https://www.pngkit.com/png/full/273-2736039_517-name-of-tetris-shapes-263-colorfulness.png" width="100%" alt="tetris_title"/>
+					<h1>{count}</h1>
+					{commands}
+			</StyledHeader>
     );
 };
 
