@@ -136,4 +136,34 @@ const Player = require('../helpers/player');
             freeze: 0
         });
     });
+
+    it('should not overpass 19 line to player', () => {
+        for (let i = 0; i < 25; i++) {
+            player.add_line();
+        }
+        expect(player).toEqual({
+            name: 'name',
+            id: 42,
+            line: 19,
+            round: 0,
+            loser: false,
+            color: player.color,
+            freeze: 0
+        });
+    });
+
+    it('should not underpass 0 line to player', () => {
+        for (let i = 0; i < 5; i++) {
+            player.remove_line();
+        }
+        expect(player).toEqual({
+            name: 'name',
+            id: 42,
+            line: 0,
+            round: 0,
+            loser: false,
+            color: player.color,
+            freeze: 0
+        });
+    });
  });
