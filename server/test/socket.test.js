@@ -2,12 +2,16 @@ const Socket = require('../helpers/socket');
 const io = require('socket.io-client');
 const params = require( '../config/params');
 const http = require('http');
+const Game = require("../helpers/game");
+const Player = require("../helpers/player");
 
 let httpServer;
 let httpServerAddr;
 let ClientSocket;
 let sockets;
-const {host, port} = params;
+const {host, port} = params.server;
+
+const player1 = new Player('p1', 'a');
 
 beforeAll((done) => {
     jest.setTimeout(20000);
@@ -43,8 +47,8 @@ afterEach((done) => {
     done();
 });
 
-describe('basic socket.io example', () => {
-    it('should communicate between client and server', () => {return new Promise((done) => {
+describe('Testing backend answer from front emit actions', () => {
+    it('should communicate between client and server', (done) => {
         sockets.io.emit('echo', 'Hello World');
         ClientSocket.on('echo', (message) => {
             expect(message).toBe('Hello World');
@@ -55,5 +59,57 @@ describe('basic socket.io example', () => {
             done();
         });
         done();
-    });});  
+    });
+
+    it('socket on room', (done) => {
+        ClientSocket.emit('room', '42', 'p1');
+        setTimeout(() => {
+          done();
+        }, 100);
+    });
+
+    it('socket on collision', (done) => {
+        ClientSocket.emit('collision', player1, '42');
+        setTimeout(() => {
+          done();
+        }, 100);
+    });
+
+    it('socket on game_over', (done) => {
+        ClientSocket.emit('game_over', player1, '42');
+        setTimeout(() => {
+          done();
+        }, 100);
+    });
+
+    it('socket on smash', (done) => {
+        ClientSocket.emit('smash', player1, '42');
+        setTimeout(() => {
+          done();
+        }, 100);
+    });
+
+    it('socket on start', (done) => {
+        ClientSocket.emit('room', '42', 'p1');
+        ClientSocket.emit('start', '42');
+        setTimeout(() => {
+          done();
+        }, 100);
+    });
+
+    it('socket on end', (done) => {
+        ClientSocket.emit('room', '42', 'p1');
+        ClientSocket.emit('end', '42');
+        setTimeout(() => {
+          done();
+        }, 100);
+    });
+
+    it('socket on reset', (done) => {
+        ClientSocket.emit('room', '42', 'p1');
+        ClientSocket.emit('reset', '42');
+        setTimeout(() => {
+          done();
+        }, 100);
+    });
 });
