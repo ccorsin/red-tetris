@@ -182,6 +182,32 @@ const Player = require("../helpers/player");
         expect(game.check_tetriminos(player1)).toEqual(true);
     });
 
+    it('should return -1 of not player in game', () => {
+        const game = new Game(player1, 42);
+        expect(game.isPlayer(player2)).toEqual(-1);
+    });
+
+    it('should say no winner in game', () => {
+        const game = new Game(player1, 42);
+        game.add_player(player2);
+        expect(game.check_winner()).toEqual(false);
+    });
+
+    it('should return winner of game', () => {
+        const game = new Game(player1, 42);
+        game.add_player(player2);
+        game.game_over_player(player1);
+        expect(game.check_winner()).toEqual(player2);
+    });
+
+    it('should reset game', () => {
+        const game = new Game(player1, 42);
+        game.add_player(player2);
+        game.game_over_player(player1);
+        game.reset_game();
+        expect(game.tetriminos).toEqual([]);
+    });
+
     // it('update player 3', () => {
     //     const game = new Game(player2, 42);
     //     game.add_player(player2);
