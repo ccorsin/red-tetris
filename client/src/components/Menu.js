@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+
+import { StyledMenuWrapper, StyledMenu, StyledImg } from "./styles/StyledMenu";
+import "./styles/Style.css";
+
 import { regex } from "../utils/regex";
 
 const Menu = () => {
@@ -38,30 +42,44 @@ const Menu = () => {
   }
 
   return (
-    <div>
-      <div>
-        <input
-          type="text"
-          placeholder="PLAYER"
-          onChange={e => checkPlayer(e.target.value)}
+    <StyledMenuWrapper>
+      <div class="imageTitle">
+        <img
+          src="https://www.pngkit.com/png/full/273-2736039_517-name-of-tetris-shapes-263-colorfulness.png"
+          width="100%"
+          alt="tetris_title"
         />
       </div>
-      <div>
-        <input
-          type="text"
-          placeholder="ROOM"
-          onChange={e => checkRoom(e.target.value)}
-        />
-        <span role="alert" id="error-name-required">
-          Only numbers.
-        </span>
-      </div>
-      <div>
-        <button onClick={e => goToRoom(true)} disabled={!isValid}>
-          PLAY
-        </button>
-      </div>
-    </div>
+
+      <StyledMenu>
+        <span>TAKE A ROOM NUMBER</span>
+        <div class="menu_input">
+          <div>
+            <input
+              type="text"
+              placeholder="PLAYER"
+              onChange={e => checkPlayer(e.target.value)}
+            />
+            <span class="error-number-required">ONLY LETTERS OR NUMBERS</span>
+          </div>
+        </div>
+        <div class="menu_input">
+          <div>
+            <input
+              type="text"
+              placeholder="ROOM"
+              onChange={e => checkRoom(e.target.value)}
+            />
+            <span class="error-number-required">ONLY NUMBERS</span>
+          </div>
+        </div>
+        <div>
+          <button onClick={e => goToRoom(true)} disabled={!isValid}>
+            PLAY
+          </button>
+        </div>
+      </StyledMenu>
+    </StyledMenuWrapper>
   );
 };
 
