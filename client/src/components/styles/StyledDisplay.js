@@ -12,4 +12,3 @@ export const StyledDisplay = styled.div`
   border: 1px solid white;
   padding: 6% 15% 0% 15%;
 `;
-  // background: #333;

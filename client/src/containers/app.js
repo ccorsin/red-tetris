@@ -37,7 +37,7 @@ const App = () => {
           <span style={{ color: 'red' }}>T</span>
           <span style={{ color: 'orange' }}>E</span>
           <span style={{ color: 'yellow' }}>T</span>
-          <span style={{ color: 'green' }}>R</span>
+          <span style={{ color: 'limegreen' }}>R</span>
           <span style={{ color: 'blue' }}>I</span>
           <span style={{ color: 'purple' }}>S</span>
         </StyledTitle>

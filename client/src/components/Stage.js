@@ -8,15 +8,15 @@ const Stage = ({ stage, currentPlayer }) => {
   const winner = useSelector(state => state.sock.winner);
 
   const TETROMINOS = {
-    0: { color: "220, 220, 220" },
+    0: { color: "0, 0, 0" },
     1: { color: "0, 0, 0" },
-    I: { color: "80, 227, 230" },
-    J: { color: "36, 95, 223" },
-    L: { color: "223, 173, 36" },
-    O: { color: "223, 217, 36" },
-    S: { color: "48, 211, 56" },
-    T: { color: "132, 61, 198" },
-    Z: { color: "227, 78, 78" }
+    I: { color: "0, 255, 255" },
+    J: { color: "225, 0, 0" },
+    L: { color: "0, 0, 255" },
+    O: { color: "255, 255, 0" },
+    S: { color: "50, 205, 50" },
+    T: { color: "128, 0, 128" },
+    Z: { color: "255, 165, 0" }
   };
   
   const color = (cell) => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { createStage, checkCollision } from '../gameHelpers';
-import { StyledTetrisWrapper, StyledTetrisAside, StyledTetris, StyledTetrisGameBar } from './styles/StyledTetris';
+import { StyledTetrisWrapper, StyledTetrisAside, StyledTetris, StyledTetrisGameBar, StyledGO } from './styles/StyledTetris';
 import { useSelector, useDispatch, useStore } from 'react-redux'
 
 // Custom Hooks
@@ -168,9 +168,9 @@ const Tetris = ({ socket, room, playerCount }) => {
       </StyledTetris>
       <StyledTetrisAside>
         {gameOver ? (
-          <StyledTetrisGameBar>
+          <StyledGO>
             <Display gameOver={gameOver} text="Game Over" />
-          </StyledTetrisGameBar>
+          </StyledGO>
         ) : (
           <StyledTetrisGameBar>
               <Display text={`SCORE`} number={score} /> {/* TO DO add next piece */}
