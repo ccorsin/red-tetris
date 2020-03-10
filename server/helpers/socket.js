@@ -26,6 +26,7 @@ class Socket {
                 const player = new Player (username, socket.id);
                 let is_room = this.isRoom (this.games, room);
                 if (is_room >= 0 && this.games[is_room].running == false) {
+                    console.log("start game")
                     this.games[is_room].add_player(player);
                     socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
                     this.io.sockets.in(room).emit('message', socket.username + ' has joined the game folks !');

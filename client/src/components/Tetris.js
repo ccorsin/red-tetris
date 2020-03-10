@@ -149,7 +149,10 @@ const Tetris = ({ socket, room, playerCount }) => {
       dispatch({ type: 'REFILL', tetriminos });
     });
     socket.on("win", function (message, player) {
-      alert(message);
+      // alert(message);
+      console.log("alert from tetris")
+      dispatch({ type: "ALERT_SWITCH", switch: true });
+      dispatch({ type: "ALERT_POP", message: message });
       dispatch({ type: 'WINNER', player, socket, room });
       setDropTime(null);
     });

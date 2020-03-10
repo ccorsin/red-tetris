@@ -6,7 +6,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 
 import { ioSocketMiddleWare } from './middleware/ioSocketMiddleWare';
-// import { alertMiddleWare } from './middleware/alertMiddleWare';
+import { alertMiddleWare } from './middleware/alertMiddleWare';
 
 // TO DO: FIX alertMiddleWare
 

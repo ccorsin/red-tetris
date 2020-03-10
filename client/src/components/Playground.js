@@ -26,7 +26,7 @@ const Playground = ({ socket }) => {
 
   const [playerCount, setPlayerCount] = useState(1);
   const [gameLeader, setGameLeader] = useState(username);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const store = useStore();
   const isRunning = store.getState().sock.isRunning;
 
@@ -41,10 +41,18 @@ const Playground = ({ socket }) => {
   }
 
   useEffect(() => {
-    socket.emit("room", room, username);
-    socket.on("message", function(message) {
-      alert(message);
+    socket.on("message", function (message) {
+      // alert(message);
+      console.log("alert from playground")
+      dispatch({ type: "ALERT_SWITCH", switch: true });
+      dispatch({ type: "ALERT_POP", message: message });
+      // console.log(store.getState().alert)
     });
+  }, []);
+
+  useEffect(() => {
+    // TO DO fix infinite loop on this
+    socket.emit("room", room, username);
     socket.on("players", function(leader, players) {
       setPlayerCount(players.length);
       setGameLeader(leader);
@@ -53,7 +61,7 @@ const Playground = ({ socket }) => {
       let tmp = {};
       if (currentPlayer && currentPlayer.id) {
         tmp = players.filter(e => (e.id === currentPlayer.id ? true : false))[0];
-        dispatch({ type: "CURRENT_PLAYER", currentPlayer:tmp });
+        dispatch({ type: "CURRENT_PLAYER", currentPlayer: tmp });
       }
     });
     socket.on("player", function(player) {
