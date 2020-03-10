@@ -16,8 +16,6 @@ const StyledStartButton = styled.button`
     text-align: center;
     position: relative;
     font-family: 'theboldfont';
-    width: 13vh;
-    height: 6vh;
     font-size: large;
     active {
       top: 0.1em;

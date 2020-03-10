@@ -13,8 +13,13 @@
       margin: 0;
       overflow: hidden;
   }
-  body {
-     min-height:100%;
+  @media (min-width: 1025px) {
+    body {
+       min-height:100%;
+    }
+  }
+  p {
+    margin: 0;
   }
   #root {
      min-height:100%;

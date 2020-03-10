@@ -10,9 +10,9 @@ export const StyledStagesWrapper = styled.div`
 export const StyledPlayground = styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 100%;
-    @media (max-width: 768px) {
-      position: absolute;
+  min-width: fit-content;
+    @media (max-width: 1025px) {
       z-index: 1;
+      margin: auto;
     }
 `;

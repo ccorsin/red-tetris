@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { createStage, checkCollision } from '../gameHelpers';
-import { StyledTetrisWrapper, StyledTetris, StyledTetrisGameBar } from './styles/StyledTetris';
+import { StyledTetrisWrapper, StyledTetrisAside, StyledTetris, StyledTetrisGameBar } from './styles/StyledTetris';
 import { useSelector, useDispatch, useStore } from 'react-redux'
 
 // Custom Hooks
@@ -13,8 +13,9 @@ import { useGameStatus } from '../hooks/useGameStatus';
 // Components
 import Stage from './Stage';
 import Display from './Display';
+import Spectrum from './Spectrum';
 
-const Tetris = ({ socket, room }) => {
+const Tetris = ({ socket, room, playerCount }) => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
@@ -118,6 +119,11 @@ const Tetris = ({ socket, room }) => {
     }
   };
 
+  let spectrum = "";
+  if (playerCount > 1) {
+    spectrum = <Spectrum stage={createStage()} title="SPECTRUM" />
+  }
+
   useEffect(() => {
     socket.on('start_game', function () {
       const currentPlayer = store.getState().sock.currentPlayer
@@ -158,22 +164,23 @@ const Tetris = ({ socket, room }) => {
       onKeyUp={keyUp}
     >
       <StyledTetris>
-          <Stage stage={stage} currentPlayer={currentPlayer} title="YOU" />
+          <Stage stage={stage} currentPlayer={currentPlayer}/>
       </StyledTetris>
-      <div>
+      <StyledTetrisAside>
         {gameOver ? (
           <StyledTetrisGameBar>
             <Display gameOver={gameOver} text="Game Over" />
           </StyledTetrisGameBar>
         ) : (
           <StyledTetrisGameBar>
-              <Display text={`Score: ${score}`} /> {/* TO DO add next piece */}
-              <Display text={`Score: ${score}`} />
-              <Display text={`rows: ${rows}`} />
-              <Display text={`Level: ${level}`} />
+              <Display text={`SCORE`} number={score} /> {/* TO DO add next piece */}
+              <Display text={`SCORE`} number={score} />
+              <Display text={`ROWS`} number={rows} />
+              <Display text={`LEVEL`} number={level} />
             </StyledTetrisGameBar>
           )}
-      </div>
+        {spectrum}
+      </StyledTetrisAside>
     </StyledTetrisWrapper>
   );
 };

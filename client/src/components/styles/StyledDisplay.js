@@ -1,17 +1,15 @@
 import styled from 'styled-components';
 
-export const StyledDisplay = styled.div`
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  margin: 10px;
-  padding: 20px;
-  min-height: 30px;
-  width: 100%;
-  border-radius: 20px;
-  color: white;
-  background: #333;
-  font-family: Pixel, Arial, Helvetica, sans-serif;
-  font-size: 1rem;
-  text-align: center;
+export const StyledDisplayCase = styled.div`
+  margin: auto;
 `;
+
+export const StyledDisplay = styled.div`
+  display: flex;
+  color: white;
+  text-align: center;
+  flex-wrap: nowrap;
+  border: 1px solid white;
+  padding: 6% 15% 0% 15%;
+`;
+  // background: #333;

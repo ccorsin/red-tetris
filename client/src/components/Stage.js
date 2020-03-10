@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 
 import Cell from './Cell';
 
-const Stage = ({ stage, title, currentPlayer }) => {
+const Stage = ({ stage, currentPlayer }) => {
   const winner = useSelector(state => state.sock.winner);
 
   const TETROMINOS = {
@@ -35,10 +35,9 @@ const Stage = ({ stage, title, currentPlayer }) => {
   
   return (
     <StyledStage width={stage[0].length} height={stage.length}>
-    <h2>{title}</h2>
       {stage.map((row, y) => (
       <StyledRow className="row" key={y}>
-        {row.map((cell, x) => <Cell key={x} type={cell[0]} color={color(cell)} />)}
+          {row.map((cell, x) => <Cell key={x} type={cell[0]} color={color(cell)} size={3}/>)}
       </StyledRow>
     ))}
   </StyledStage>

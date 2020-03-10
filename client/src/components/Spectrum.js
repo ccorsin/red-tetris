@@ -21,14 +21,13 @@ const Spectrum = ({ stage, title }) => {
         }
     }
     return (
-        <StyledSpectrum width={stage[0].length} height={stage.length}>
-        <h2>{title}</h2>
-        {stage.map((row, y) => (
-        <StyledRow className="row" key={y}>
-            {row.map((cell, x) => <Cell key={x} type={cell[0]} color={getColor(19 - y)} />)}
-        </StyledRow>
-        ))}
-    </StyledSpectrum>
+			<StyledSpectrum width={stage[0].length} height={stage.length}>
+				{stage.map((row, y) => (
+				<StyledRow className="row" key={y}>
+						{row.map((cell, x) => <Cell key={x} type={cell[0]} color={getColor(19 - y)} size={1}/>)}
+				</StyledRow>
+				))}
+			</StyledSpectrum>
     );
 }
 export default Spectrum;

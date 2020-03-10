@@ -24,7 +24,8 @@ export const StyledTitle = styled.div`
     flex-direction: column;
     font-size: 15vh;
     margin: 5vh 5vw 0;
-    @media (max-width: 768px) {
+    width: fit-content;
+    @media (max-width: 1025px) {
       position: absolute;
       z-index: 0;
     }

@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useStore } from 'react-redux';
 import { useHistory } from "react-router-dom";
 
-import { createStage } from '../gameHelpers';
 import { regex } from "../utils/regex";
 
 import { StyledPlayground, StyledStagesWrapper } from "./styles/StyledPlayground";
 import "./styles/Style.css";
 import Header from "./Header";
 import Tetris from "./Tetris";
-import Spectrum from './Spectrum';
 
 const Playground = ({ socket }) => {
   const params = regex.url.exec(window.location.href);
@@ -40,11 +38,6 @@ const Playground = ({ socket }) => {
     commands = <span>Wait for {gameLeader} to start the game !</span>;
   } else {
     commands = <span>Game is ON !</span>;
-  }
-
-  let spectrum = "";
-  if (playerCount > 1) {
-    spectrum = <Spectrum stage={createStage()} title="SPECTRUM" />
   }
 
   useEffect(() => {
@@ -79,8 +72,7 @@ const Playground = ({ socket }) => {
         socket={socket} 
       />
       <StyledStagesWrapper>
-        <Tetris socket={socket} room={room} isLeader={isLeader}/>
-        {spectrum}
+        <Tetris socket={socket} room={room} playerCount={playerCount}/>
       </StyledStagesWrapper>
     </StyledPlayground>
   );
