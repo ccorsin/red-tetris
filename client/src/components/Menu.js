@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-import { StyledMenuWrapper, StyledMenu, StyledImg } from "./styles/StyledMenu";
+import { StyledMenuWrapper, StyledMenu, StyledTitle } from "./styles/StyledMenu";
 import "./styles/Style.css";
 
 import { regex } from "../utils/regex";
@@ -43,14 +43,14 @@ const Menu = () => {
 
   return (
     <StyledMenuWrapper>
-      <div class="imageTitle">
-        <img
-          src="https://www.pngkit.com/png/full/273-2736039_517-name-of-tetris-shapes-263-colorfulness.png"
-          width="100%"
-          alt="tetris_title"
-        />
-      </div>
-
+      <StyledTitle>
+        <span style={{ color: 'red' }}>T</span>
+        <span style={{ color: 'orange'}}>E</span>
+        <span style={{ color: 'yellow'}}>T</span>
+        <span style={{ color: 'green'}}>R</span>
+        <span style={{ color: 'blue'}}>I</span>
+        <span style={{ color: 'purple'}}>S</span>
+      </StyledTitle>
       <StyledMenu>
         <span>TAKE A ROOM NUMBER</span>
         <div class="menu_input">

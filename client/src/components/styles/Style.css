@@ -1,8 +1,22 @@
+
+@font-face {
+	font-family: 'theboldfont';
+	src: url('../../fonts/theboldfont.ttf'); 
+	src: 
+		local('theboldfont'),
+		url('../../fonts/theboldfont.ttf') 
+		format('opentype');
+}
+
+  span {
+    font-family: 'theboldfont';
+  }
   .error-number-required {
     display: none;
     font-size: xx-small;
     color: red;
     padding-top: 5px;
+
   }
   .error-char-required {
     display: none;
@@ -12,7 +26,6 @@
   }
   .menu_input {
     margin-top: 1em;
-
   }
   .menu_input:hover .error-number-required {
     opacity: 1;
@@ -24,11 +37,4 @@
   }
   .menu_input:hover {
     /* background-color : black ; */
-  }
-  .imageTitle {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    padding: 5em;
-    padding-top: 1em;
   }

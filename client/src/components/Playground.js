@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { createStage } from '../gameHelpers';
 import { regex } from "../utils/regex";
 
+import "./styles/Style.css";
 import Header from "./Header";
 import Tetris from "./Tetris";
 import Spectrum from './Spectrum';
