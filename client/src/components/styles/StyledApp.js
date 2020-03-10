@@ -16,4 +16,16 @@ export const StyledApp = styled.div`
   font-family: 'theboldfont';
   display: flex;
   flex - direction: column;
+  min-height: -webkit-fill-available;
+`;
+
+export const StyledTitle = styled.div`
+    display: flex;
+    flex-direction: column;
+    font-size: 15vh;
+    margin: 5vh 5vw 0;
+    @media (max-width: 768px) {
+      position: absolute;
+      z-index: 0;
+    }
 `;

@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { createStage } from '../gameHelpers';
 import { regex } from "../utils/regex";
 
+import { StyledPlayground, StyledStagesWrapper } from "./styles/StyledPlayground";
 import "./styles/Style.css";
 import Header from "./Header";
 import Tetris from "./Tetris";
@@ -34,11 +35,11 @@ const Playground = ({ socket }) => {
   const isLeader = username === gameLeader;
 
   if (isLeader && !isRunning) {
-    commands = <h2>You can start the game !</h2>;
+    commands = <span>You can start the game !</span>;
   } else if (!isRunning) {
-    commands = <h2>Wait for {gameLeader} to start the game !</h2>;
+    commands = <span>Wait for {gameLeader} to start the game !</span>;
   } else {
-    commands = <h2>Game is ON !</h2>;
+    commands = <span>Game is ON !</span>;
   }
 
   let spectrum = "";
@@ -69,15 +70,19 @@ const Playground = ({ socket }) => {
   }, []);
 
   return (
-    <div>
-      <div>
-        <Header playerCount={playerCount} commands={commands} />
-      </div>
-      <div>
+    <StyledPlayground>
+      <Header 
+        playerCount={playerCount} 
+        commands={commands} 
+        isLeader={isLeader} 
+        room={room} 
+        socket={socket} 
+      />
+      <StyledStagesWrapper>
         <Tetris socket={socket} room={room} isLeader={isLeader}/>
         {spectrum}
-      </div>
-    </div>
+      </StyledStagesWrapper>
+    </StyledPlayground>
   );
 }
 export default Playground;

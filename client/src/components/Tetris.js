@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { createStage, checkCollision } from '../gameHelpers';
-import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
+import { StyledTetrisWrapper, StyledTetris, StyledTetrisGameBar } from './styles/StyledTetris';
 import { useSelector, useDispatch, useStore } from 'react-redux'
 
 // Custom Hooks
@@ -13,21 +13,16 @@ import { useGameStatus } from '../hooks/useGameStatus';
 // Components
 import Stage from './Stage';
 import Display from './Display';
-import StartButton from './StartButton';
 
-const Tetris = ({ socket, room, isLeader }) => {
+const Tetris = ({ socket, room }) => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, gameOver, room, socket);
   // eslint-disable-next-line no-unused-vars
-  const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
-    // const [rows, level, setLevel] = useGameStatus( // GROS BUG SUR useInterval si on retire le score
-    rowsCleared
-  );
+  const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared);
   const dispatch = useDispatch();
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
-  const isRunning = useSelector(state => state.sock.isRunning);
   const store = useStore();
 
   const collide = (playerData) => {
@@ -36,25 +31,14 @@ const Tetris = ({ socket, room, isLeader }) => {
     dispatch({ type: 'COLLISION', player: playerData, room, socket })
   };
 
-  let isRestart = store.getState().sock.winner !== undefined;
-
-  const clickStart = () => {
-    if (isRestart) {
-      dispatch({ type: 'RESET', room, socket })
-    }
-    else {
-      dispatch({ type: 'START', room, socket })
-    }
-  }
-
   const startGame = (currentPlayer, tetriminos) => {
     // Reset everything
     setStage(createStage());
     setDropTime(1000);
     resetPlayer(currentPlayer, tetriminos);
-    // setScore(0);
-    // setLevel(0);
-    // setRows(0);
+    setScore(0);
+    setLevel(0);
+    setRows(0);
     setGameOver(false);
   };
 
@@ -134,11 +118,6 @@ const Tetris = ({ socket, room, isLeader }) => {
     }
   };
 
-  let button = "";
-  if (isLeader === true && isRunning !== true) {
-    button = <StartButton callback={clickStart} />
-  }
-
   useEffect(() => {
     socket.on('start_game', function () {
       const currentPlayer = store.getState().sock.currentPlayer
@@ -179,24 +158,25 @@ const Tetris = ({ socket, room, isLeader }) => {
       onKeyUp={keyUp}
     >
       <StyledTetris>
-        <aside>
-          {gameOver ? (
-            <Display gameOver={gameOver} text="Game Over" />
-          ) : (
-              <div>
-                {/* <Display text={`Score: ${score}`} />
-              <Display text={`rows: ${rows}`} />
-              <Display text={`Level: ${level}`} /> */}
-              </div>
-            )}
-          {button}
-        </aside>
-        <aside>
           <Stage stage={stage} currentPlayer={currentPlayer} title="YOU" />
-        </aside>
       </StyledTetris>
+      <div>
+        {gameOver ? (
+          <StyledTetrisGameBar>
+            <Display gameOver={gameOver} text="Game Over" />
+          </StyledTetrisGameBar>
+        ) : (
+          <StyledTetrisGameBar>
+              <Display text={`Score: ${score}`} /> {/* TO DO add next piece */}
+              <Display text={`Score: ${score}`} />
+              <Display text={`rows: ${rows}`} />
+              <Display text={`Level: ${level}`} />
+            </StyledTetrisGameBar>
+          )}
+      </div>
     </StyledTetrisWrapper>
   );
 };
+
 
 export default Tetris;

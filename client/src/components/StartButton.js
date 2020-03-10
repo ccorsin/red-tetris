@@ -2,19 +2,26 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledStartButton = styled.button`
-  box-sizing: border-box;
-  margin: 10px;
-  padding: 20px;
-  min-height: 30px;
-  width: 100%;
-  border-radius: 20px;
-  border: none;
-  color: white;
-  background: #333;
-  font-family: Pixel, Arial, Helvetica, sans-serif;
-  font-size: 1rem;
-  outline: none;
-  cursor: pointer;
+    display: inline-block;
+    padding: 0.7em 1.4em;
+    margin: 0 0.3em 0.3em 0;
+    border-radius: 0.15em;
+    box-sizing:  border-box;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: #FFFFFF;
+    background-color: #3369ff;
+    box-shadow: inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+    text-align: center;
+    position: relative;
+    font-family: 'theboldfont';
+    width: 13vh;
+    height: 6vh;
+    font-size: large;
+    active {
+      top: 0.1em;
+    }
 `;
 
 const StartButton = ({ callback }) => (

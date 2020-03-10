@@ -1,40 +1,50 @@
 import React from 'react';
-import styled from 'styled-components';
+import { useSelector, useDispatch, useStore } from 'react-redux'
 
-const StyledHeader = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin-left: auto;
-    margin-right: auto;
-    width: 25%;
-    filter: grayscale(0.95);
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-family: Pixel, Arial, Helvetica, sans-serif;
-`;
+import { StyledHeaderWrapper, StyledHeader, StyledHeaderButton } from './styles/StyledHeader';
+import "./styles/Style.css";
+import StartButton from './StartButton'; 
 
-const Header = ({ playerCount, commands }) => {
-		let count;
+const Header = (props) => {
+	const isRunning = useSelector(state => state.sock.isRunning);
+	const store = useStore();
+	const dispatch = useDispatch();
 
-    if (playerCount > 1) {
-        count = playerCount + " players in the game.";
-    } else {
-        count = playerCount + " player in the game.";
+	let count;
+
+	if (props.playerCount > 1) {
+			count = props.playerCount + " players in the game.";
+	} else {
+			count = props.playerCount + " player in the game.";
+	}
+
+	let isRestart = store.getState().sock.winner !== undefined;
+
+	const clickStart = () => {
+		if (isRestart) {
+			dispatch({ type: 'RESET', room: props.room, socket: props.socket })
 		}
+		else {
+			dispatch({ type: 'START', room: props.room, socket: props.socket })
+		}
+	}
 
-    return (
+	let button = "";
+	if (props.isLeader === true && isRunning !== true) {
+		button = <StartButton callback={clickStart} />
+	}
+
+	return (
+		<StyledHeaderWrapper>
 			<StyledHeader>
-            <div class="imageTitle">
-                {/* <img
-                    src="https://www.pngkit.com/png/full/273-2736039_517-name-of-tetris-shapes-263-colorfulness.png"
-                    width="100%"
-                    alt="tetris_title"
-                /> */}
-            </div>
-					<h1>{count}</h1>
-					{commands}
+				<span>{count}</span>
+				{props.commands}
 			</StyledHeader>
-    );
+			<StyledHeaderButton>
+				{button}
+			</StyledHeaderButton>
+		</StyledHeaderWrapper>
+	);
 };
 
 export default Header;

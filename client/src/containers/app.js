@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from "react-redux";
 import io from "socket.io-client";
-import { StyledApp } from '../components/styles/StyledApp';
+import { StyledApp, StyledTitle } from '../components/styles/StyledApp';
+import "../components/styles/Style.css";
 
 import { HashRouter, Route, Switch } from 'react-router-dom';
 
@@ -15,7 +16,8 @@ const App = () => {
 
   const [isRunning, setIsRunning] = useState(false);
 
-  let playground = <h1>Game is currently running in this room.</h1>;
+  // TO DO STYLE HERE
+  let playground = <span>Game is currently running in this room.</span>;
 
   if (isRunning !== true) {
     playground = <Playground socket={socket}/>
@@ -31,6 +33,14 @@ const App = () => {
   return (
     <HashRouter>
       <StyledApp>
+        <StyledTitle>
+          <span style={{ color: 'red' }}>T</span>
+          <span style={{ color: 'orange' }}>E</span>
+          <span style={{ color: 'yellow' }}>T</span>
+          <span style={{ color: 'green' }}>R</span>
+          <span style={{ color: 'blue' }}>I</span>
+          <span style={{ color: 'purple' }}>S</span>
+        </StyledTitle>
         <Switch>
           <Route path="/" exact component={Menu} />
           <Route path="/room" component={() => playground} />
