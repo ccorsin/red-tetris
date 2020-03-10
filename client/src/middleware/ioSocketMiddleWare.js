@@ -40,6 +40,6 @@ export const ioSocketMiddleWare = () => {
     else if (action.type === 'ADD_ROUND') {
       return next(action);
     }
-    return
+    return;
   }
 }

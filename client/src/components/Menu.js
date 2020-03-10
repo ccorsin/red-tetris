@@ -44,25 +44,25 @@ const Menu = () => {
   return (
     <StyledMenuWrapper>
       <StyledMenu>
-        <span class="menu_label">TAKE A ROOM NUMBER</span>
-        <div class="menu_input">
+        <span className="menu_label">TAKE A ROOM NUMBER</span>
+        <div className="menu_input">
             <input
               type="text"
               placeholder="PLAYER"
               onChange={e => checkPlayer(e.target.value)}
             />
-            <span class="error-number-required">ONLY LETTERS OR NUMBERS</span>
+            <span className="error-number-required">ONLY LETTERS OR NUMBERS</span>
         </div>
-        <div class="menu_input">
+        <div className="menu_input">
             <input
               type="text"
               placeholder="ROOM"
               onChange={e => checkRoom(e.target.value)}
             />
-            <span class="error-number-required">ONLY NUMBERS</span>
+            <span className="error-number-required">ONLY NUMBERS</span>
         </div>
-        <div class="menu_input">
-          <button class="button-to-game" onClick={e => goToRoom(true)} disabled={!isValid}>
+        <div className="menu_input">
+          <button className="button-to-game" onClick={e => goToRoom(true)} disabled={!isValid}>
             PLAY
           </button>
         </div>
