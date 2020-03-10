@@ -1,4 +1,4 @@
-{ 
+{
   "name": "red_tetrisfuckingboilerplate",
   "version": "0.0.1",
   "author": "redpelicans",
@@ -14,7 +14,10 @@
     "set-app": "npm install --prefix ./client/ && npm install --prefix ./server/"
   },
   "dependencies": {
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "enzyme-to-json": "^3.4.4",
+    "react-test-renderer": "^16.13.0"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }
