@@ -7,37 +7,39 @@ import "./styles/Style.css";
 import { regex } from "../utils/regex";
 
 const Menu = () => {
-  const [isValid, setIsValid] = useState(false);
+  const [playerIsValid, setPlayerIsValid] = useState(true);
+  const [roomIsValid, setRoomIsValid] = useState(false);
   const [player, setPlayer] = useState("PLAYER");
   const [roomNb, setRoomNb] = useState("");
   let history = useHistory();
 
   const checkRoom = value => {
-      if (regex.room.exec(value)) {
-          setIsValid(true);
-          setRoomNb(value);
+    if (regex.room.exec(value)) {
+        setRoomIsValid(true);
+        setRoomNb(value);
       } else {
-          setIsValid(false);
-          setRoomNb("");
+        setRoomIsValid(false);
+        setRoomNb("");
       }
   };
 
   const checkPlayer = value => {
-    if (regex.username.exec(value) && regex.room.exec(value)) {
-      setIsValid(true);
+    if (regex.username.exec(value)) {
+      setPlayerIsValid(true);
       setPlayer(value);
     } else {
-      setIsValid(false);
+      setPlayerIsValid(false);
       setPlayer("PLAYER");
     }
   };
 
   const goToRoom = () => {
-    if (isValid) {
+    if (playerIsValid && roomIsValid) {
       history.push("/room/#" + roomNb + "[" + player + "]");
       setPlayer("PLAYER");
       setRoomNb("");
-      setIsValid(false);
+      setRoomIsValid(false);
+      setPlayerIsValid(false);
     }
   }
 
@@ -62,7 +64,7 @@ const Menu = () => {
             <span className="error-number-required">ONLY NUMBERS</span>
         </div>
         <div className="menu_input">
-          <button className="button-to-game" onClick={e => goToRoom(true)} disabled={!isValid}>
+          <button className="button-to-game" onClick={e => goToRoom(true)} disabled={!roomIsValid || !playerIsValid}>
             PLAY
           </button>
         </div>

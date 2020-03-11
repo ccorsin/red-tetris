@@ -6,11 +6,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 
 import { ioSocketMiddleWare } from './middleware/ioSocketMiddleWare';
-import { alertMiddleWare } from './middleware/alertMiddleWare';
 
-// TO DO: FIX alertMiddleWare
-
-import alertReducer from './reducers/alert';
 import socketReducer from "./reducers/socket";
 import tetriminosReducer from "./reducers/tetriminos";
 
@@ -20,13 +16,11 @@ import App from './containers/app';
 
 const initialState = {};
 const rootReducer = combineReducers({
-    alert: alertReducer,
     sock: socketReducer,
     tetriminos: tetriminosReducer
 });
 const middleware = [
     ioSocketMiddleWare,
-    // alertMiddleWare,
     thunk,
     createLogger()
 ];

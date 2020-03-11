@@ -11,7 +11,7 @@ export const StyledHeader = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 0;
-  font-size: x-large;
+  font-size: 1.2em;
 `;
 
 export const StyledHeaderButton = styled.div`

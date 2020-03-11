@@ -11,4 +11,4 @@ export const StyledDisplay = styled.div`
   flex-wrap: nowrap;
   border: 1px solid white;
   padding: 6% 15% 0% 15%;
-`;
+  `;

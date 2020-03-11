@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 const StyledStartButton = styled.button`
-  display: inline-block;
   padding: 0.7em 1.4em;
   margin: 0 0.3em 0.3em 0;
   border-radius: 0.15em;
@@ -11,13 +10,13 @@ const StyledStartButton = styled.button`
   text-transform: uppercase;
   font-weight: 400;
   color: #FFFFFF;
-  background-color: #3369ff;
+  background-color: #800080;
   box-shadow: inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
   text-align: center;
   position: relative;
   font-family: 'theboldfont';
   font-size: large;
-  
+  margin-left: 10px;
   active {
     top: 0.1em;
   }

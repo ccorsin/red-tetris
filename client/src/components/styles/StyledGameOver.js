@@ -14,5 +14,4 @@ export const StyledGameOver = styled.div`
   height: 100px;
   z-index: 1000;
   border: 4px solid #333;
-  font-family: Pixel, Arial, Helvetica, sans-serif;
 `;

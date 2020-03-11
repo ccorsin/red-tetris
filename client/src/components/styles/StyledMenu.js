@@ -8,6 +8,7 @@ export const StyledMenuWrapper = styled.div`
   background: darkgrey;
   min-width: 300px;
   min-height: 300px;
+  z-index: 1;
 `;
 
 export const StyledMenu = styled.div`

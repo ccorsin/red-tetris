@@ -148,11 +148,7 @@ const Tetris = ({ socket, room, playerCount }) => {
     socket.on('refill', function (tetriminos) {
       dispatch({ type: 'REFILL', tetriminos });
     });
-    socket.on("win", function (message, player) {
-      // alert(message);
-      console.log("alert from tetris")
-      dispatch({ type: "ALERT_SWITCH", switch: true });
-      dispatch({ type: "ALERT_POP", message: message });
+    socket.on("win", function (player) {
       dispatch({ type: 'WINNER', player, socket, room });
       setDropTime(null);
     });
@@ -172,7 +168,7 @@ const Tetris = ({ socket, room, playerCount }) => {
       <StyledTetrisAside>
         {gameOver ? (
           <StyledGO>
-            <Display gameOver={gameOver} text="Game Over" />
+            <Display text="Game Over" />
           </StyledGO>
         ) : (
           <StyledTetrisGameBar>
@@ -183,6 +179,7 @@ const Tetris = ({ socket, room, playerCount }) => {
             </StyledTetrisGameBar>
           )}
         {spectrum}
+        {/* TO DO display list of players */}
       </StyledTetrisAside>
     </StyledTetrisWrapper>
   );

@@ -41,17 +41,6 @@ const Playground = ({ socket }) => {
   }
 
   useEffect(() => {
-    socket.on("message", function (message) {
-      // alert(message);
-      console.log("alert from playground")
-      dispatch({ type: "ALERT_SWITCH", switch: true });
-      dispatch({ type: "ALERT_POP", message: message });
-      // console.log(store.getState().alert)
-    });
-  }, []);
-
-  useEffect(() => {
-    // TO DO fix infinite loop on this
     socket.emit("room", room, username);
     socket.on("players", function(leader, players) {
       setPlayerCount(players.length);

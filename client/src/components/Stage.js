@@ -9,7 +9,7 @@ const Stage = ({ stage, currentPlayer }) => {
 
   const TETROMINOS = {
     0: { color: "0, 0, 0" },
-    1: { color: "0, 0, 0" },
+    1: { color: "130, 130, 130" },
     I: { color: "0, 255, 255" },
     J: { color: "225, 0, 0" },
     L: { color: "0, 0, 255" },
@@ -22,10 +22,10 @@ const Stage = ({ stage, currentPlayer }) => {
   const color = (cell) => {
     let color;
     if (currentPlayer && currentPlayer.loser) {
-      color = '96, 96, 96';
+      color = '130, 130, 130';
     }
     else if (currentPlayer && winner && currentPlayer.id === winner.id && currentPlayer.winner) {
-      color = '63, 191, 191'
+      color = '255, 255, 0'
     }
     else {
       color = TETROMINOS[cell[0]].color;

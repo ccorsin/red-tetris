@@ -20,13 +20,12 @@ class Socket {
     initEngine() {
         this.io.sockets.on('connection', (socket) => {
             process.stdout.write("Socket connected: " + socket.id + '\n');
-            socket.on('room', (room, username) => {
+            socket.once('room', (room, username) => {
                 socket.username = username;
                 socket.room = room;
                 const player = new Player (username, socket.id);
                 let is_room = this.isRoom (this.games, room);
                 if (is_room >= 0 && this.games[is_room].running == false) {
-                    console.log("start game")
                     this.games[is_room].add_player(player);
                     socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
                     this.io.sockets.in(room).emit('message', socket.username + ' has joined the game folks !');
@@ -39,9 +38,10 @@ class Socket {
                 else {
                     let game = new Game (player, room);
                     this.games.push(game);
-                    socket.emit('message', 'Welcome to the game #' + socket.room + ' ' + socket.username + ' !');
+                    socket.emit('message', 'Welcome to the room #' + socket.room + ' player ' + socket.username + ' !');
                     socket.join(room);
                 }
+                // TO DO function to leave the room
                 if(this.io.sockets.adapter.rooms[room]['sockets'][socket.id] !== undefined) {
                     socket.on('disconnect', () => {
                         process.stdout.write("Socket disconnected: " + socket.id + '\n');
@@ -54,7 +54,9 @@ class Socket {
                             if (winner && curGame.running === true) {
                                 winner.win();
                                 curGame.end_game();
-                                this.io.sockets.in(room).emit('win', winner.name + ' won the game !', winner);
+                                // NOTE changed win
+                                this.io.sockets.in(room).emit('win', winner);
+                                this.io.sockets.in(room).emit('message', winner.name + ' won the game !');
                                 this.io.sockets.in(room).emit('players', this.games[this.isRoom (this.games, room)].leader.name, this.games[this.isRoom (this.games, room)].players);
                             }
                             else {
@@ -68,6 +70,7 @@ class Socket {
                 }
                 socket.emit('player', player);
                 socket.on('collision', (player, room) => {
+                    // TO DO change spectre update
                     const curGame = this.games[this.isRoom(this.games, room)];
                     curGame.update_player(player);
                     this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
@@ -82,11 +85,14 @@ class Socket {
                     let winner = curGame.check_winner();
                     if (winner) {
                         winner.win();
-                        this.io.sockets.in(room).emit('win', winner.name + ' won the game !', winner);
+                        // NOTE changed win
+                        this.io.sockets.in(room).emit('win', winner);
+                        this.io.sockets.in(room).emit('message', winner.name + ' won the game !');
                     }
                     this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
                 });
                 socket.on('smash', (player, room) => {
+                    // TO DO save scores 
                     const curGame = this.games[this.isRoom(this.games, room)];
                     curGame.freeze_players(player);
                     this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
