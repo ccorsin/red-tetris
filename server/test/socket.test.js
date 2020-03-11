@@ -125,14 +125,14 @@ describe('Testing backend answer from front emit actions', () => {
         }, 100);
     });
 
-    // it('player reaching a running room', (done) => {
-    //     ClientSocket.on('isRunning', function() {
-    //         done();
-    //     });
-    //     ClientSocket.emit('room', '42', 'p1');
-    //     setTimeout(() => {
-    //         ClientSocket.emit('start', '42');
-    //         ClientSocket.emit('room', '42', 'p2');
-    //     }, 100);
-    // });
+    it('player reaching a running room', (done) => {
+        ClientSocket.on('isRunning', function() {
+            done();
+        });
+        ClientSocket.emit('room', '42', 'p1');
+        setTimeout(() => {
+            ClientSocket.emit('start', '42');
+            ClientSocket.emit('room', '42', 'p2');
+        }, 100);
+    });
 });

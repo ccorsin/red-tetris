@@ -9,18 +9,6 @@ const Player = require("../helpers/player");
     beforeEach(() => {
         player1 = new Player('p1', 'a');
         player2 = new Player('p2', 'b');
-        player3 = {
-            name: 'p3',
-            id: 'c',
-            line: 0,
-            round: 0,
-            loser: false,
-            color: player1.color,
-            freeze: 0,
-            pos: {
-                y: 1
-            }
-        };
     });
 
     it('should instanciate game with given values', () => {
@@ -207,19 +195,4 @@ const Player = require("../helpers/player");
         game.reset_game();
         expect(game.tetriminos).toEqual([]);
     });
-
-    // it('update player 3', () => {
-    //     const game = new Game(player2, 42);
-    //     game.add_player(player2);
-    //     game.update_player(player2);
-    //     expect(game.players[0]).toEqual({
-    //         name: 'p2',
-    //         id: 'b',
-    //         line: 0,
-    //         round: 1,
-    //         loser: false,
-    //         color: player1.color,
-    //         freeze: 0
-    //     });
-    // });
  });
