@@ -18,6 +18,7 @@ class Socket {
     }
 
     initEngine() {
+        // TO DO fix bug when player has same name same room
         this.io.sockets.on('connection', (socket) => {
             process.stdout.write("Socket connected: " + socket.id + '\n');
             socket.once('room', (room, username) => {

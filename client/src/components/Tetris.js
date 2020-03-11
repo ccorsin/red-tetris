@@ -29,7 +29,7 @@ const Tetris = ({ socket, room, playerCount }) => {
   const collide = (playerData) => {
     const newCurrentPlayer = {...currentPlayer, round: currentPlayer.round + 1}
     dispatch({ type: "ADD_ROUND", currentPlayer: newCurrentPlayer });
-    dispatch({ type: 'COLLISION', player: playerData, room, socket })
+    dispatch({ type: "COLLISION", player: playerData, room, socket })
   };
 
   const startGame = (currentPlayer, tetriminos) => {
@@ -125,6 +125,10 @@ const Tetris = ({ socket, room, playerCount }) => {
   }
 
   useEffect(() => {
+    // TO DO debug mess on freeze
+    // socket.on('freeze', function () {
+      // variable freeze pour eviter le drop ?
+    // });
     socket.on('start_game', function () {
       const currentPlayer = store.getState().sock.currentPlayer
       const tetriminos = store.getState().tetriminos.tetriminos
