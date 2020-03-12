@@ -54,12 +54,10 @@ describe('Games is dealing with games from sockets', () => {
     it('Specific game should be start', () => {
         const spy1 = jest.spyOn(Game.prototype, 'start_game');
         const spy2 = jest.spyOn(Game.prototype, 'init_players_tetriminos');
-        const spy3 = jest.spyOn(Game.prototype, 'update_players_round');
         games.create_game(player1, '42');
         games.start_one_game(0);
         expect(spy1).toHaveBeenCalled();
         expect(spy2).toHaveBeenCalled();
-        expect(spy3).toHaveBeenCalled();
         expect(games.games[0].running).toBe(true);
         expect(games.games[0].tetriminos).toHaveLength(5);
     });

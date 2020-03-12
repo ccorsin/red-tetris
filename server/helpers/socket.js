@@ -89,6 +89,7 @@ class Socket {
                 this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
                 this.io.sockets.in(room).emit('refill', curGame.tetriminos);
                 this.io.sockets.in(room).emit('start_game');
+                curGame.update_players_round();
             });
             socket.on('end', room => {
                 this.games.end_one_game(this.isRoom(this.games.games, room))
