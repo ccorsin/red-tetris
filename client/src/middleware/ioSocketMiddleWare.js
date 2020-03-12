@@ -43,6 +43,10 @@ export const ioSocketMiddleWare = () => {
     else if (action.type === 'TOGGLE_RUNNING') {
       return next(action);
     }
+    else if (action.type === 'SET_SCORE') {
+      action.socket.emit('set_score', action.player, action.room);
+      return next(action);
+    }
     return;
   }
 }

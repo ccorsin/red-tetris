@@ -7,6 +7,15 @@ class Player {
 		this.freeze = 0;
 		this.loser = false;
 		this.color = (Math.floor(Math.random() * 255) + 1) +','+ (Math.floor(Math.random() * 255) + 1) +','+ (Math.floor(Math.random() * 255) + 1);
+		this.rows = 0;
+		this.score = 0;
+		this.level = 0;
+	}
+
+	set_score(round, rows, level) {
+		this.round = round;
+		this.rows = rows;
+		this.level = level;
 	}
 
 	add_round() {

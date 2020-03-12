@@ -1,14 +1,25 @@
 import { useState, useEffect } from 'react';
 import { createStage } from '../gameHelpers';
 import { useSelector, useDispatch, useStore } from 'react-redux'
+import { useGameStatus } from './useGameStatus';
 
 export const useStage = (player, resetPlayer, gameOver, room, socket) => {
   const [stage, setStage] = useState(createStage());
   const [rowsCleared, setRowsCleared] = useState(0);
+  const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared);
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
   const tetriminos = useSelector(state => state.tetriminos.tetriminos);
   const store = useStore();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    // WIP send score, rows and level to back
+    if (socket !== undefined) {
+      const playerData = { ...currentPlayer, score: score, rows: rows, level: level };
+      dispatch({ type: 'SET_SCORE', player: playerData, room: room, socket });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [score, rows, level]);
 
   useEffect(() => {
     if (socket !== undefined) {

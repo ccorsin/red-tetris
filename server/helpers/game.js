@@ -19,6 +19,9 @@ class Game {
         }
         return -1;
     }
+  updateScore(player) {
+    this.players[this.isPlayer(this.players, player)].set_score(player.round, player.rows, player.level);
+  }
 
     add_tetriminos() {
       let tetromino = new Tetriminos().randomTetromino();

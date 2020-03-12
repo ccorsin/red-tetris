@@ -63,6 +63,11 @@ class Socket {
                     });
                 }
                 socket.emit('player', player);
+                socket.on('set_score', (player, room) => {
+                    const curGame = this.games[this.isRoom(this.games, room)];
+                    curGame.updateScore(player);
+                    console.log(player)
+                });
                 socket.on('collision', (player, room) => {
                     const { curGame, need_refill } = this.games.collision(this.isRoom(this.games.games, room), player)
                     this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
