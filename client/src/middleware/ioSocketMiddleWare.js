@@ -40,6 +40,9 @@ export const ioSocketMiddleWare = () => {
     else if (action.type === 'ADD_ROUND') {
       return next(action);
     }
+    else if (action.type === 'TOGGLE_RUNNING') {
+      return next(action);
+    }
     return;
   }
 }

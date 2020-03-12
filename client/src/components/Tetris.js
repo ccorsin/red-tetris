@@ -74,6 +74,7 @@ const Tetris = ({ socket, room, playerCount }) => {
         dispatch({ type: 'GAME_OVER', player: currentPlayer, room, socket })
         if (store.getState().sock.players.length === 1) {
           dispatch({ type: 'END', socket, room });
+          dispatch({ type: "TOGGLE_RUNNING", isRunning: false });
         }
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
@@ -129,35 +130,39 @@ const Tetris = ({ socket, room, playerCount }) => {
     // socket.on('freeze', function () {
       // variable freeze pour eviter le drop ?
     // });
-    socket.on('start_game', function () {
-      const currentPlayer = store.getState().sock.currentPlayer
-      const tetriminos = store.getState().tetriminos.tetriminos
-      dispatch({ type: 'REFILL', tetriminos });
-      if (currentPlayer) {
-        startGame(currentPlayer, tetriminos);
-        const newCurrentPlayer = {...currentPlayer, round: currentPlayer.round + 1}
-        dispatch({ type: "ADD_ROUND", currentPlayer: newCurrentPlayer });
-      }
-    });
-    socket.on('restart_game', function (players) {
-      dispatch({ type: "UPDATE_PLAYERS", players });
-      let currentPlayer = store.getState().sock.currentPlayer;
-      let tmp = {};
-      if (currentPlayer && currentPlayer.id) {
-        tmp = players.filter(e => (e.id === currentPlayer.id ? true : false))[0];
-        dispatch({ type: "CURRENT_PLAYER", currentPlayer: tmp });
-      }
-      dispatch({ type: 'START', room, socket })
-    })
-    socket.on('refill', function (tetriminos) {
-      dispatch({ type: 'REFILL', tetriminos });
-    });
-    socket.on("win", function (player) {
-      dispatch({ type: 'WINNER', player, socket, room });
-      setDropTime(null);
-    });
+    if (socket !== null) {
+      socket.on('start_game', function () {
+        const currentPlayer = store.getState().sock.currentPlayer;
+        const tetriminos = store.getState().tetriminos.tetriminos;
+        dispatch({ type: 'REFILL', tetriminos });
+        if (currentPlayer) {
+          startGame(currentPlayer, tetriminos);
+          const newCurrentPlayer = {...currentPlayer, round: currentPlayer.round + 1};
+          dispatch({ type: "ADD_ROUND", currentPlayer: newCurrentPlayer });
+        }
+      });
+      socket.on('restart_game', function (players) {
+        dispatch({ type: "UPDATE_PLAYERS", players });
+        let currentPlayer = store.getState().sock.currentPlayer;
+        let tmp = {};
+        if (currentPlayer && currentPlayer.id) {
+          tmp = players.filter(e => (e.id === currentPlayer.id ? true : false))[0];
+          dispatch({ type: "CURRENT_PLAYER", currentPlayer: tmp });
+        }
+        dispatch({ type: 'START', room, socket });
+        dispatch({ type: "TOGGLE_RUNNING", isRunning: true });
+      })
+      socket.on('refill', function (tetriminos) {
+        dispatch({ type: 'REFILL', tetriminos });
+      });
+      socket.on("win", function (player) {
+        dispatch({ type: 'WINNER', player, socket, room });
+        dispatch({ type: "TOGGLE_RUNNING", isRunning: false });
+        setDropTime(null);
+      });
+    }   
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [socket]);
 
   return (
     <StyledTetrisWrapper

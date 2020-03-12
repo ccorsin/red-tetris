@@ -22,10 +22,11 @@ const Header = (props) => {
 
 	const clickStart = () => {
 		if (isRestart) {
-			dispatch({ type: 'RESET', room: props.room, socket: props.socket })
+			dispatch({ type: 'RESET', room: props.room, socket: props.socket });
 		}
 		else {
-			dispatch({ type: 'START', room: props.room, socket: props.socket })
+			dispatch({ type: 'START', room: props.room, socket: props.socket });
+			dispatch({ type: "TOGGLE_RUNNING", isRunning: true });
 		}
 	}
 

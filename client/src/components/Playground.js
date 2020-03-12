@@ -9,10 +9,13 @@ import "./styles/Style.css";
 import Header from "./Header";
 import Tetris from "./Tetris";
 
-const Playground = ({ socket }) => {
+import io from 'socket.io-client';
+
+
+const Playground = ({ setIsAlert, setAlertMessage, socket, setSocket }) => {
+
   const params = regex.url.exec(window.location.href);
   let history = useHistory();
-
   let commands = "";
   let room = "";
   let username = "";
@@ -41,23 +44,40 @@ const Playground = ({ socket }) => {
   }
 
   useEffect(() => {
-    socket.emit("room", room, username);
-    socket.on("players", function(leader, players) {
-      setPlayerCount(players.length);
-      setGameLeader(leader);
-      dispatch({ type: "UPDATE_PLAYERS", players });
-      let currentPlayer = store.getState().sock.currentPlayer;
-      let tmp = {};
-      if (currentPlayer && currentPlayer.id) {
-        tmp = players.filter(e => (e.id === currentPlayer.id ? true : false))[0];
-        dispatch({ type: "CURRENT_PLAYER", currentPlayer: tmp });
-      }
-    });
-    socket.on("player", function(player) {
-      dispatch({ type: "CURRENT_PLAYER", currentPlayer: player });
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (socket === null)
+      setSocket(io('http://0.0.0.0:3504'));
   }, []);
+
+  useEffect(() => {
+    if (socket !== null) {
+      socket.emit("room", room, username);
+      socket.on("players", function(leader, players) {
+        setPlayerCount(players.length);
+        setGameLeader(leader);
+        dispatch({ type: "UPDATE_PLAYERS", players });
+        let currentPlayer = store.getState().sock.currentPlayer;
+        let tmp = {};
+        if (currentPlayer && currentPlayer.id) {
+          tmp = players.filter(e => (e.id === currentPlayer.id ? true : false))[0];
+          dispatch({ type: "CURRENT_PLAYER", currentPlayer: tmp });
+        }
+      });
+      socket.on("player", function(player) {
+        dispatch({ type: "CURRENT_PLAYER", currentPlayer: player });
+      });
+      socket.on("message", function (message) {
+        setIsAlert(true);
+        setAlertMessage(message);
+      });
+      socket.on("isRunning", function () {
+        dispatch({ type: "TOGGLE_RUNNING", isRunning: true });
+        setIsAlert(true);
+        setAlertMessage("A game is currently running in this room. Please chose another number.");
+      });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]);
 
   return (
     <StyledPlayground>

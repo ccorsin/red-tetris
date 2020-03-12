@@ -11,18 +11,20 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    socket.on('freeze', function () {
-      const currPlayer = store.getState().sock.currentPlayer;
-      const addLine = prev => {
-        prev.shift();
-        prev.push(new Array(prev[0].length).fill([1, 'frozen']));
-        return prev;
-      }
-      if (currPlayer.freeze > 0 && !gameOver)
-        setStage(prev => addLine(prev));
-    });
+    if (socket !== null) {
+      socket.on('freeze', function () {
+        const currPlayer = store.getState().sock.currentPlayer;
+        const addLine = prev => {
+          prev.shift();
+          prev.push(new Array(prev[0].length).fill([1, 'frozen']));
+          return prev;
+        }
+        if (currPlayer.freeze > 0 && !gameOver)
+          setStage(prev => addLine(prev));
+      });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
     setRowsCleared(0);

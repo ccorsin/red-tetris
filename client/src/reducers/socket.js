@@ -1,14 +1,8 @@
-const reducer = (state = { freeze: false }, action) => {
+const reducer = (state = { }, action) => {
   switch(action.type){
-    case 'START':
-        return {
-          ...state,
-          isRunning: true,
-         };
     case 'END':
         return {
           ...state,
-          isRunning: false,
           winner: {}
         };
     case 'UPDATE_PLAYERS':
@@ -24,7 +18,6 @@ const reducer = (state = { freeze: false }, action) => {
     case 'WINNER':
     return {
       ...state,
-      isRunning: false,
       winner: action.player
     }
     case 'RESET':
@@ -37,8 +30,13 @@ const reducer = (state = { freeze: false }, action) => {
         ...state,
         currentPlayer: action.currentPlayer
       }
+    case 'TOGGLE_RUNNING':
+      return {
+        ...state,
+        isRunning: action.isRunning,
+      };
     default: 
-        return state
+      return state
   }
 }
 
