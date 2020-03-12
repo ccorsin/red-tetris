@@ -11,9 +11,9 @@ import Tetris from "./Tetris";
 
 import io from 'socket.io-client';
 
+let socket;
 
-const Playground = ({ setIsAlert, setAlertMessage, socket, setSocket, setIsRunning }) => {
-
+const Playground = ({ setIsAlert, setAlertMessage, setIsRunning }) => { 
   const params = regex.url.exec(window.location.href);
   let history = useHistory();
   let commands = "";
@@ -44,12 +44,15 @@ const Playground = ({ setIsAlert, setAlertMessage, socket, setSocket, setIsRunni
   }
 
   useEffect(() => {
-    if (socket === null)
-      setSocket(io('http://0.0.0.0:3504'));
+    socket = io('http://0.0.0.0:3504');
+
+    return () => {
+      socket.close();
+    }
   }, []);
 
   useEffect(() => {
-    if (socket !== null) {
+    if (socket !== undefined) {
       socket.emit("room", room, username);
       socket.on("players", function(leader, players) {
         setPlayerCount(players.length);

@@ -20,7 +20,6 @@ const App = () => {
   const [isAlert, setIsAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [isRunning, setIsRunning] = useState("");
-  const [socket, setSocket] = useState(null);
 
   const turnOffAlert = (calling) => {
     setIsAlert(calling);
@@ -31,10 +30,6 @@ const App = () => {
     turnOffAlert(false);
     setIsRunning(false)
     dispatch({ type: "TOGGLE_RUNNING", isRunning: false });
-    if (socket !== null) {
-      socket.close();
-      setSocket(null);
-    }
     return <Redirect to="/" />;
   };
 
@@ -53,7 +48,7 @@ const App = () => {
         <Switch>
           <Route path="/" exact component={Menu} />
           <Route path="/room">
-            {isRunning ? <Redirect to="/" /> : <Playground setIsAlert={setIsAlert} setAlertMessage={setAlertMessage} socket={socket} setSocket={setSocket} setIsRunning={setIsRunning} />}
+            {isRunning ? <Redirect to="/" /> : <Playground setIsAlert={setIsAlert} setAlertMessage={setAlertMessage} setIsRunning={setIsRunning} />}
           </Route>
           <Route component={NotFound} />
         </Switch>

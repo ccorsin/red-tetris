@@ -130,7 +130,7 @@ const Tetris = ({ socket, room, playerCount }) => {
     // socket.on('freeze', function () {
       // variable freeze pour eviter le drop ?
     // });
-    if (socket !== null) {
+    if (socket !== undefined) {
       socket.on('start_game', function () {
         const currentPlayer = store.getState().sock.currentPlayer;
         const tetriminos = store.getState().tetriminos.tetriminos;

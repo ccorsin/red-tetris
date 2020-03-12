@@ -11,7 +11,7 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (socket !== null) {
+    if (socket !== undefined) {
       socket.on('freeze', function () {
         const currPlayer = store.getState().sock.currentPlayer;
         const addLine = prev => {
