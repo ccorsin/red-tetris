@@ -17,6 +17,10 @@ describe('Games is dealing with games from sockets', () => {
         games = new Games();
     });
 
+    afterEach(() => {    
+        jest.clearAllMocks();
+      });
+
     it('New game should be created with first player', () => {
         games.create_game(player1, '42');
         expect(games.games).toHaveLength(1);
@@ -111,6 +115,36 @@ describe('Games is dealing with games from sockets', () => {
         expect(spy2).toHaveBeenCalled();
         expect(spy3).not.toHaveBeenCalled();
         expect(spy4).not.toHaveBeenCalled();
-        // games.player_leaving(0, player2);
+        games.player_leaving(0, player2);
+        expect(spy3).toHaveBeenCalled();
+        expect(spy4).toHaveBeenCalled();
+    });
+
+    it('Disconnect last player', () => {
+        const spy1 = jest.spyOn(Game.prototype, 'remove_player');
+        const spy2 = jest.spyOn(Game.prototype, 'check_winner');
+        const spy3 = jest.spyOn(Player.prototype, 'win');
+        const spy4 = jest.spyOn(Game.prototype, 'end_game');
+        games.create_game(player1, '42');
+        games.start_one_game(0);
+        games.player_leaving(0, player1);
+        expect(spy1).toHaveBeenCalled();
+        expect(spy2).not.toHaveBeenCalled();
+        expect(spy3).not.toHaveBeenCalled();
+        expect(spy4).not.toHaveBeenCalled();
+    });
+
+    it('Disconnect undefined game', () => {
+        const spy1 = jest.spyOn(Game.prototype, 'remove_player');
+        const spy2 = jest.spyOn(Game.prototype, 'check_winner');
+        const spy3 = jest.spyOn(Player.prototype, 'win');
+        const spy4 = jest.spyOn(Game.prototype, 'end_game');
+        games.create_game(player1, '42');
+        games.start_one_game(0);
+        games.player_leaving(1, player1);
+        expect(spy1).not.toHaveBeenCalled();
+        expect(spy2).not.toHaveBeenCalled();
+        expect(spy3).not.toHaveBeenCalled();
+        expect(spy4).not.toHaveBeenCalled();
     });
 });

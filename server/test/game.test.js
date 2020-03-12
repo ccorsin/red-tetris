@@ -9,6 +9,7 @@ const Player = require("../helpers/player");
     beforeEach(() => {
         player1 = new Player('p1', 'a');
         player2 = new Player('p2', 'b');
+        player3 = new Player('p3', 'c');
     });
 
     it('should instanciate game with given values', () => {
@@ -68,6 +69,20 @@ const Player = require("../helpers/player");
         const game = new Game(player1, 42);
         game.add_player(player2);
         game.remove_player(player1);
+        game.remove_player(player3);
+        expect(game).toMatchObject(values);
+    });
+
+    it('should remove player 2 without update leader', () => {
+        const values = {
+            leader: player1,
+            room: 42,
+            players: [player1],
+            running: false
+        };
+        const game = new Game(player1, 42);
+        game.add_player(player2);
+        game.remove_player(player2);
         expect(game).toMatchObject(values);
     });
 

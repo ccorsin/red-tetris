@@ -76,7 +76,7 @@ class Game {
       if (index > -1) {
         this.players.splice(index, 1);
       }
-      if ((player = this.leader)) {
+      if ((player == this.leader)) {
         this.leader = this.players[0];
       }
     }

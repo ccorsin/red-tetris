@@ -55,7 +55,9 @@ class Games {
 
     player_leaving(index, player){
         let winner = false;
+        let ran = false;
         if (this.games[index] !== undefined) {
+            ran = this.games[index].running;
             this.games[index].remove_player(player);
             if (this.games[index].players.length > 0) {
                 winner = this.games[index].check_winner();
@@ -65,7 +67,7 @@ class Games {
                 }
             }
         }
-        return { curGame: this.games[index], winner }
+        return { curGame: this.games[index], winner, ran }
     }
 }
 
