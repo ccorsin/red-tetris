@@ -160,7 +160,7 @@ const Tetris = ({ socket, room, playerCount }) => {
         dispatch({ type: "TOGGLE_RUNNING", isRunning: false });
         setDropTime(null);
       });
-    }   
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 

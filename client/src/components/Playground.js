@@ -12,7 +12,7 @@ import Tetris from "./Tetris";
 import io from 'socket.io-client';
 
 
-const Playground = ({ setIsAlert, setAlertMessage, socket, setSocket }) => {
+const Playground = ({ setIsAlert, setAlertMessage, socket, setSocket, setIsRunning }) => {
 
   const params = regex.url.exec(window.location.href);
   let history = useHistory();
@@ -71,6 +71,7 @@ const Playground = ({ setIsAlert, setAlertMessage, socket, setSocket }) => {
       });
       socket.on("isRunning", function () {
         dispatch({ type: "TOGGLE_RUNNING", isRunning: true });
+        setIsRunning(true);
         setIsAlert(true);
         setAlertMessage("A game is currently running in this room. Please chose another number.");
       });
