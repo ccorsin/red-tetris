@@ -37,7 +37,7 @@ const Stage = ({ stage, currentPlayer }) => {
     <StyledStage width={stage[0].length} height={stage.length}>
       {stage.map((row, y) => (
       <StyledRow className="row" key={y}>
-          {row.map((cell, x) => <Cell key={x} type={cell[0]} color={color(cell)} size={3}/>)}
+          {row.map((cell, x) => <Cell key={x} type={cell[0]} color={color(cell)} size={3} cell={true} />)}
       </StyledRow>
     ))}
   </StyledStage>

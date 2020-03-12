@@ -45,9 +45,7 @@ class Game {
 
     update_player(player) {
       this.players[this.isPlayer(this.players, player)].add_round();
-      if ((19 - player.player.pos.y) > this.players[this.isPlayer(this.players, player)].line) {
-        this.players[this.isPlayer(this.players, player)].set_line(player.player.pos.y);
-      }
+      this.players[this.isPlayer(this.players, player)].set_spectre(player.spectre);
     }
 
     update_players_round() {

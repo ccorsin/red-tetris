@@ -20,7 +20,6 @@ const Tetris = ({ socket, room, playerCount }) => {
   const [gameOver, setGameOver] = useState(false);
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, gameOver, room, socket);
-  // eslint-disable-next-line no-unused-vars
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared);
   const dispatch = useDispatch();
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
@@ -58,6 +57,25 @@ const Tetris = ({ socket, room, playerCount }) => {
     }
   };
 
+  const getSpectreHigh = () => {
+    let spectre = [];
+    stage.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (cell[0] !== 0) {
+          if (spectre[x] === undefined) {
+            spectre[x] = y;
+          }
+        }
+        if (y === 19) {
+          if (cell[0] === 0 && spectre[x] === undefined) {
+            spectre[x] = y;
+          }
+        }
+      })
+    })
+    return spectre;
+  };
+
   const drop = () => {
     // Increase level when player has cleared 10 rows
     if (rows > (level + 1) * 10) {
@@ -78,7 +96,8 @@ const Tetris = ({ socket, room, playerCount }) => {
         }
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
-      const playerData = { ...currentPlayer, player };
+      const spectre = getSpectreHigh();
+      const playerData = { ...currentPlayer, spectre };
       collide(playerData);
     }
   };
@@ -122,7 +141,7 @@ const Tetris = ({ socket, room, playerCount }) => {
 
   let spectrum = "";
   if (playerCount > 1) {
-    spectrum = <Spectrum stage={createStage()} title="SPECTRUM" />
+    spectrum = <Spectrum stage={createStage()}/>
   }
 
   useEffect(() => {
