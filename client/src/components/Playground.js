@@ -13,7 +13,7 @@ import io from 'socket.io-client';
 
 let socket;
 
-const Playground = ({ setIsAlert, setAlertMessage, setIsRunning }) => { 
+const Playground = ({ setIsAlert, setAlertMessage, setIsRunning }) => {
   const params = regex.url.exec(window.location.href);
   let history = useHistory();
   let commands = "";
@@ -85,12 +85,11 @@ const Playground = ({ setIsAlert, setAlertMessage, setIsRunning }) => {
 
   return (
     <StyledPlayground>
-      <Header 
-        playerCount={playerCount} 
-        commands={commands} 
-        isLeader={isLeader} 
-        room={room} 
-        socket={socket} 
+      <Header
+        commands={commands}
+        isLeader={isLeader}
+        room={room}
+        socket={socket}
       />
       <StyledStagesWrapper>
         <Tetris socket={socket} room={room} playerCount={playerCount}/>

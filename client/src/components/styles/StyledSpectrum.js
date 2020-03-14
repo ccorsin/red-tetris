@@ -11,9 +11,31 @@ export const StyledSpectrum = styled.div`
   }
 `;
 
+export const StyledAdversity = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+`;
+
 export const StyledRow = styled.div`
   display: flex;
   flex-direction: row;
   width: auto;
   width: 100%;
+`;
+
+export const StyledName = styled.div`
+  color: rgba(${props => props.color}, 1) !important;
+`;
+
+export const StyledNameLabel = styled.div`
+  color: white;
+`;
+
+export const StyledNameColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+      margin-right: 1vw
 `;

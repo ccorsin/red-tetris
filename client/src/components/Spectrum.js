@@ -1,20 +1,21 @@
-import React from 'react';
-import { StyledSpectrum, StyledRow } from './styles/StyledSpectrum';
+import React, { useState, useEffect } from "react";
+import { StyledSpectrum, StyledRow, StyledAdversity, StyledNameColumn, StyledName, StyledNameLabel } from './styles/StyledSpectrum';
 import { useSelector } from 'react-redux'
 
+import "./styles/Style.css";
 import Cell from './Cell';
 
-const Spectrum = ({ stage, title }) => {
-  const players = useSelector(state => state.sock.players);
+const Spectrum = ({ stage, players, playerCount }) => {
 	const currentPlayer = useSelector(state => state.sock.currentPlayer);
-	
+	const [spectres, setSpectres] = useState(players);
+
 	const getColor = (y, x) => {
-		if (players && currentPlayer) {
+		if (spectres && currentPlayer) {
 			let color;
-			for (let player of players) {
-				if (y >= player.spectre[x] && player.id !== currentPlayer.id) {
-					color = player.color;
-					if (player.spectre[x] === 19 && y === 19) {
+			for (let spectre of spectres) {
+				if (y >= spectre.spectre[x] && spectre.id !== currentPlayer.id) {
+					color = spectre.color;
+					if (spectre.spectre[x] === 19 && y === 19) {
 						color = '0, 0, 0';
 					}
 					break;
@@ -24,15 +25,44 @@ const Spectrum = ({ stage, title }) => {
 			return color;
 		}
 	};
-		
+
+	const spectreOrder = () => {
+		// if not my name
+		let tmp = players;
+		if (players) {
+			for (let i = 0; i < tmp.length; i++) {
+				var target = tmp[i];
+					for (var j = i - 1; j >= 0 && (tmp[j].rows < target.rows); j--) {
+						tmp[j + 1] = tmp[j];
+					}
+				tmp[j + 1] = target
+			}
+		}
+		setSpectres(tmp);
+	};
+
+	useEffect(() => {
+		spectreOrder();
+	}, [players]);
+
 	return (
-		<StyledSpectrum width={stage[0].length} height={stage.length}>
-			{stage.map((row, y) => (
-			<StyledRow className="row" key={y}>
-				{row.map((cell, x) => <Cell key={x} type={cell[0]} color={getColor(y, x)} size={1} cell={false}/>)}
-			</StyledRow>
+		<StyledAdversity>
+			<StyledNameColumn>
+				<StyledNameLabel>{playerCount} PLAYERS: </StyledNameLabel>
+				<br/>
+			{spectres.map((player, i) => (
+				<StyledName className="playerName" key={i} color={player.color}> {player.name} </StyledName>
 			))}
-		</StyledSpectrum>
+			</StyledNameColumn>
+
+			<StyledSpectrum width={stage[0].length} height={stage.length}>
+				{stage.map((row, y) => (
+					<StyledRow className="row" key={y}>
+						{row.map((cell, x) => <Cell key={x} type={cell[0]} color={getColor(y, x)} size={1} cell={false}/>)}
+					</StyledRow>
+				))}
+			</StyledSpectrum>
+		</StyledAdversity>
 	);
 }
 export default Spectrum;

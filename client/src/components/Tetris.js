@@ -24,6 +24,7 @@ const Tetris = ({ socket, room, playerCount }) => {
   const dispatch = useDispatch();
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
   const store = useStore();
+  let players = store.getState().sock.players;
 
   const collide = (playerData) => {
     const newCurrentPlayer = {...currentPlayer, round: currentPlayer.round + 1}
@@ -140,8 +141,8 @@ const Tetris = ({ socket, room, playerCount }) => {
   };
 
   let spectrum = "";
-  if (playerCount > 1) {
-    spectrum = <Spectrum stage={createStage()}/>
+  if (playerCount > 1 && players) {
+    spectrum = <Spectrum stage={createStage()} players={players} playerCount={playerCount}/>
   }
 
   useEffect(() => {
@@ -192,8 +193,6 @@ const Tetris = ({ socket, room, playerCount }) => {
     >
       <StyledTetris>
           <Stage stage={stage} currentPlayer={currentPlayer}/>
-      </StyledTetris>
-      <StyledTetrisAside>
         {gameOver ? (
           <StyledGO>
             <Display text="Game Over" />
@@ -204,10 +203,11 @@ const Tetris = ({ socket, room, playerCount }) => {
               <Display text={`SCORE`} number={score} />
               <Display text={`ROWS`} number={rows} />
               <Display text={`LEVEL`} number={level} />
-            </StyledTetrisGameBar>
+          </StyledTetrisGameBar>
           )}
+      </StyledTetris>
+      <StyledTetrisAside>
         {spectrum}
-        {/* TO DO display list of players */}
       </StyledTetrisAside>
     </StyledTetrisWrapper>
   );

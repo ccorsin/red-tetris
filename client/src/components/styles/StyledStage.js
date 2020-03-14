@@ -5,8 +5,9 @@ export const StyledStage = styled.div`
   flex-direction: column;
   margin: auto;
   border: 1px solid white;
+  width: -moz-fit-content;
 `;
-  
+
 export const StyledRow = styled.div`
   display: flex;
   flex-direction: row;

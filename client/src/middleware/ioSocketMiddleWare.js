@@ -10,7 +10,7 @@ export const ioSocketMiddleWare = () => {
     }
     else if (action.type === 'UPDATE_PLAYERS') {
       return next(action);
-    } 
+    }
     else if (action.type === 'COLLISION') {
       action.socket.emit('collision', action.player, action.room);
       return next(action);

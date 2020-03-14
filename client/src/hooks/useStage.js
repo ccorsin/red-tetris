@@ -13,7 +13,6 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // WIP send score, rows and level to back
     if (socket !== undefined) {
       const playerData = { ...currentPlayer, score: score, rows: rows, level: level };
       dispatch({ type: 'SET_SCORE', player: playerData, room: room, socket });
