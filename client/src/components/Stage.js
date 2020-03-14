@@ -2,9 +2,11 @@
 import { StyledStage, StyledRow } from './styles/StyledStage';
 import { useSelector } from 'react-redux'
 
+import { StyledGO } from './styles/StyledTetris';
+import Display from './Display';
 import Cell from './Cell';
 
-const Stage = ({ stage, currentPlayer }) => {
+const Stage = ({ stage, currentPlayer, gameOver }) => {
   const winner = useSelector(state => state.sock.winner);
 
   const TETROMINOS = {
@@ -18,7 +20,7 @@ const Stage = ({ stage, currentPlayer }) => {
     T: { color: "128, 0, 128" },
     Z: { color: "255, 165, 0" }
   };
-  
+
   const color = (cell) => {
     let color;
     if (currentPlayer && currentPlayer.loser) {
@@ -32,7 +34,7 @@ const Stage = ({ stage, currentPlayer }) => {
     }
     return color;
   }
-  
+
   return (
     <StyledStage width={stage[0].length} height={stage.length}>
       {stage.map((row, y) => (

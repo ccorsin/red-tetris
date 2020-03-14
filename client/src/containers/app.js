@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { StyledApp, StyledTitle } from '../components/styles/StyledApp';
 import '../components/styles/Style.css';
- 
+
 import { HashRouter, Route, Switch, Redirect, Link } from 'react-router-dom';
 import { useStore, useDispatch } from 'react-redux';
 
@@ -44,6 +44,9 @@ const App = () => {
           <span style={{ color: 'blue' }}>I</span>
           <span style={{ color: 'purple' }}>S</span>
         </StyledTitle>
+        <Link to="/">
+          <StyledHomeButton onClick={() => { leaveRoom(); }}> T </StyledHomeButton>
+        </Link>
         {isAlert ? <Alert message={alertMessage} turnOffAlert={turnOffAlert}/> : <div></div> }
         <Switch>
           <Route path="/" exact component={Menu} />
@@ -52,9 +55,6 @@ const App = () => {
           </Route>
           <Route component={NotFound} />
         </Switch>
-        <Link to="/">
-          <StyledHomeButton onClick={() => { leaveRoom(); }}> T </StyledHomeButton>
-        </Link> 
       </StyledApp>
     </HashRouter>
   );

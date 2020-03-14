@@ -15,7 +15,7 @@ export const StyledAdversity = styled.div`
   display: flex;
   flex-direction: row;
   flex-direction: row;
-    justify-content: space-between;
+  justify-content: space-around;
     width: 100%;
 `;
 

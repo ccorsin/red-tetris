@@ -145,6 +145,7 @@ const Tetris = ({ socket, room, playerCount }) => {
     spectrum = <Spectrum stage={createStage()} players={players} playerCount={playerCount}/>
   }
 
+
   useEffect(() => {
     // TO DO debug mess on freeze
     // socket.on('freeze', function () {

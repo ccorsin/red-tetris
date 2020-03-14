@@ -10,6 +10,6 @@ export const StyledDisplay = styled.div`
   text-align: center;
   flex-wrap: nowrap;
   border: 1px solid white;
-  padding: 9% 0 0 0;
+  padding: 3% 0 0 0;
   height: 25%;
 `;

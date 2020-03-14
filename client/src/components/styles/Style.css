@@ -1,9 +1,9 @@
 @font-face {
 	font-family: 'theboldfont';
-	src: url('../../fonts/theboldfont.ttf'); 
-	src: 
+	src: url('../../fonts/theboldfont.ttf');
+	src:
 		local('theboldfont'),
-		url('../../fonts/theboldfont.ttf') 
+		url('../../fonts/theboldfont.ttf')
 		format('opentype');
 }
 html, body
@@ -17,11 +17,15 @@ html, body
       min-height:100%;
   }
 }
+a {
+  height: fit-content;
+}
 p {
   margin: 0;
 }
 #root {
-    min-height:100%;
+  background: black;
+  min-height:100%;
 }
 span {
   font-family: 'theboldfont';
