@@ -9,7 +9,8 @@ export const StyledDisplay = styled.div`
   color: white;
   text-align: center;
   flex-wrap: nowrap;
-  border: 1px solid white;
   padding: 3% 0 0 0;
   height: 25%;
+  border: 1px solid white;
+
 `;

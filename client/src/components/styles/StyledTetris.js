@@ -42,11 +42,10 @@ export const StyledTetris = styled.div`
 export const StyledTetrisGameBar = styled.div`
   display: flex;
   flex-direction: column;
-  width: 20%;
   height: auto;
+  margin: 0em 0em 0em 1em;
 
-  @media (min-width: 1025px) {
-    margin: 15% 0% 15% 3%;
-
-  }
 `;
+    // @media (min-width: 1025px) {
+    //   margin: 15% 0% 15% 3%;
+    // }

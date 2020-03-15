@@ -6,7 +6,7 @@ export const StyledMenuWrapper = styled.div`
   flex-wrap: nowrap;
   margin: auto;
   background: darkgrey;
-  min-width: 300px;
+  min-width: 270px;
   min-height: 300px;
   z-index: 1;
 `;

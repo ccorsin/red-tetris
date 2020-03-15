@@ -13,9 +13,11 @@ import { useGameStatus } from '../hooks/useGameStatus';
 // Components
 import Stage from './Stage';
 import Display from './Display';
+import DisplayTetromino from './DisplayTetromino';
 import Spectrum from './Spectrum';
 
 const Tetris = ({ socket, room, playerCount }) => {
+  const [nextTetromino, setNextTetromino] = useState([]);
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
@@ -25,11 +27,14 @@ const Tetris = ({ socket, room, playerCount }) => {
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
   const store = useStore();
   let players = store.getState().sock.players;
+  let tetriminos = store.getState().tetriminos.tetriminos;
 
   const collide = (playerData) => {
+
     const newCurrentPlayer = {...currentPlayer, round: currentPlayer.round + 1}
     dispatch({ type: "ADD_ROUND", currentPlayer: newCurrentPlayer });
     dispatch({ type: "COLLISION", player: playerData, room, socket })
+    setNextTetromino(tetriminos[currentPlayer.round + 1]);
   };
 
   const startGame = (currentPlayer, tetriminos) => {
@@ -160,6 +165,7 @@ const Tetris = ({ socket, room, playerCount }) => {
           startGame(currentPlayer, tetriminos);
           const newCurrentPlayer = {...currentPlayer, round: currentPlayer.round + 1};
           dispatch({ type: "ADD_ROUND", currentPlayer: newCurrentPlayer });
+          setNextTetromino(tetriminos[currentPlayer.round + 1]);
         }
       });
       socket.on('restart_game', function (players) {
@@ -200,7 +206,7 @@ const Tetris = ({ socket, room, playerCount }) => {
           </StyledGO>
         ) : (
           <StyledTetrisGameBar>
-              <Display text={`SCORE`} number={score} /> {/* TO DO add next piece */}
+              <DisplayTetromino text={`NEXT`} tetro={nextTetromino}/>
               <Display text={`SCORE`} number={score} />
               <Display text={`ROWS`} number={rows} />
               <Display text={`LEVEL`} number={level} />
