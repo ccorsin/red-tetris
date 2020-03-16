@@ -116,20 +116,26 @@ const Player = require("../helpers/player");
         expect(game.players[0]).toEqual({
             name: 'p1',
             id: 'a',
-            line: 0,
             round: 0,
             loser: false,
             color: player1.color,
-            freeze: 0
+            freeze: 0,
+            level: 0,
+            rows: 0,
+            score: 0,
+            spectre: []
         });
         expect(game.players[1]).toEqual({
             name: 'p2',
             id: 'b',
-            line: 2,
             round: 0,
             loser: false,
             color: player2.color,
-            freeze: 1
+            freeze: 1,
+            level: 0,
+            rows: 0,
+            score: 0,
+            spectre: []
         });
     });
 
@@ -140,20 +146,26 @@ const Player = require("../helpers/player");
         expect(game.players[0]).toEqual({
             name: 'p1',
             id: 'a',
-            line: 0,
             round: 1,
             loser: false,
             color: player1.color,
-            freeze: 0
+            freeze: 0,
+            level: 0,
+            rows: 0,
+            score: 0,
+            spectre: []
         });
         expect(game.players[1]).toEqual({
             name: 'p2',
             id: 'b',
-            line: 0,
             round: 1,
             loser: false,
             color: player2.color,
-            freeze: 0
+            freeze: 0,
+            level: 0,
+            rows: 0,
+            score: 0,
+            spectre: []
         });
     });
 
@@ -164,11 +176,14 @@ const Player = require("../helpers/player");
         expect(game.players[0]).toEqual({
             name: 'p1',
             id: 'a',
-            line: 0,
             round: 0,
             loser: true,
             color: player1.color,
-            freeze: 0
+            freeze: 0,
+            level: 0,
+            rows: 0,
+            score: 0,
+            spectre: []
         });
     });
 
@@ -202,7 +217,7 @@ const Player = require("../helpers/player");
         game.game_over_player(player1);
         expect(game.check_winner()).toEqual(player2);
     });
-
+    
     it('should reset game', () => {
         const game = new Game(player1, 42);
         game.add_player(player2);
