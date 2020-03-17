@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Display/> Component rendering correctly Display 1`] = `
+<styled.div>
+  <styled.div>
+    <p>
+      text
+    </p>
+    <p>
+      42
+    </p>
+  </styled.div>
+</styled.div>
+`;

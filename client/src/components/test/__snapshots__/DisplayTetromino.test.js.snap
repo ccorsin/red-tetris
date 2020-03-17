@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DisplayTetromino/> Component rendering correctly DisplayTetromino 1`] = `
+<styled.div>
+  <styled.div>
+    <p>
+      text
+    </p>
+    <p />
+  </styled.div>
+</styled.div>
+`;

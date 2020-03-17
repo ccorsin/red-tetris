@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Alert/> Component rendering correctly Alert 1`] = `
+<styled.div>
+  <styled.button
+    onClick={[Function]}
+  >
+     - 
+  </styled.button>
+  <styled.div>
+    <span>
+      alert
+    </span>
+  </styled.div>
+</styled.div>
+`;
