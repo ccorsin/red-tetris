@@ -35,7 +35,7 @@ describe('<Playground/> Component', () => {
     ReactDom.render(
       <Provider store={store}>
             <Router history={historyMock}>
-                <Playground/>
+                <Playground setIsAlert={""} setAlertMessage={""} setIsRunning={""}/>
             </Router>
       </Provider>, div)
     ReactDom.unmountComponentAtNode(div)

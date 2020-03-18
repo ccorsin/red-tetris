@@ -14,6 +14,8 @@ import { ioSocketMiddleWare } from '../../middleware/ioSocketMiddleWare';
 import socketReducer from "../../reducers/socket";
 import tetriminosReducer from "../../reducers/tetriminos";
 
+import io from 'socket.io-client';
+
 const initialState = {};
 const rootReducer = combineReducers({
     sock: socketReducer,
@@ -35,7 +37,7 @@ describe('<Tetris/> Component', () => {
         const div = document.createElement('div')
         ReactDom.render(
             <Provider store={store}>
-            <Tetris/>
+                <Tetris socket={io('http://0.0.0.0:3504')} room={42} playerCount={0}/>
             </Provider>, div)
         ReactDom.unmountComponentAtNode(div)
         });
