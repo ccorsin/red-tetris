@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import { shallow } from 'enzyme';
-// import { Tetriminos } from '../../../server/models'
+
 import Header from '../Header';
+import StartButton from '../StartButton';
+
 import toJson from "enzyme-to-json";
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
@@ -21,6 +23,7 @@ const rootReducer = combineReducers({
     sock: socketReducer,
     tetriminos: tetriminosReducer
 });
+
 const middleware = [
     ioSocketMiddleWare,
     thunk,
@@ -32,12 +35,13 @@ export const store = createStore(
     initialState,
     applyMiddleware(...middleware))
 
+
 describe('<Header/> Component', () => {
   it('rendering correctly with no shapes', () => {
     const div = document.createElement('div')
     ReactDom.render(
       <Provider store={store}>
-        <Header 
+        <Header
           commands={""}
           isLeader={true}
           room={42}
@@ -45,6 +49,17 @@ describe('<Header/> Component', () => {
       </Provider>, div)
     ReactDom.unmountComponentAtNode(div)
   });
+});
+
+// describe('<Header/> Component', () => {
+//   it('rendering correctly with no shapes', () => {
+//     const div = document.createElement('div')
+//     ReactDom.render(
+//       <Provider store={store}>
+//         <Header/>
+//       </Provider>, div)
+//     ReactDom.unmountComponentAtNode(div)
+  // });
   // it('rendering correctly with shapes', () => {
   //   // const tetriminos = new Tetriminos
   //   // let tetro = []
@@ -56,4 +71,26 @@ describe('<Header/> Component', () => {
   //   )
   //   expect(toJson(wrapper)).toMatchSnapshot()
   // })
-})
+// })
+
+
+/**
+
+  if (isLeader && !isRunning) {
+    commands = <span>You can start the game !</span>;
+  } else if (!isRunning) {
+    commands = <span>Wait for {gameLeader} to start the game !</span>;
+  } else {
+    commands = <span>Game is ON !</span>;
+  }
+
+ */
+
+    // it('contains only a line in a <div> element', () => {
+    //   const wrapper = shallow(<Provider store={store}><Header commands={<span>Wait for XXX to start the game !</span>} isLeader={false} /></Provider>);
+    //   expect(wrapper).toContainReact(<div></div>);
+    // });
+    // it('does not contain any <button> element', () => {
+    //   const wrapper = shallow(<Provider store={store}><Header commands={<span>Wait for XXX to start the game !</span>} isLeader={false} /></Provider>);
+    //   expect(wrapper.find('button').length).toEqual(0);
+    // });

@@ -1,12 +1,12 @@
 import React from 'react'
 import { shallow } from 'enzyme';
-import Display from '../Display';
+import NotFound from '../NotFound';
 import toJson from "enzyme-to-json";
 
-describe('<Display/> Component', () => {
-  it('rendering correctly Display', () => {
+describe('<NotFound/> Component', () => {
+  it ('rendering correctly NotFound', () => {
     let wrapper = shallow(
-      <Display text='text' number='42'/>
+      <NotFound></NotFound>
     );
     expect(toJson(wrapper)).toMatchSnapshot();
   });
