@@ -32,6 +32,7 @@ export const useStage = (player, resetPlayer, gameOver) => {
 
   useEffect(() => {
     getSpectreHigh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stage]);
 
   useEffect(() => {

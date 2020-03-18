@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { createStage, checkCollision } from '../gameHelpers';
 import { StyledTetrisWrapper, StyledTetrisAside, StyledTetris, StyledTetrisGameBar, StyledGO } from './styles/StyledTetris';
-import { useSelector, useDispatch, useStore } from 'react-redux'
+import { useSelector, useDispatch, useStore } from 'react-redux';
 
 // Custom Hooks
 import { useInterval } from '../hooks/useInterval';
@@ -123,6 +123,7 @@ const Tetris = ({ socket, room, playerCount }) => {
     if (playerCount > 1 && players) {
       setSpectrum(<Spectrum stage={createStage()} players={players} playerCount={playerCount}/>);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [players]);
 
   const collide = (playerData) => {

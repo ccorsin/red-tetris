@@ -4,7 +4,7 @@ import { StyledApp, StyledTitle } from '../components/styles/StyledApp';
 import '../components/styles/Style.css';
 
 import { HashRouter, Route, Switch, Redirect, Link } from 'react-router-dom';
-import { useStore, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import Playground from '../components/Playground';
 import NotFound from '../components/NotFound';
@@ -14,7 +14,6 @@ import { StyledHomeButton } from '../components/styles/StyledHomeButton';
 
 
 const App = () => {
-  const store = useStore();
   const dispatch = useDispatch();
 
   const [isAlert, setIsAlert] = useState(false);

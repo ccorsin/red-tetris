@@ -43,6 +43,7 @@ const Spectrum = ({ stage, players, playerCount }) => {
 
 	useEffect(() => {
 		spectreOrder();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [players]);
 
 	return (
