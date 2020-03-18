@@ -20,22 +20,15 @@ const Tetris = ({ socket, room, playerCount }) => {
   const [nextTetromino, setNextTetromino] = useState([]);
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
+  const [spectrum, setSpectrum] = useState("");
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
-  const [stage, setStage, rowsCleared] = useStage(player, resetPlayer, gameOver, room, socket);
+  const [stage, setStage, rowsCleared, spectre, getSpectreHigh, sendSmash, setSendSmash] = useStage(player, resetPlayer, gameOver, room, socket);
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared);
   const dispatch = useDispatch();
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
   const store = useStore();
   let players = store.getState().sock.players;
   let tetriminos = store.getState().tetriminos.tetriminos;
-
-  const collide = (playerData) => {
-
-    const newCurrentPlayer = {...currentPlayer, round: currentPlayer.round + 1}
-    dispatch({ type: "ADD_ROUND", currentPlayer: newCurrentPlayer });
-    dispatch({ type: "COLLISION", player: playerData, room, socket })
-    setNextTetromino(tetriminos[currentPlayer.round + 1]);
-  };
 
   const startGame = (currentPlayer, tetriminos) => {
     // Reset everything
@@ -63,26 +56,8 @@ const Tetris = ({ socket, room, playerCount }) => {
     }
   };
 
-  const getSpectreHigh = () => {
-    let spectre = [];
-    stage.forEach((row, y) => {
-      row.forEach((cell, x) => {
-        if (cell[0] !== 0) {
-          if (spectre[x] === undefined) {
-            spectre[x] = y;
-          }
-        }
-        if (y === 19) {
-          if (cell[0] === 0 && spectre[x] === undefined) {
-            spectre[x] = y;
-          }
-        }
-      })
-    })
-    return spectre;
-  };
-
   const drop = () => {
+    getSpectreHigh();
     // Increase level when player has cleared 10 rows
     if (rows > (level + 1) * 10) {
       setLevel(prev => prev + 1);
@@ -102,7 +77,6 @@ const Tetris = ({ socket, room, playerCount }) => {
         }
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
-      const spectre = getSpectreHigh();
       const playerData = { ...currentPlayer, spectre };
       collide(playerData);
     }
@@ -145,18 +119,39 @@ const Tetris = ({ socket, room, playerCount }) => {
     }
   };
 
-  let spectrum = "";
-  if (playerCount > 1 && players) {
-    spectrum = <Spectrum stage={createStage()} players={players} playerCount={playerCount}/>
-  }
+  useEffect(() => {
+    if (playerCount > 1 && players) {
+      setSpectrum(<Spectrum stage={createStage()} players={players} playerCount={playerCount}/>);
+    }
+  }, [players]);
 
+  const collide = (playerData) => {
+    const newCurrentPlayer = { ...currentPlayer, round: currentPlayer.round + 1 }
+    dispatch({ type: "ADD_ROUND", currentPlayer: newCurrentPlayer });
+    dispatch({ type: "COLLISION", player: playerData, room, socket })
+    setNextTetromino(tetriminos[currentPlayer.round + 1]);
+  };
+
+  useEffect(() => {
+    if (socket !== undefined) {
+      const playerData = { ...currentPlayer, score: score, rows: rows, level: level };
+      dispatch({ type: 'SET_SCORE', player: playerData, room: room, socket });
+      if (sendSmash > 0) {
+        getSpectreHigh();
+        const playerData = { ...currentPlayer, spectre: spectre, smashed: sendSmash };
+        dispatch({ type: 'SMASH', player: playerData, room: room, socket });
+        setSendSmash(0);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [score, rows, level, sendSmash]);
 
   useEffect(() => {
     // TO DO debug mess on freeze
-    // socket.on('freeze', function () {
-      // variable freeze pour eviter le drop ?
-    // });
     if (socket !== undefined) {
+      // socket.on('freeze', function ()
+      //   // variable freeze pour eviter le drop ?
+      // });
       socket.on('start_game', function () {
         const currentPlayer = store.getState().sock.currentPlayer;
         const tetriminos = store.getState().tetriminos.tetriminos;

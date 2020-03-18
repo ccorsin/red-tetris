@@ -15,7 +15,7 @@ const Spectrum = ({ stage, players, playerCount }) => {
 			for (let spectre of spectres) {
 				if (y >= spectre.spectre[x] && spectre.id !== currentPlayer.id) {
 					color = spectre.color;
-					if (spectre.spectre[x] === 19 && y === 19) {
+					if (spectre.spectre[x] === 20 && y === 20) {
 						color = '0, 0, 0';
 					}
 					break;
@@ -32,7 +32,7 @@ const Spectrum = ({ stage, players, playerCount }) => {
 		if (players) {
 			for (let i = 0; i < tmp.length; i++) {
 				var target = tmp[i];
-					for (var j = i - 1; j >= 0 && (tmp[j].rows < target.rows); j--) {
+					for (var j = i - 1; j >= 0 && (tmp[j].score < target.score); j--) {
 						tmp[j + 1] = tmp[j];
 					}
 				tmp[j + 1] = target

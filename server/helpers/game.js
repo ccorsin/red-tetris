@@ -20,7 +20,7 @@ class Game {
         return -1;
     }
   updateScore(player) {
-    this.players[this.isPlayer(this.players, player)].set_score(player.round, player.rows, player.level);
+    this.players[this.isPlayer(this.players, player)].set_score(player.score, player.rows, player.level);
   }
 
     add_tetriminos() {
@@ -35,15 +35,15 @@ class Game {
     }
 
     freeze_players(player) {
-        for (let i = 0; i < this.players.length; i++) {
-            if (i != this.isPlayer(this.players, player)) {
-              this.players[i].add_freeze();
-              this.players[i].add_line();
-            }
-            else {
-              this.players[i].remove_line();
-            }
+      for (let i = 0; i < this.players.length; i++) {
+        if (i != this.isPlayer(this.players, player)) {
+          this.players[i].add_freeze(player.smashed);
+          this.players[i].add_line(player.smashed);
         }
+        else {
+          this.players[i].remove_line(player.smashed);
+        }
+      }
     }
 
     update_player(player) {

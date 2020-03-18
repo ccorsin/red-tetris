@@ -1,28 +1,43 @@
 import { useState, useEffect } from 'react';
 import { createStage } from '../gameHelpers';
 import { useSelector, useDispatch, useStore } from 'react-redux'
-import { useGameStatus } from './useGameStatus';
 
 export const useStage = (player, resetPlayer, gameOver, room, socket) => {
   const [stage, setStage] = useState(createStage());
+  const [spectre, setSpectre] = useState(stage);
   const [rowsCleared, setRowsCleared] = useState(0);
-  const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared);
+  const [sendSmash, setSendSmash] = useState(0);
+
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
   const tetriminos = useSelector(state => state.tetriminos.tetriminos);
   const store = useStore();
-  const dispatch = useDispatch();
+
+  const getSpectreHigh = () => {
+    let tmp = [];
+    stage.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (cell[0] !== 0) {
+          if (tmp[x] === undefined) {
+            tmp[x] = y;
+          }
+        }
+        if (y === 19) {
+          if (cell[0] === 0 && tmp[x] === undefined) {
+            tmp[x] = 20;
+          }
+        }
+      })
+    })
+    setSpectre(tmp);
+  };
+
+  useEffect(() => {
+    getSpectreHigh();
+  }, [stage]);
 
   useEffect(() => {
     if (socket !== undefined) {
-      const playerData = { ...currentPlayer, score: score, rows: rows, level: level };
-      dispatch({ type: 'SET_SCORE', player: playerData, room: room, socket });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [score, rows, level]);
-
-  useEffect(() => {
-    if (socket !== undefined) {
-      socket.on('freeze', function () {
+      socket.on('freeze', function (n) {
         const currPlayer = store.getState().sock.currentPlayer;
         const addLine = prev => {
           prev.shift();
@@ -30,7 +45,9 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
           return prev;
         }
         if (currPlayer.freeze > 0 && !gameOver)
-          setStage(prev => addLine(prev));
+          for (let i = 0; i < n; i++) {
+            setStage(prev => addLine(prev));
+          }
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -45,7 +62,7 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
             if (!gameOver) {
               setRowsCleared(prev => prev + 1);
               ack.unshift(new Array(newStage[0].length).fill([0, 'clear']));
-              dispatch({ type: 'SMASH', player: currentPlayer, room: room, socket });
+              setSendSmash(prev => prev += 1);
             }
             return ack;
           }
@@ -53,22 +70,22 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
           return ack;
       }, []);
 
-      const updateStage = prevStage => {
-        // First flush the stage
-        const newStage = prevStage.map(row =>
-          row.map(cell => (cell[1] === 'clear' ? [0, 'clear'] : cell))
-        );
-        // Then draw the tetromino
-        player.tetromino.forEach((row, y) => {
-          row.forEach((value, x) => {
-            if (value !== 0) {
-              newStage[y + player.pos.y][x + player.pos.x] = [
-                value,
-                `${player.collided ? 'merged' : 'clear'}`,
-              ];
-            }
-          });
+    const updateStage = prevStage => {
+      // First flush the stage
+      const newStage = prevStage.map(row =>
+        row.map(cell => (cell[1] === 'clear' ? [0, 'clear'] : cell))
+      );
+      // Then draw the tetromino
+      player.tetromino.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value !== 0) {
+            newStage[y + player.pos.y][x + player.pos.x] = [
+              value,
+              `${player.collided ? 'merged' : 'clear'}`,
+            ];
+          }
         });
+      });
 
       // Then check if we got some score if collided
       if (player.collided) {
@@ -92,5 +109,5 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
     resetPlayer,
   ]);
 
-  return [stage, setStage, rowsCleared];
+  return [stage, setStage, rowsCleared, spectre, getSpectreHigh, sendSmash, setSendSmash];
 };

@@ -2,7 +2,7 @@ class Player {
 	constructor (name, id) {
 		this.name = name;
 		this.id = id;
-		this.spectre = [];
+		this.spectre = [20, 20, 20, 20, 20, 20, 20, 20, 20, 20];
 		this.round = 0;
 		this.freeze = 0;
 		this.loser = false;
@@ -12,8 +12,8 @@ class Player {
 		this.level = 0;
 	}
 
-	set_score(round, rows, level) {
-		this.round = round;
+	set_score(score, rows, level) {
+		this.score = score;
 		this.rows = rows;
 		this.level = level;
 	}
@@ -22,30 +22,35 @@ class Player {
 		this.round += 1;
 	}
 
-	add_freeze() {
-		this.freeze += 1;
+	add_freeze(n) {
+		if (this.freeze + n <= 20)
+			this.freeze += n;
+		else
+			this.freeze = 20;
 	}
 
 	set_spectre(spectre) {
 		this.spectre = spectre;
 	}
 
-	add_line() {
-		this.spectre.map(e => {
-			if (e < 19)
-				return e + 1;
+	add_line(n) {
+		let tmp = this.spectre;
+		this.spectre = tmp.map(e => {
+			if (e - n >= 0)
+				return e - n;
 			else
-				return 20;
+				return 0;
 		});
 	}
 
-	remove_line() {
-		this.spectre.map(e => {
-			if (e > 0)
-				return e - 1;
+	remove_line(n) {
+		let tmp = this.spectre;
+		this.spectre = tmp.map(e => {
+			if (e + n <= 20)
+				return e + n;
 			else
 				return e;
-		});
+			});
 	}
 
 	lose() {

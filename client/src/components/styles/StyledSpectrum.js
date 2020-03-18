@@ -3,20 +3,17 @@ import styled from 'styled-components';
 export const StyledSpectrum = styled.div`
   display: flex;
   flex-direction: column;
-  margin: auto;
+  margin-left: 2vw;
   border: 1px solid white;
 
   @media (max-width: 1025px) {
-    margin: 0;
   }
-`;
+  `;
 
 export const StyledAdversity = styled.div`
   display: flex;
   flex-direction: row;
-  flex-direction: row;
-  justify-content: space-around;
-    width: 100%;
+  width: 100%;
 `;
 
 export const StyledRow = styled.div`
@@ -37,5 +34,4 @@ export const StyledNameLabel = styled.div`
 export const StyledNameColumn = styled.div`
   display: flex;
   flex-direction: column;
-      margin-right: 1vw
 `;

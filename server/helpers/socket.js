@@ -63,28 +63,29 @@ class Socket {
                     });
                 }
                 socket.emit('player', player);
-                socket.on('set_score', (player, room) => {
+                socket.on('set_score', (person, room) => {
                     const curGame = this.games.games[this.isRoom(this.games.games, room)];
-                    curGame.updateScore(player);
+                    curGame.updateScore(person);
+                    this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
                 });
-                socket.on('collision', (player, room) => {
-                    const { curGame, need_refill } = this.games.collision(this.isRoom(this.games.games, room), player)
+                socket.on('collision', (person, room) => {
+                    const { curGame, need_refill } = this.games.collision(this.isRoom(this.games.games, room), person)
                     this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
                     if (need_refill) {
                         this.io.sockets.in(room).emit('refill', curGame.tetriminos);
                     }
                 });
-                socket.on('game_over', (player, room) => {
-                    const { curGame, winner } = this.games.game_over(this.isRoom(this.games.games, room), player);
+                socket.on('game_over', (person, room) => {
+                    const { curGame, winner } = this.games.game_over(this.isRoom(this.games.games, room), person);
                     if (winner) {
                         this.io.sockets.in(room).emit('win', winner);
                     }
                     this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
                 });
-                socket.on('smash', (player, room) => {
-                    const curGame = this.games.smash_player(this.isRoom(this.games.games, room), player)
+                socket.on('smash', (person, room) => {
+                    const curGame = this.games.smash_player(this.isRoom(this.games.games, room), person);
                     this.io.sockets.in(room).emit('players', curGame.leader.name, curGame.players);
-                    socket.broadcast.to(room).emit('freeze');
+                    socket.broadcast.to(room).emit('freeze', person.smashed);
                 });
             });
             socket.on('start', room => {
@@ -96,7 +97,6 @@ class Socket {
             });
             socket.on('end', room => {
                 this.games.end_one_game(this.isRoom(this.games.games, room))
-
             });
             socket.on('reset', room => {
                 this.games.reset_one_game(this.isRoom(this.games.games, room))

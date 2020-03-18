@@ -14,4 +14,5 @@ export const StyledHomeButton = styled.button`
     position: absolute;
     font-size: 3em;
     bottom: 0;
+    right: 0;
 `;

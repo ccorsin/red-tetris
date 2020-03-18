@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-// justify-content: space-around;
-// margin: 1vh 0vw 0vh 0vw;
 export const StyledTetrisWrapper = styled.div`
   min-width: 300px;
   display: flex;
@@ -26,10 +24,12 @@ export const StyledGO = styled.div`
 export const StyledTetrisAside = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 2vw;
+  padding-left: 2vw;
 
   @media (max-width: 1025px) {
     padding-top: 2vh;
+    padding-left: 0vw;
+    padding-right: 2vw;
     justify-content: space-between;
   }
 `;
@@ -44,6 +44,7 @@ export const StyledTetrisGameBar = styled.div`
   flex-direction: column;
   height: auto;
   margin: 0em 0em 0em 1em;
+  width: fit-content;
 
 `;
     // @media (min-width: 1025px) {
