@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Menu/> Component rendering correctly Menu 1`] = `"<div class=\\"sc-AxjAm dQSdpZ\\"><div class=\\"sc-AxirZ cfHwMP\\"><span class=\\"menu_label\\">TAKE A ROOM NUMBER</span><div class=\\"menu_input\\"><input type=\\"text\\" placeholder=\\"PLAYER\\"/><span class=\\"error-number-required\\">ONLY LETTERS OR NUMBERS</span></div><div class=\\"menu_input\\"><input type=\\"text\\" placeholder=\\"ROOM\\"/><span class=\\"error-number-required\\">ONLY NUMBERS</span></div><div class=\\"menu_input\\"><button class=\\"button-to-game\\" disabled=\\"\\">PLAY</button></div></div></div>"`;

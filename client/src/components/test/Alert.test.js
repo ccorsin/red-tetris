@@ -10,4 +10,12 @@ describe('<Alert/> Component', () => {
     )
     expect(toJson(wrapper)).toMatchSnapshot()
   })
+
+  // it('turn off alert on click', () => {
+  //   const mockTurnoffAlert = jest.fn();
+  //   const wrapper = shallow(<Alert message='alert' turnOffAlert={mockTurnoffAlert}/>);
+  //   console.log(wrapper.find('.styled.button'))
+  //   wrapper.find(styled.button).simulate('click');
+  //   expect(mockTurnoffAlert).toHaveBeenCalled();
+  // })
 })
