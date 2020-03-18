@@ -22,7 +22,7 @@ const Tetris = ({ socket, room, playerCount }) => {
   const [gameOver, setGameOver] = useState(false);
   const [spectrum, setSpectrum] = useState("");
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
-  const [stage, setStage, rowsCleared, spectre, getSpectreHigh, sendSmash, setSendSmash] = useStage(player, resetPlayer, gameOver, room, socket);
+  const [stage, setStage, rowsCleared, spectre, getSpectreHigh, sendSmash, setSendSmash] = useStage(player, resetPlayer, gameOver);
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared);
   const dispatch = useDispatch();
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
@@ -149,9 +149,19 @@ const Tetris = ({ socket, room, playerCount }) => {
   useEffect(() => {
     // TO DO debug mess on freeze
     if (socket !== undefined) {
-      // socket.on('freeze', function ()
-      //   // variable freeze pour eviter le drop ?
-      // });
+      // variable freeze pour eviter le drop ?
+      socket.on('freeze', function (n) {
+        const currentPlayer = store.getState().sock.currentPlayer;
+        const addLine = prev => {
+          prev.shift();
+          prev.push(new Array(prev[0].length).fill([1, 'frozen']));
+          return prev;
+        }
+        if (currentPlayer.freeze > 0 && !gameOver)
+          for (let i = 0; i < n; i++) {
+            setStage(prev => addLine(prev));
+          }
+      });
       socket.on('start_game', function () {
         const currentPlayer = store.getState().sock.currentPlayer;
         const tetriminos = store.getState().tetriminos.tetriminos;

@@ -10,6 +10,7 @@ class Player {
 		this.rows = 0;
 		this.score = 0;
 		this.level = 0;
+		this.smashed = 0;
 	}
 
 	set_score(score, rows, level) {
@@ -49,7 +50,7 @@ class Player {
 			if (e + n <= 20)
 				return e + n;
 			else
-				return e;
+				return 20;
 			});
 	}
 

@@ -108,8 +108,9 @@ const Player = require("../helpers/player");
     });
 
     it('add freeze line to other players', () => {
-        player1.add_line();
-        player2.add_line();
+        player1.add_line(1);
+        player2.add_line(1);
+        player1.smashed = 1;
         const game = new Game(player1, 42);
         game.add_player(player2);
         game.freeze_players(player1);
@@ -123,7 +124,8 @@ const Player = require("../helpers/player");
             level: 0,
             rows: 0,
             score: 0,
-            spectre: []
+            smashed: 1,
+            spectre: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
         });
         expect(game.players[1]).toEqual({
             name: 'p2',
@@ -135,7 +137,8 @@ const Player = require("../helpers/player");
             level: 0,
             rows: 0,
             score: 0,
-            spectre: []
+            smashed: 0,
+            spectre: [18, 18, 18, 18, 18, 18, 18, 18, 18, 18]
         });
     });
 
@@ -153,7 +156,8 @@ const Player = require("../helpers/player");
             level: 0,
             rows: 0,
             score: 0,
-            spectre: []
+            smashed: 0,
+            spectre: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
         });
         expect(game.players[1]).toEqual({
             name: 'p2',
@@ -165,7 +169,8 @@ const Player = require("../helpers/player");
             level: 0,
             rows: 0,
             score: 0,
-            spectre: []
+            smashed: 0,
+            spectre: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
         });
     });
 
@@ -183,7 +188,8 @@ const Player = require("../helpers/player");
             level: 0,
             rows: 0,
             score: 0,
-            spectre: []
+            smashed: 0,
+            spectre: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
         });
     });
 
@@ -217,7 +223,7 @@ const Player = require("../helpers/player");
         game.game_over_player(player1);
         expect(game.check_winner()).toEqual(player2);
     });
-    
+
     it('should reset game', () => {
         const game = new Game(player1, 42);
         game.add_player(player2);

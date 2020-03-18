@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { createStage } from '../gameHelpers';
-import { useSelector, useDispatch, useStore } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-export const useStage = (player, resetPlayer, gameOver, room, socket) => {
+export const useStage = (player, resetPlayer, gameOver) => {
   const [stage, setStage] = useState(createStage());
   const [spectre, setSpectre] = useState(stage);
   const [rowsCleared, setRowsCleared] = useState(0);
@@ -10,7 +10,6 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
 
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
   const tetriminos = useSelector(state => state.tetriminos.tetriminos);
-  const store = useStore();
 
   const getSpectreHigh = () => {
     let tmp = [];
@@ -34,24 +33,6 @@ export const useStage = (player, resetPlayer, gameOver, room, socket) => {
   useEffect(() => {
     getSpectreHigh();
   }, [stage]);
-
-  useEffect(() => {
-    if (socket !== undefined) {
-      socket.on('freeze', function (n) {
-        const currPlayer = store.getState().sock.currentPlayer;
-        const addLine = prev => {
-          prev.shift();
-          prev.push(new Array(prev[0].length).fill([1, 'frozen']));
-          return prev;
-        }
-        if (currPlayer.freeze > 0 && !gameOver)
-          for (let i = 0; i < n; i++) {
-            setStage(prev => addLine(prev));
-          }
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [socket]);
 
   useEffect(() => {
     setRowsCleared(0);
