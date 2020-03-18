@@ -131,7 +131,6 @@ const Tetris = ({ socket, room, playerCount }) => {
     dispatch({ type: "COLLISION", player: playerData, room, socket })
     setNextTetromino(tetriminos[currentPlayer.round + 1]);
   };
-
   useEffect(() => {
     if (socket !== undefined) {
       const playerData = { ...currentPlayer, score: score, rows: rows, level: level };
