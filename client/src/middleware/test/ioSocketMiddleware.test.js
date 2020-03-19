@@ -91,4 +91,9 @@ describe('Testing ioSocketMiddleware', () => {
         const action = { type: 'TOGGLE_RUNNING'}
         ioSocketMiddleWare(store)(next)(action);
     });
+
+    it('should return', () => {
+        const action = { type: 'BLA'}
+        ioSocketMiddleWare(store)(next)(action);
+    });
 });
