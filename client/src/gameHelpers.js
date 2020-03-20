@@ -42,16 +42,3 @@ export const checkCollision = (player, stage, { x: moveX, y: moveY }) => {
   // 5. If everything above is false
   return false;
 };
-
-export const tetriminosHeight = (tetromino) => {
-  let height = 0;
-  tetromino.forEach(row => {
-    let count = 0;
-    row.map(cell => {
-      count += cell[0] === undefined ? 1 : 0;
-      return true;
-    });
-    height += count === row.length ? 0 : 1;
-  });
-  return height;
-};
