@@ -10,12 +10,11 @@
     "server:test": "npm run test --prefix ./server/",
     "server:coverage": "npm run coverage --prefix ./server/",
     "client:test": "npm run test --prefix ./client/",
+    "coverage:all": "npm run coverage --prefix ./client/ && npm run coverage --prefix ./server/",
     "client:coverage": "npm run coverage --prefix ./client/",
     "set-app": "npm install --prefix ./client/ && npm install --prefix ./server/"
   },
   "dependencies": {
-    "react": "^16.13.0",
-    "react-dom": "^16.13.0"
   },
   "devDependencies": {}
 }
