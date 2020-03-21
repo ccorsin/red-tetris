@@ -231,4 +231,28 @@ const Player = require("../helpers/player");
         game.reset_game();
         expect(game.tetriminos).toEqual([]);
     });
+
+    it('should update score', () => {
+        const game = new Game(player1, 42);
+        const player = {
+            id: 'a',
+            rows: 2,
+            level: 2,
+            score: 200
+        }
+        game.updateScore(player);
+        expect(game.players[0]).toEqual({
+            name: 'p1',
+            id: 'a',
+            round: 0,
+            loser: false,
+            color: player1.color,
+            freeze: 0,
+            level: 2,
+            rows: 2,
+            score: 200,
+            smashed: 0,
+            spectre: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
+        });
+    });
  });

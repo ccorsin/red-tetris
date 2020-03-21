@@ -107,6 +107,24 @@ describe('Player class is made to represent a player, store its name and socket 
        });
    });
 
+   it('should cap n lines to player', () => {
+    player.set_spectre([20, 20, 20, 20, 20, 20, 20, 20, 20, 20]);
+    player.add_line(45);
+    expect(player).toEqual({
+         name: 'name',
+         id: 42,
+         round: 0,
+         loser: false,
+         color: player.color,
+         freeze: 0,
+         level: 0,
+         rows: 0,
+         score: 0,
+         smashed: 0,
+         spectre: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    });
+});
+
    it('should remove 1 line to player', () => {
        player.set_spectre([15, 15, 15, 15, 15, 15, 15, 15, 15, 15]);
        player.remove_line(1);
@@ -160,7 +178,8 @@ describe('Player class is made to represent a player, store its name and socket 
         });
    });
 
-   it('should freeze 1 line to player', () => {
+   it('freeze should not go over 20', () => {
+       player.freeze = 21;
        player.add_freeze(1);
        expect(player).toEqual({
            name: 'name',
@@ -168,7 +187,7 @@ describe('Player class is made to represent a player, store its name and socket 
            round: 0,
            loser: false,
            color: player.color,
-           freeze: 1,
+           freeze: 20,
            level: 0,
            rows: 0,
            score: 0,
@@ -176,6 +195,23 @@ describe('Player class is made to represent a player, store its name and socket 
            spectre: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
         });
    });
+
+   it('should freeze 1 line to player', () => {
+    player.add_freeze(1);
+    expect(player).toEqual({
+        name: 'name',
+        id: 42,
+        round: 0,
+        loser: false,
+        color: player.color,
+        freeze: 1,
+        level: 0,
+        rows: 0,
+        score: 0,
+        smashed: 0,
+        spectre: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
+     });
+});
 
    it('should become a winner', () => {
        player.win();

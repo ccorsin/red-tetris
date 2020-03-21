@@ -67,14 +67,12 @@ describe('Testing backend answer from front emit actions', () => {
   });
 
   it('player creating new room', (done) => {
-      ClientSocket.on('message', (message) => {
-        expect(message).toBe('Welcome to the game #42 p !');
-        done();
-      });
       expect(sockets.games.games).toHaveLength(0);
-      ClientSocket.emit('room', '42', 'p');
+      ClientSocket.emit('room', '42', 'p1');
+      ClientSocket.emit('start', '42');
       setTimeout(() => {
-        expect(sockets.games.games).toHaveLength(0);
+        expect(sockets.games.games).toHaveLength(1);
+        done();
       }, 50);
   });
 
@@ -103,6 +101,7 @@ describe('Testing backend answer from front emit actions', () => {
       ClientSocket.emit('room', '42', 'p1');
       ClientSocket.emit('start', '42');
       setTimeout(() => {
+        expect(sockets.games.games[0].running).toBe(true);
         done();
       }, 50);
   });

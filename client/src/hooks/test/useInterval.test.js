@@ -1,5 +1,5 @@
-import React from 'react'
-import { useInterval } from '../useInterval'
+import React from 'react';
+import { useInterval } from '../useInterval';
 import { renderHook, act } from '@testing-library/react-hooks';
 
 describe('The useGameStatus hook', () => {
