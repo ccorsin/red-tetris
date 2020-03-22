@@ -19,7 +19,7 @@ const Menu = () => {
         setRoomNb(value);
       } else {
         setRoomIsValid(false);
-        setRoomNb("");
+        // setRoomNb("");
       }
   };
 
@@ -29,7 +29,7 @@ const Menu = () => {
       setPlayer(value);
     } else {
       setPlayerIsValid(false);
-      setPlayer("PLAYER");
+      // setPlayer("");
     }
   };
 
@@ -49,15 +49,17 @@ const Menu = () => {
         <span className="menu_label">TAKE A ROOM NUMBER</span>
         <div className="menu_input">
             <input
+              value={player}
               type="text"
               placeholder="PLAYER"
               onChange={e => checkPlayer(e.target.value)}
             />
-            <span className="error-number-required">ONLY LETTERS OR NUMBERS</span>
+          <span className="error-char-required" test="player">ONLY LETTERS OR NUMBERS</span>
         </div>
         <div className="menu_input">
             <input
-              type="text"
+            value={roomNb}
+            type="text"
               placeholder="ROOM"
               onChange={e => checkRoom(e.target.value)}
             />

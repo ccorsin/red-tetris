@@ -104,6 +104,8 @@ const Tetris = ({ socket, room, playerCount }) => {
 
   const move = (e) => {
     e.preventDefault();
+    // a retirer
+    setDropTime(100);
     if (!gameOver) {
       if (e.keyCode === 37) {
         movePlayer(-1);
