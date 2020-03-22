@@ -104,8 +104,6 @@ const Tetris = ({ socket, room, playerCount }) => {
 
   const move = (e) => {
     e.preventDefault();
-    // a retirer
-    setDropTime(100);
     if (!gameOver) {
       if (e.keyCode === 37) {
         movePlayer(-1);
@@ -201,20 +199,19 @@ const Tetris = ({ socket, room, playerCount }) => {
 
   return (
     <StyledTetrisWrapper
-      data-testid="tetetetris"
       role="button"
       tabIndex="0"
       onKeyDown={e => move(e)}
       onKeyUp={keyUp}
     >
-      <StyledTetris data-testid="myTetris">
+      <StyledTetris>
           <Stage stage={stage} currentPlayer={currentPlayer}/>
         {gameOver ? (
-          <StyledGO data-testid="myGO">
+          <StyledGO>
             <Display text="Game Over" />
           </StyledGO>
         ) : (
-            <StyledTetrisGameBar data-testid="myGB">
+            <StyledTetrisGameBar>
               <DisplayTetromino text={`NEXT`} tetro={nextTetromino}/>
               <Display text={`SCORE`} number={score} />
               <Display text={`ROWS`} number={rows} />
@@ -222,7 +219,7 @@ const Tetris = ({ socket, room, playerCount }) => {
           </StyledTetrisGameBar>
           )}
       </StyledTetris>
-      <StyledTetrisAside data-testid="Tetris">
+      <StyledTetrisAside>
         {spectrum}
       </StyledTetrisAside>
     </StyledTetrisWrapper>

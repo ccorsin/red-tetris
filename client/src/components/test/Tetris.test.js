@@ -37,14 +37,6 @@ export const store = createStore(
 describe('<Tetris/> Component', () => {
   const socket = io('http://0.0.0.0:3504');
 
-  it('rendering correctly with no shapes', () => {
-    const div = document.createElement('div')
-    ReactDom.render(
-      <Provider store={store}>
-        <Tetris socket={socket} room={42} playerCount={0} />
-      </Provider>, div)
-    ReactDom.unmountComponentAtNode(div)
-  });
   it('renders without crashing', () => {
     let wrapper = shallow(
       <Provider store={store}>
@@ -53,24 +45,6 @@ describe('<Tetris/> Component', () => {
     )
     expect(wrapper.html()).toMatchSnapshot()
   });
-  // it("button role doesn't exist", () => {
-  //   const { queryByTestId } = render(
-  //     <Provider store={store}>
-  //       <Tetris socket={socket} room={42} playerCount={0}/>
-  //     </Provider>);
-  //   // expect(queryByTestId(/myTetris/i)).toBe(<Stage></Stage><div></div>);
-  //   // expect(queryByTestId(/myGB/i)).toBe(<div></div>);
-  //   // expect(queryByTestId(/otherTetris/i)).toBe(<div></div>);
-  //   // expect(queryByTestId(/myGO/i)).toBeNull();
-  // });
-
-  // it("gamebar text at initialization", () => {
-  //   const { getByTestId, getAllByTestId } = render(
-  //     <Provider store={store}>
-  //       <Tetris socket={socket} room={42} playerCount={1} />
-  //     </Provider>);
-  //   expect(getByTestId(/myGB/i).textContent).toBe("NEXTSCORE0ROWS0LEVEL0");
-  // });
 
   let wrapper;
   const setState = jest.fn();
@@ -156,37 +130,8 @@ describe('<Tetris/> Component', () => {
   //     console.log(onKeyUp.called) // [Function]
   //     // expect(onKeyDown).toHaveBeenCalled();  //  // Matcher error: received value must be a mock or spy function / Received has type: function / Received has value: [Function anonymous]
   //     expect(onKeyUp.called).toBe(true);
+  // .to.have.been.calledWith(key);
   //   });
   // });
 
-  it('test component attributes', () => {
-      const wrapper = mount(
-      <Provider store={store}>
-        <Tetris socket={socket} room={42} playerCount={1} />
-      </Provider>
-    );
-    expect(wrapper.find('Tetris').props()).toEqual({
-      playerCount: 1,
-      room: 42,
-      socket: socket,
-      // role: "button",
-      // tabIndex: "0",
-  //     onKeyDown:  expect.any(Function),
-  //     onKeyUp:  expect.any(Function)
-    });
-  });
-
-
-  it('It should simulate keydown events', () => {
-    const { getByTestId } = render(
-      <Provider store={store}>
-        <Tetris socket={socket} room={42} playerCount={1} />
-      </Provider>);
-      expect(getByTestId('tetetetris')).toHaveAttribute('role');
-      expect(getByTestId('tetetetris')).toHaveAttribute('tabIndex');
-      // expect(getByTestId('tetetetris')).toHaveAttribute('onKeyDown', onKeyDown);
-      // expect(getByTestId('tetetetris')).toHaveAttribute('onKeyUp');
-    });
-
-  // })
 })
