@@ -132,6 +132,7 @@ const Tetris = ({ socket, room, playerCount }) => {
     dispatch({ type: "COLLISION", player: playerData, room, socket })
     setNextTetromino(tetriminos[currentPlayer.round + 1]);
   };
+
   useEffect(() => {
     if (socket !== undefined) {
       const playerData = { ...currentPlayer, score: score, rows: rows, level: level };
@@ -198,19 +199,20 @@ const Tetris = ({ socket, room, playerCount }) => {
 
   return (
     <StyledTetrisWrapper
+      data-testid="tetetetris"
       role="button"
       tabIndex="0"
       onKeyDown={e => move(e)}
       onKeyUp={keyUp}
     >
-      <StyledTetris>
+      <StyledTetris data-testid="myTetris">
           <Stage stage={stage} currentPlayer={currentPlayer}/>
         {gameOver ? (
-          <StyledGO>
+          <StyledGO data-testid="myGO">
             <Display text="Game Over" />
           </StyledGO>
         ) : (
-          <StyledTetrisGameBar>
+            <StyledTetrisGameBar data-testid="myGB">
               <DisplayTetromino text={`NEXT`} tetro={nextTetromino}/>
               <Display text={`SCORE`} number={score} />
               <Display text={`ROWS`} number={rows} />
@@ -218,7 +220,7 @@ const Tetris = ({ socket, room, playerCount }) => {
           </StyledTetrisGameBar>
           )}
       </StyledTetris>
-      <StyledTetrisAside>
+      <StyledTetrisAside data-testid="Tetris">
         {spectrum}
       </StyledTetrisAside>
     </StyledTetrisWrapper>
