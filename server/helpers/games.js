@@ -62,6 +62,9 @@ class Games {
             ran = this.games[index].running;
             this.games[index].remove_player(player);
             if (this.games[index].players.length > 0) {
+                if (player.id == this.games[index].leader.id) {
+                    this.games[index].leader = this.games[index].players[0]
+                }
                 winner = this.games[index].check_winner();
                 if (winner && this.games[index].running === true) {
                     winner.win();
