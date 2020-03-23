@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { createStage } from '../gameHelpers';
 import { useSelector } from 'react-redux'
 
-export const useStage = (player, resetPlayer, gameOver) => {
+export const useStage = (player, resetPlayer, gameOver, freezing, setFreezing) => {
   const [stage, setStage] = useState(createStage());
   const [spectre, setSpectre] = useState(stage);
   const [rowsCleared, setRowsCleared] = useState(0);
@@ -57,6 +57,21 @@ export const useStage = (player, resetPlayer, gameOver) => {
       const newStage = prevStage.map(row =>
         row.map(cell => (cell[1] === 'clear' ? [0, 'clear'] : cell))
       );
+
+    if (freezing[0] === true) {
+      const addLine = prev => {
+        prev.shift();
+        prev.push(new Array(prev[0].length).fill([1, 'frozen']));
+        return prev;
+      }
+      if (currentPlayer.freeze > 0 && !gameOver) {
+        for (let i = 0; i < freezing[1]; i++) {
+          setStage(prev => addLine(prev));
+        }
+      }
+      // setFreezing(false);
+    }
+
       // Then draw the tetromino
       player.tetromino.forEach((row, y) => {
         row.forEach((value, x) => {

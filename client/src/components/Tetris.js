@@ -18,11 +18,12 @@ import Spectrum from './Spectrum';
 
 const Tetris = ({ socket, room, playerCount }) => {
   const [nextTetromino, setNextTetromino] = useState([]);
+  const [freezing, setFreezing] = useState([false, 0]);
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [spectrum, setSpectrum] = useState("");
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
-  const [stage, setStage, rowsCleared, spectre, getSpectreHigh, sendSmash, setSendSmash] = useStage(player, resetPlayer, gameOver);
+  const [stage, setStage, rowsCleared, spectre, getSpectreHigh, sendSmash, setSendSmash] = useStage(player, resetPlayer, gameOver, freezing, setFreezing);
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared);
   const dispatch = useDispatch();
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
@@ -65,12 +66,18 @@ const Tetris = ({ socket, room, playerCount }) => {
       setDropTime(1000 / (level + 1) + 200);
     }
     if (!checkCollision(player, stage, { x: 0, y: 1 })) {
-      updatePlayerPos({ x: 0, y: 1, collided: false });
+      if (!(freezing[0] === true)) {
+        updatePlayerPos({ x: 0, y: 1, collided: false });
+      } else {
+          if (player.pos.y - 1 >= 0)
+            updatePlayerPos({ x: 0, y: -1, collided: false });
+          setFreezing([false, 0]);
+      }
     } else {
       if (player.pos.y < 1) {
         setGameOver(true);
         setDropTime(null);
-        dispatch({ type: 'GAME_OVER', player: currentPlayer, room, socket })
+        dispatch({ type: 'GAME_OVER', player: currentPlayer, room, socket });
         if (store.getState().sock.players.length === 1) {
           dispatch({ type: 'END', socket, room });
           dispatch({ type: "TOGGLE_RUNNING", isRunning: false });
@@ -148,20 +155,21 @@ const Tetris = ({ socket, room, playerCount }) => {
   }, [score, rows, level, sendSmash]);
 
   useEffect(() => {
-    // TO DO debug mess on freeze
     if (socket !== undefined) {
-      // variable freeze pour eviter le drop ?
       socket.on('freeze', function (n) {
-        const currentPlayer = store.getState().sock.currentPlayer;
-        const addLine = prev => {
-          prev.shift();
-          prev.push(new Array(prev[0].length).fill([1, 'frozen']));
-          return prev;
-        }
-        if (currentPlayer.freeze > 0 && !gameOver)
-          for (let i = 0; i < n; i++) {
-            setStage(prev => addLine(prev));
-          }
+        setFreezing([true, n]);
+        console.log("n")
+        console.log(n)
+        // const currentPlayer = store.getState().sock.currentPlayer;
+        // const addLine = prev => {
+        //   prev.shift();
+        //   prev.push(new Array(prev[0].length).fill([1, 'frozen']));
+        //   return prev;
+        // }
+        // if (currentPlayer.freeze > 0 && !gameOver)
+        //   for (let i = 0; i < n; i++) {
+        //     setStage(prev => addLine(prev));
+        //   }
       });
       socket.on('start_game', function () {
         const currentPlayer = store.getState().sock.currentPlayer;
