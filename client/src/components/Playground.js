@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useStore } from 'react-redux';
 import { useHistory } from "react-router-dom";
 
@@ -28,24 +28,24 @@ const Playground = ({ setIsAlert, setAlertMessage, setIsRunning }) => {
   }
 
   const [playerCount, setPlayerCount] = useState(1);
-  const [gameLeader, setGameLeader] = useState(username);
+  const [gameLeader, setGameLeader] = useState({name: username, id: 0});
   const dispatch = useDispatch();
   const store = useStore();
   const isRunning = store.getState().sock.isRunning;
 
-  const isLeader = username === gameLeader;
+  // const isLeader = (username === gameLeader.name);
+  const isLeaderRef = useRef(username === gameLeader.name);
 
-  if (isLeader && !isRunning) {
+  if (isLeaderRef.current && !isRunning) {
     commands = <span>You can start the game !</span>;
   } else if (!isRunning) {
-    commands = <span>Wait for {gameLeader} to start the game !</span>;
+    commands = <span>Wait for {gameLeader.name} to start the game !</span>;
   } else {
     commands = <span>Game is ON !</span>;
   }
 
   useEffect(() => {
     socket = io('http://0.0.0.0:3504');
-
     return () => {
       socket.close();
     }
@@ -57,6 +57,8 @@ const Playground = ({ setIsAlert, setAlertMessage, setIsRunning }) => {
       socket.on("players", function(leader, players) {
         setPlayerCount(players.length);
         setGameLeader(leader);
+        const isLeader = (socket.id === leader.id) || leader.id === 0;
+        isLeaderRef.current = isLeader;
         dispatch({ type: "UPDATE_PLAYERS", players });
         let currentPlayer = store.getState().sock.currentPlayer;
         let tmp = {};
@@ -87,7 +89,7 @@ const Playground = ({ setIsAlert, setAlertMessage, setIsRunning }) => {
     <StyledPlayground>
       <Header
         commands={commands}
-        isLeader={isLeader}
+        isLeader={isLeaderRef.current}
         room={room}
         socket={socket}
       />
