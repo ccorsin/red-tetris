@@ -21,6 +21,7 @@ const Tetris = ({ socket, room, playerCount }) => {
   const [freezing, setFreezing] = useState([false, 0]);
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
+  const [Victory, setVictory] = useState(false);
   const [spectrum, setSpectrum] = useState("");
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, rowsCleared, spectre, getSpectreHigh, sendSmash, setSendSmash] = useStage(player, resetPlayer, gameOver, freezing, setFreezing);
@@ -40,6 +41,7 @@ const Tetris = ({ socket, room, playerCount }) => {
     setLevel(0);
     setRows(0);
     setGameOver(false);
+    setVictory(false);
   };
 
   const keyUp = ({ keyCode }) => {
@@ -197,6 +199,7 @@ const Tetris = ({ socket, room, playerCount }) => {
       socket.on("win", function (player) {
         dispatch({ type: 'WINNER', player, socket, room });
         dispatch({ type: "TOGGLE_RUNNING", isRunning: false });
+        setVictory(true);
         setDropTime(null);
       });
     }
@@ -216,14 +219,18 @@ const Tetris = ({ socket, room, playerCount }) => {
           <StyledGO>
             <Display text="Game Over" />
           </StyledGO>
-        ) : (
+        ) : (Victory ? (
+          <StyledGO>
+            <Display text="Winner !" />
+          </StyledGO>
+          ) : (
             <StyledTetrisGameBar>
               <DisplayTetromino text={`NEXT`} tetro={nextTetromino}/>
               <Display text={`SCORE`} number={score} />
               <Display text={`ROWS`} number={rows} />
               <Display text={`LEVEL`} number={level} />
           </StyledTetrisGameBar>
-          )}
+        ))}
       </StyledTetris>
       <StyledTetrisAside>
         {spectrum}
