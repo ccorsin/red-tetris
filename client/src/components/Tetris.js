@@ -69,9 +69,19 @@ const Tetris = ({ socket, room, playerCount }) => {
       if (!(freezing[0] === true)) {
         updatePlayerPos({ x: 0, y: 1, collided: false });
       } else {
-          if (player.pos.y - 1 >= 0)
-            updatePlayerPos({ x: 0, y: -1, collided: false });
-          setFreezing([false, 0]);
+          if (player.pos.y - freezing[1] > 0 && checkCollision(player, stage, { x: 0, y: (player.pos.y + freezing[1]) }))
+            updatePlayerPos({ x: 0, y: -freezing[1], collided: false });
+          const addLine = prev => {
+          prev.shift();
+          prev.push(new Array(prev[0].length).fill([1, 'frozen']));
+          return prev;
+        }
+        if (currentPlayer.freeze > 0 && !gameOver)
+          for (let i = 0; i < freezing[1]; i++) {
+            setStage(prev => addLine(prev));
+          }
+        setFreezing([false, 0]);
+        updatePlayerPos({ x: 0, y: 1, collided: false });
       }
     } else {
       if (player.pos.y < 1) {
@@ -158,18 +168,6 @@ const Tetris = ({ socket, room, playerCount }) => {
     if (socket !== undefined) {
       socket.on('freeze', function (n) {
         setFreezing([true, n]);
-        console.log("n")
-        console.log(n)
-        // const currentPlayer = store.getState().sock.currentPlayer;
-        // const addLine = prev => {
-        //   prev.shift();
-        //   prev.push(new Array(prev[0].length).fill([1, 'frozen']));
-        //   return prev;
-        // }
-        // if (currentPlayer.freeze > 0 && !gameOver)
-        //   for (let i = 0; i < n; i++) {
-        //     setStage(prev => addLine(prev));
-        //   }
       });
       socket.on('start_game', function () {
         const currentPlayer = store.getState().sock.currentPlayer;
