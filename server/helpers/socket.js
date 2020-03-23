@@ -12,7 +12,7 @@ class Socket {
     isRoom(games, room) {
         for (var i = 0; i < games.length ; i++) {
             if (games[i].room == room) {
-            return i;
+                return i;
             }
         }
         return (-1);
