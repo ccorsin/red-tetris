@@ -46,7 +46,7 @@ class Socket {
                     socket.on('disconnect', () => {
                         process.stdout.write("Socket disconnected: " + socket.id + '\n');
                         socket.leave(room);
-                        const {curGame, winner, ran } = this.games.player_leaving(this.isRoom(this.games.games, room), player)
+                        const { curGame, winner, ran } = this.games.player_leaving(this.isRoom(this.games.games, room), player);
                             if (curGame !== undefined && curGame.players.length > 0) {
                                 this.io.sockets.in(room).emit('message', socket.username + ' has left the game');
                                 if (winner && ran === true) {
