@@ -89,7 +89,8 @@ const Tetris = ({ socket, room, playerCount }) => {
       if (player.pos.y < 1) {
         setGameOver(true);
         setDropTime(null);
-        dispatch({ type: 'GAME_OVER', player: currentPlayer, room, socket });
+        setStage(createStage());
+        dispatch({ type: 'GAME_OVER', player: currentPlayer, room, socket })
         if (store.getState().sock.players.length === 1) {
           dispatch({ type: 'END', socket, room });
           dispatch({ type: "TOGGLE_RUNNING", isRunning: false });
@@ -201,6 +202,7 @@ const Tetris = ({ socket, room, playerCount }) => {
         dispatch({ type: "TOGGLE_RUNNING", isRunning: false });
         setVictory(true);
         setDropTime(null);
+        setStage(createStage());
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
