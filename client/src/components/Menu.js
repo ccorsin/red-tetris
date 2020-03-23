@@ -9,7 +9,7 @@ import { regex } from "../utils/regex";
 const Menu = () => {
   const [playerIsValid, setPlayerIsValid] = useState(true);
   const [roomIsValid, setRoomIsValid] = useState(false);
-  const [player, setPlayer] = useState("PLAYER");
+  const [player, setPlayer] = useState("");
   const [roomNb, setRoomNb] = useState("");
   let history = useHistory();
 
