@@ -33,7 +33,6 @@ const Playground = ({ setIsAlert, setAlertMessage, setIsRunning }) => {
   const store = useStore();
   const isRunning = store.getState().sock.isRunning;
 
-  // const isLeader = (username === gameLeader.name);
   const isLeaderRef = useRef(username === gameLeader.name);
 
   if (isLeaderRef.current && !isRunning) {
