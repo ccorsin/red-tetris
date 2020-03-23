@@ -143,6 +143,9 @@ const Tetris = ({ socket, room, playerCount }) => {
     if (playerCount > 1 && players) {
       setSpectrum(<Spectrum stage={createStage()} players={players} playerCount={playerCount}/>);
     }
+    else {
+      setSpectrum("");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [players]);
 
