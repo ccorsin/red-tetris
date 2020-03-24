@@ -69,7 +69,7 @@ class Socket {
                     this.io.sockets.in(room).emit('players', curGame.leader, curGame.players);
                 });
                 socket.on('collision', (person, room) => {
-                    const { curGame, need_refill } = this.games.collision(this.isRoom(this.games.games, room), person)
+                    const { curGame, need_refill } = this.games.collision(this.isRoom(this.games.games, room), person);
                     this.io.sockets.in(room).emit('players', curGame.leader, curGame.players);
                     if (need_refill) {
                         this.io.sockets.in(room).emit('refill', curGame.tetriminos);
@@ -84,7 +84,7 @@ class Socket {
                 });
                 socket.on('smash', (person, room) => {
                     const curGame = this.games.smash_player(this.isRoom(this.games.games, room), person);
-                    this.io.sockets.in(room).emit('players', curGame.leade, curGame.players);
+                    this.io.sockets.in(room).emit('players', curGame.leader, curGame.players);
                     socket.broadcast.to(room).emit('freeze', person.smashed);
                 });
             });
