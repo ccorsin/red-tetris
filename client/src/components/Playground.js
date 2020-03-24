@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useStore } from 'react-redux';
-import { useHistory } from "react-router-dom";
+import { Redirect } from 'react-router-dom';
 
 import { regex } from "../utils/regex";
 
@@ -15,17 +15,8 @@ let socket;
 
 const Playground = ({ setIsAlert, setAlertMessage, setIsRunning }) => {
   const params = regex.url.exec(window.location.href);
-  let history = useHistory();
-  let commands = "";
   let room = "";
   let username = "";
-
-  if (params !== null) {
-    room = params[1].substring(1);
-    username = params[2].slice(1, -1);
-  } else {
-    history.push("/");
-  }
 
   const [playerCount, setPlayerCount] = useState(1);
   const [gameLeader, setGameLeader] = useState({name: username, id: 0});
@@ -35,13 +26,37 @@ const Playground = ({ setIsAlert, setAlertMessage, setIsRunning }) => {
 
   const isLeaderRef = useRef(username === gameLeader.name);
 
-  if (isLeaderRef.current && !isRunning) {
-    commands = <span>You can start the game !</span>;
-  } else if (!isRunning) {
-    commands = <span>Wait for {gameLeader.name} to start the game !</span>;
-  } else {
-    commands = <span>Game is ON !</span>;
-  }
+  const commands = () => {
+    if (isLeaderRef.current && !isRunning) {
+      return <span>You can start the game !</span>;
+    } else if (!isRunning) {
+      return <span>Wait for {gameLeader.name} to start the game !</span>;
+    } else {
+      return <span>Game is ON !</span>;
+    }
+  };
+
+  const scene = () => {
+    if (params !== null) {
+      room = params[1].substring(1);
+      username = params[2].slice(1, -1);
+      return (
+        <div>
+          <Header
+            commands={commands()}
+            isLeader={isLeaderRef.current}
+            room={room}
+            socket={socket}
+          />
+          <StyledStagesWrapper>
+            <Tetris socket={socket} room={room} playerCount={playerCount} />
+          </StyledStagesWrapper>
+        </div>
+      );
+    } else {
+      return (<Redirect to="/" />);
+    }
+  };
 
   useEffect(() => {
     socket = io('http://0.0.0.0:3504');
@@ -86,15 +101,7 @@ const Playground = ({ setIsAlert, setAlertMessage, setIsRunning }) => {
 
   return (
     <StyledPlayground>
-      <Header
-        commands={commands}
-        isLeader={isLeaderRef.current}
-        room={room}
-        socket={socket}
-      />
-      <StyledStagesWrapper>
-        <Tetris socket={socket} room={room} playerCount={playerCount}/>
-      </StyledStagesWrapper>
+      {scene()}
     </StyledPlayground>
   );
 }
