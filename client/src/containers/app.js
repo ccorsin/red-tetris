@@ -48,7 +48,7 @@ const App = () => {
         </Link>
         {isAlert ? <Alert message={alertMessage} turnOffAlert={turnOffAlert}/> : <div></div> }
         <Switch>
-          <Route path="/" exact component={Menu} />
+          <Route path="/" exact component={() => <Menu leaveRoom={() => { leaveRoom(); }} />}/>
           <Route path="/room">
             {isRunning ? <Redirect to="/" /> : <Playground setIsAlert={setIsAlert} setAlertMessage={setAlertMessage} setIsRunning={setIsRunning} />}
           </Route>

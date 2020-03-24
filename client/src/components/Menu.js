@@ -6,7 +6,7 @@ import "./styles/Style.css";
 
 import { regex } from "../utils/regex";
 
-const Menu = () => {
+const Menu = ({ leaveRoom }) => {
   const [playerIsValid, setPlayerIsValid] = useState(true);
   const [roomIsValid, setRoomIsValid] = useState(false);
   const [player, setPlayer] = useState("");
@@ -38,6 +38,7 @@ const Menu = () => {
       setRoomNb("");
       setRoomIsValid(false);
       setPlayerIsValid(false);
+      leaveRoom();
     }
   }
 
