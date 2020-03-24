@@ -36,7 +36,6 @@ describe('Testing <useStage/> hook', () => {
     const { result, waitForNextUpdate } = renderHook(() => useStage(player, null, false), {
         wrapper: ({ children }) => <Provider store={store} >{children}</Provider>
     });
-    // console.log(result.current)
 
     it('should not error', () => {
         expect(result.current[2]).toStrictEqual(0)

@@ -1,11 +1,8 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { shallow } from 'enzyme';
 
 import Header from '../Header';
-import StartButton from '../StartButton';
 
-import toJson from "enzyme-to-json";
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware, combineReducers } from 'redux';

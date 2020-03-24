@@ -1,11 +1,9 @@
 import React from 'react';
-import { Router, MemoryRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import { shallow, mount } from 'enzyme';
-import { useHistory } from "react-router-dom";
 import { render, fireEvent } from '@testing-library/react';
 import Menu from '../Menu';
 import NotFound from '../NotFound';
-import toJson from "enzyme-to-json"
 
 const mockHistoryPush = jest.fn();
 
@@ -61,12 +59,6 @@ describe('RouteMenu', () => {
   });
 
   it('Button should be disabled', () => {
-    // const { getByRole } = render(
-    //   <MemoryRouter initialEntries={['/']}>
-    //     <Menu />
-    //   </MemoryRouter>,
-    // );
-    // expect(getByRole('button')).toHaveAttribute('disabled');
     const wrapper = mount(
       <MemoryRouter initialEntries={['/']}>
         <Menu />

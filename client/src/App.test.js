@@ -1,13 +1,10 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { render } from '@testing-library/react';
 import App from './containers/app';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
-import toJson from "enzyme-to-json"
-import { shallow } from 'enzyme';
 
 import { ioSocketMiddleWare } from './middleware/ioSocketMiddleWare';
 

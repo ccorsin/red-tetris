@@ -32,7 +32,6 @@ describe('Testing <usePlayer/> hook', () => {
     const { result, waitForNextUpdate } = renderHook(() => usePlayer(), {
         wrapper: ({ children }) => <Provider store={store} >{children}</Provider>
     });
-    // console.log(result.current)
 
     it('should not error', () => {
         expect(result.current[0]).toStrictEqual({"collided": false, "pos": {"x": 0, "y": 0}, "tetromino": [[0]]})

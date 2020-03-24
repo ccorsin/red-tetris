@@ -120,5 +120,6 @@ class Game {
     this.players = new_players;
     this.tetriminos = [];
   }
-  }
+}
+
 module.exports = Game;

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { createStage } from '../gameHelpers';
 import { useSelector } from 'react-redux'
 
-export const useStage = (player, resetPlayer, gameOver, freezing, setFreezing) => {
+export const useStage = (player, resetPlayer, gameOver) => {
   const [stage, setStage] = useState(createStage());
   const [spectre, setSpectre] = useState(stage);
   const [rowsCleared, setRowsCleared] = useState(0);

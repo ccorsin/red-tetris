@@ -6,6 +6,5 @@ const Cell = ({ type, color, size, cell }) => {
   const theCell = cell ? <StyledCell type={type} color={color} size={size} /> : <StyledGhostCell type={type} color={color} size={size} /> ;
   return theCell;
 }
-// {console.log('rerender cell')}
 
 export default React.memo(Cell);

@@ -231,7 +231,6 @@ describe('Player class is made to represent a player, store its name and socket 
         });
    });
 
-   ////////// ICI
    it('should reset a player', () => {
        player.win();
        player.add_round();

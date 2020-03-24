@@ -1,5 +1,4 @@
 const Game = require('./game');
-const Player = require('./player');
 
 class Games {
     constructor() {
@@ -26,9 +25,6 @@ class Games {
     start_one_game(index) {
         this.games[index].start_game();
         this.games[index].init_players_tetriminos();
-        // const prevcurGame = this.games[index];
-        // this.games[index].update_players_round();
-        // console.log (prevcurGame)
         return this.games[index];
     }
 

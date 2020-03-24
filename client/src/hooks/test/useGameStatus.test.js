@@ -1,10 +1,8 @@
-import React from 'react'
 import { useGameStatus } from '../useGameStatus'
 import { renderHook, act } from '@testing-library/react-hooks';
 
 describe('The useGameStatus hook', () => {
-  const { result, waitForNextUpdate } = renderHook(() => useGameStatus());
-  // console.log(result.current)
+  const { result } = renderHook(() => useGameStatus());
   it('should initialize correctly states', () => {
     expect (result.current[0]).toBe(0);
     expect (result.current[2]).toBe(0);
