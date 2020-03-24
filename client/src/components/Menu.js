@@ -16,21 +16,19 @@ const Menu = () => {
   const checkRoom = value => {
     if (regex.room.exec(value)) {
         setRoomIsValid(true);
-        setRoomNb(value);
       } else {
         setRoomIsValid(false);
-        // setRoomNb("");
       }
+      setRoomNb(value);
   };
 
   const checkPlayer = value => {
     if (regex.username.exec(value)) {
       setPlayerIsValid(true);
-      setPlayer(value);
     } else {
       setPlayerIsValid(false);
-      // setPlayer("");
     }
+    setPlayer(value);
   };
 
   const goToRoom = () => {
