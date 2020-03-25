@@ -107,7 +107,7 @@ const Player = require("../helpers/player");
         expect(game.tetriminos.length).toEqual(5);
     });
 
-    it('add freeze line to other players', () => {
+    it('add 0 freeze line to other players for smash = 1', () => {
         player1.add_line(1);
         player2.add_line(1);
         player1.smashed = 1;
@@ -125,6 +125,42 @@ const Player = require("../helpers/player");
             rows: 0,
             score: 0,
             smashed: 1,
+            spectre: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
+        });
+        expect(game.players[1]).toEqual({
+            name: 'p2',
+            id: 'b',
+            round: 0,
+            loser: false,
+            color: player2.color,
+            freeze: 0,
+            level: 0,
+            rows: 0,
+            score: 0,
+            smashed: 0,
+            spectre: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
+        });
+    });
+
+
+    it('add n-1 freeze line to other players', () => {
+        player1.add_line(1);
+        player2.add_line(1);
+        player1.smashed = 2;
+        const game = new Game(player1, 42);
+        game.add_player(player2);
+        game.freeze_players(player1);
+        expect(game.players[0]).toEqual({
+            name: 'p1',
+            id: 'a',
+            round: 0,
+            loser: false,
+            color: player1.color,
+            freeze: 0,
+            level: 0,
+            rows: 0,
+            score: 0,
+            smashed: 2,
             spectre: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
         });
         expect(game.players[1]).toEqual({

@@ -173,7 +173,9 @@ const Tetris = ({ socket, room, playerCount }) => {
   useEffect(() => {
     if (socket !== undefined) {
       socket.on('freeze', function (n) {
-        setFreezing([true, n]);
+        if (n > 1) {
+          setFreezing([true, (n - 1)]);
+        }
       });
       socket.on('start_game', function () {
         const currentPlayer = store.getState().sock.currentPlayer;

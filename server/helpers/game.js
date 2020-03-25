@@ -37,9 +37,9 @@ class Game {
 
   freeze_players(player) {
     for (let i = 0; i < this.players.length; i++) {
-      if (i != this.isPlayer(this.players, player)) {
-        this.players[i].add_line(player.smashed);
-        this.players[i].add_freeze(player.smashed);
+      if (i != this.isPlayer(this.players, player) && player.smashed > 1) {
+        this.players[i].add_line((player.smashed) - 1);
+        this.players[i].add_freeze((player.smashed) - 1);
         this.players[i].smashed = 0;
 
       }
