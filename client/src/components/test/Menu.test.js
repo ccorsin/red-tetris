@@ -92,9 +92,10 @@ describe('RouteMenu', () => {
   });
 
   it('Input change enable submit', () => {
+    let leaveRoom = jest.fn();
     const wrapper = mount(
       <MemoryRouter initialEntries={['/']}>
-        <Menu />
+        <Menu leaveRoom={leaveRoom} />
       </MemoryRouter>,
     );
     const formRoom = wrapper.find('input[placeholder="ROOM"]');
@@ -106,5 +107,6 @@ describe('RouteMenu', () => {
     const submitButton = wrapper.find('button');
     submitButton.simulate('click');
     expect(submitButton.prop('disabled')).toBe(false);
+    expect(leaveRoom).toHaveBeenCalled();
   });
 });
