@@ -4,6 +4,8 @@ import { Router } from 'react-router-dom';
 import Playground from '../Playground';
 import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
+import { shallow, mount } from 'enzyme';
+import { MemoryRouter } from 'react-router-dom';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 
@@ -32,12 +34,21 @@ describe('<Playground/> Component', () => {
   it('rendering correctly with no shapes', () => {
     const div = document.createElement('div')
     const historyMock = { push: jest.fn(), location: {}, listen: jest.fn() };
-    ReactDom.render(
+    // ReactDom.render(
+    //   <Provider store={store}>
+    //     <Router history={historyMock}>
+    //       <Playground setIsAlert={""} setAlertMessage={""} setIsRunning={""}/>
+    //     </Router>
+    //   </Provider>, div)
+    // ReactDom.unmountComponentAtNode(div)
+    const playground = mount(
       <Provider store={store}>
-            <Router history={historyMock}>
-                <Playground setIsAlert={""} setAlertMessage={""} setIsRunning={""}/>
-            </Router>
-      </Provider>, div)
-    ReactDom.unmountComponentAtNode(div)
+        <MemoryRouter initialEntries={['/room/#0[op]']}>
+          <Playground path='/room'/>
+        </MemoryRouter>
+      </Provider>
+    )
+    // console.log(playground)
+    expect(playground.find('Header').length).toEqual(0)
   });
 })
