@@ -5,7 +5,7 @@ export const StyledSpectrum = styled.div`
   flex-direction: column;
   margin-left: 2vw;
   border: 1px solid white;
-
+  height: fit-content;
   @media (max-width: 1025px) {
   }
   `;
