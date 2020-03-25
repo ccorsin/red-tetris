@@ -33,7 +33,10 @@ export const store = createStore(
 describe('<Playground/> Component', () => {
   it('rendering correctly with no shapes', () => {
     const div = document.createElement('div')
-    const historyMock = { push: jest.fn(), location: {}, listen: jest.fn() };
+    const setIsAlert = jest.fn();
+    const setIsRunning = jest.fn();
+    const setAlertMessage = jest.fn();
+    // const historyMock = { push: jest.fn(), location: {}, listen: jest.fn() };
     // ReactDom.render(
     //   <Provider store={store}>
     //     <Router history={historyMock}>
@@ -44,11 +47,15 @@ describe('<Playground/> Component', () => {
     const playground = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={['/room/#0[op]']}>
-          <Playground path='/room'/>
+          <Playground path='/room' setIsAlert={setIsAlert} setIsRunning={setIsRunning} setAlertMessage={setAlertMessage}/>
         </MemoryRouter>
       </Provider>
     )
-    // console.log(playground)
-    expect(playground.find('Header').length).toEqual(0)
+    console.log(playground.debug())
+    expect(playground.find('Header').length).toEqual(0);
+    // expect(setIsAlert).not.toHaveBeenCalled();
+    // expect(setIsRunning).not.toHaveBeenCalled();
+    // expect(setAlertMessage).not.toHaveBeenCalled();
+
   });
 })
