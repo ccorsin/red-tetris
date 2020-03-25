@@ -231,13 +231,14 @@ const Tetris = ({ socket, room, playerCount }) => {
             <Display text="Winner !" />
           </StyledGO>
           ) : (
+            <div></div>
+        ))}
             <StyledTetrisGameBar>
               <DisplayTetromino text={`NEXT`} tetro={nextTetromino}/>
               <Display text={`SCORE`} number={score} />
               <Display text={`ROWS`} number={rows} />
               <Display text={`LEVEL`} number={level} />
           </StyledTetrisGameBar>
-        ))}
       </StyledTetris>
       <StyledTetrisAside>
         {spectrum}

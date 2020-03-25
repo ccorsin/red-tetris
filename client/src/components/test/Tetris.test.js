@@ -59,13 +59,13 @@ describe('<Tetris/> Component', () => {
     jest.clearAllMocks();
   });
 
-  it('Should have 234 divs', () => {
+  it('Should have 235 divs', () => {
     const container = mount(
       <Provider store={store}>
         <Tetris socket={socket} room={42} playerCount={2} />
       </Provider>
     );
-    expect(container.find('div').length).toEqual(234);
+    expect(container.find('div').length).toEqual(235);
   });
 
   describe('Keydown', () => {
