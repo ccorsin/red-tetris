@@ -24,7 +24,7 @@ const Tetris = ({ socket, room, playerCount }) => {
   const [Victory, setVictory] = useState(false);
   const [spectrum, setSpectrum] = useState("");
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
-  const [stage, setStage, rowsCleared, spectre, getSpectreHigh, sendSmash, setSendSmash] = useStage(player, resetPlayer, gameOver, freezing, setFreezing);
+  const [stage, setStage, rowsCleared, spectre, getSpectreHigh, sendSmash, setSendSmash] = useStage(player, resetPlayer, gameOver);
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(rowsCleared);
   const dispatch = useDispatch();
   const currentPlayer = useSelector(state => state.sock.currentPlayer);
