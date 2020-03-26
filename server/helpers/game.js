@@ -1,4 +1,4 @@
-const Tetriminos = require('./tetriminos');
+const Tetriminos = require('./piece');
 
 class Game {
   constructor(player, room) {

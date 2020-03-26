@@ -1,4 +1,4 @@
-class Tetriminos {
+class Piece {
     constructor() {
         this.TETROMINOS = {
             0: { shape: [[0]], color: "0, 0, 0" },
@@ -69,4 +69,4 @@ class Tetriminos {
     }
 }
 
-module.exports = Tetriminos;
+module.exports = Piece;
