@@ -4,6 +4,7 @@ import { shallow, mount } from 'enzyme';
 import { render, fireEvent } from '@testing-library/react';
 import Menu from '../Menu';
 import NotFound from '../NotFound';
+import { act } from 'react-dom/test-utils';
 
 const mockHistoryPush = jest.fn();
 
@@ -76,8 +77,8 @@ describe('RouteMenu', () => {
       </MemoryRouter>,
     );
     const formName = wrapper.find('input[placeholder="PLAYER"]');
-    formName.simulate('change', { target: { value: 'Hello' } });
-    expect(wrapper.find('input[placeholder="PLAYER"]').prop('value')).toBe('Hello');
+    formName.simulate('change', { target: { value: 'Hel' } });
+    expect(wrapper.find('input[placeholder="PLAYER"]').prop('value')).toBe('Hel');
   });
 
   it('Input change for room nb', () => {
@@ -102,8 +103,8 @@ describe('RouteMenu', () => {
     formRoom.simulate('change', { target: { value: '123' } });
     expect(wrapper.find('input[placeholder="ROOM"]').prop('value')).toBe('123');
     const formName = wrapper.find('input[placeholder="PLAYER"]');
-    formName.simulate('change', { target: { value: 'Hello' } });
-    expect(wrapper.find('input[placeholder="PLAYER"]').prop('value')).toBe('Hello');
+    formName.simulate('change', { target: { value: 'Hel' } });
+    expect(wrapper.find('input[placeholder="PLAYER"]').prop('value')).toBe('Hel');
     const submitButton = wrapper.find('button');
     submitButton.simulate('click');
     expect(submitButton.prop('disabled')).toBe(false);

@@ -19,6 +19,7 @@ $ docker system prune
 
 # to get both client & server coverage
 first, you have to run the tests separately
+IMPORTANT : docker must be turned on to test front, but absolutely be down to test the back
 ```
 $ npm run server:coverage
 $ npm run client:coverage

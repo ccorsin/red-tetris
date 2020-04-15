@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<NotFound/> Component rendering correctly NotFound 1`] = `
-<div>
+<styled.div>
    NOT FOUND 
-</div>
+</styled.div>
 `;
