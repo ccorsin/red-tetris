@@ -12,7 +12,9 @@
     "client:test": "npm run test --prefix ./client/",
     "coverage:all": "npm run coverage --prefix ./client/ && npm run coverage --prefix ./server/ && istanbul-combine -d coverage -p detail -r lcov client/coverage/coverage-final.json server/coverage/coverage-final.json",
     "client:coverage": "npm run coverage --prefix ./client/",
-    "set-app": "npm install --prefix ./client/ && npm install --prefix ./server/"
+    "set-app": "npm install --prefix ./client/ && npm install --prefix ./server/",
+    "start": "/usr/local/bin/docker-compose -f docker-compose.yml up -d",
+    "log": "/usr/local/bin/docker-compose logs -f -t"
   },
   "dependencies": {},
   "devDependencies": {}

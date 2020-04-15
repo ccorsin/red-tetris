@@ -63,7 +63,7 @@ const Alert = ({ message, turnOffAlert }) => {
         <span>{message}</span>
       </StyledMessage>
     </StyledAlert>
-	);
+  );
 };
 
 export default Alert;

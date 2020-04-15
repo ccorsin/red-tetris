@@ -19,7 +19,7 @@ const Playground = ({ setIsAlert, setAlertMessage, setIsRunning }) => {
   let username = "";
 
   const [playerCount, setPlayerCount] = useState(1);
-  const [gameLeader, setGameLeader] = useState({name: username, id: 0});
+  const [gameLeader, setGameLeader] = useState({ name: username, id: 0 });
   const dispatch = useDispatch();
   const store = useStore();
   const isRunning = store.getState().sock.isRunning;
@@ -59,7 +59,11 @@ const Playground = ({ setIsAlert, setAlertMessage, setIsRunning }) => {
   };
 
   useEffect(() => {
-    socket = io('http://0.0.0.0:3504');
+    // if (process.env.NODE_ENV === "production") {
+    // 	socket = io("https://" + process.env.REACT_APP_DOMAIN+ ":" + process.env.REACT_APP_TETRIS_API_PORT);
+    // } else {
+    socket = io("http://" + process.env.REACT_APP_DOMAIN + ":" + process.env.REACT_APP_TETRIS_API_PORT);
+    // }
     return () => {
       socket.close();
     }
@@ -68,7 +72,7 @@ const Playground = ({ setIsAlert, setAlertMessage, setIsRunning }) => {
   useEffect(() => {
     if (socket !== undefined) {
       socket.emit("room", room, username);
-      socket.on("players", function(leader, players) {
+      socket.on("players", function (leader, players) {
         setPlayerCount(players.length);
         setGameLeader(leader);
         const isLeader = (socket.id === leader.id) || leader.id === 0;
@@ -81,7 +85,7 @@ const Playground = ({ setIsAlert, setAlertMessage, setIsRunning }) => {
           dispatch({ type: "CURRENT_PLAYER", currentPlayer: tmp });
         }
       });
-      socket.on("player", function(player) {
+      socket.on("player", function (player) {
         dispatch({ type: "CURRENT_PLAYER", currentPlayer: player });
       });
       socket.on("message", function (message) {

@@ -32,9 +32,9 @@ const Spectrum = ({ stage, players, playerCount }) => {
 		if (players) {
 			for (let i = 0; i < tmp.length; i++) {
 				var target = tmp[i];
-					for (var j = i - 1; j >= 0 && (tmp[j].score < target.score); j--) {
-						tmp[j + 1] = tmp[j];
-					}
+				for (var j = i - 1; j >= 0 && (tmp[j].score < target.score); j--) {
+					tmp[j + 1] = tmp[j];
+				}
 				tmp[j + 1] = target
 			}
 		}
@@ -50,16 +50,16 @@ const Spectrum = ({ stage, players, playerCount }) => {
 		<StyledAdversity>
 			<StyledNameColumn>
 				<StyledNameLabel>{playerCount} PLAYERS: </StyledNameLabel>
-				<br/>
-			{spectres.map((player, i) => (
-				<StyledName className="playerName" key={i} color={player.color}> {player.name} </StyledName>
-			))}
+				<br />
+				{spectres.map((player, i) => (
+					<StyledName className="playerName" key={i} color={player.color}> {player.name} </StyledName>
+				))}
 			</StyledNameColumn>
 
 			<StyledSpectrum width={stage[0].length} height={stage.length}>
 				{stage.map((row, y) => (
 					<StyledRow className="row" key={y}>
-						{row.map((cell, x) => <Cell key={x} type={cell[0]} color={getColor(y, x)} size={1} cell={false}/>)}
+						{row.map((cell, x) => <Cell key={x} type={cell[0]} color={getColor(y, x)} size={1} cell={false} />)}
 					</StyledRow>
 				))}
 			</StyledSpectrum>

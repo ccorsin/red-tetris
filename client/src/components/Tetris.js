@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { createStage, checkCollision } from '../gameHelpers';
 import { StyledTetrisWrapper, StyledTetrisAside, StyledTetris, StyledTetrisGameBar, StyledGO } from './styles/StyledTetris';
+import { StyledLeaderBoard, StyledLeaderBoardBar, StyledLeaderBoardCross } from './styles/StyledLeaderBoard';
 import { useSelector, useDispatch, useStore } from 'react-redux';
 
 // Custom Hooks
@@ -15,6 +16,9 @@ import Stage from './Stage';
 import Display from './Display';
 import DisplayTetrimino from './DisplayTetrimino';
 import Spectrum from './Spectrum';
+import LeaderBoard from './LeaderBoard';
+
+import API from '../utils/API';
 
 const Tetris = ({ socket, room, playerCount }) => {
   const [nextTetrimino, setNextTetrimino] = useState([]);
@@ -22,6 +26,7 @@ const Tetris = ({ socket, room, playerCount }) => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [Victory, setVictory] = useState(false);
+  const [LB, setLB] = useState(false);
   const [spectrum, setSpectrum] = useState("");
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, rowsCleared, spectre, getSpectreHigh, sendSmash, setSendSmash] = useStage(player, resetPlayer, gameOver);
@@ -42,6 +47,17 @@ const Tetris = ({ socket, room, playerCount }) => {
     setRows(0);
     setGameOver(false);
     setVictory(false);
+  };
+
+  const postScore = async (player, cp) => {
+    if (player.id === cp.id) {
+      const pData = { player: player.name, score: player.score };
+      const scored = (await API.post('/new/', pData)).data;
+      if (scored) {
+        // display leaderboard
+        setLB(true);
+      }
+    }
   };
 
   const keyUp = ({ keyCode }) => {
@@ -71,9 +87,9 @@ const Tetris = ({ socket, room, playerCount }) => {
       if (!(freezing[0] === true)) {
         updatePlayerPos({ x: 0, y: 1, collided: false });
       } else {
-          if (player.pos.y - freezing[1] > 0 && checkCollision(player, stage, { x: 0, y: (player.pos.y + freezing[1]) }))
-            updatePlayerPos({ x: 0, y: -freezing[1], collided: false });
-          const addLine = prev => {
+        if (player.pos.y - freezing[1] > 0 && checkCollision(player, stage, { x: 0, y: (player.pos.y + freezing[1]) }))
+          updatePlayerPos({ x: 0, y: -freezing[1], collided: false });
+        const addLine = prev => {
           prev.shift();
           prev.push(new Array(prev[0].length).fill([1, 'frozen']));
           return prev;
@@ -95,6 +111,8 @@ const Tetris = ({ socket, room, playerCount }) => {
           dispatch({ type: 'END', socket, room });
           dispatch({ type: "TOGGLE_RUNNING", isRunning: false });
         }
+        // post score
+        postScore(currentPlayer, currentPlayer);
       }
       updatePlayerPos({ x: 0, y: 0, collided: true });
       const playerData = { ...currentPlayer, spectre };
@@ -109,7 +127,7 @@ const Tetris = ({ socket, room, playerCount }) => {
     drop();
   };
 
-  function dropFallPlayer () {
+  function dropFallPlayer() {
     let i = 0;
     while (!checkCollision(player, stage, { x: 0, y: i })) i++;
     updatePlayerPos({ x: 0, y: i - 1, collided: false });
@@ -141,7 +159,7 @@ const Tetris = ({ socket, room, playerCount }) => {
 
   useEffect(() => {
     if (playerCount > 1 && players) {
-      setSpectrum(<Spectrum stage={createStage()} players={players} playerCount={playerCount}/>);
+      setSpectrum(<Spectrum stage={createStage()} players={players} playerCount={playerCount} />);
     }
     else {
       setSpectrum("");
@@ -183,7 +201,7 @@ const Tetris = ({ socket, room, playerCount }) => {
         dispatch({ type: 'REFILL', tetriminos });
         if (currentPlayer) {
           startGame(currentPlayer, tetriminos);
-          const newCurrentPlayer = {...currentPlayer, round: currentPlayer.round + 1};
+          const newCurrentPlayer = { ...currentPlayer, round: currentPlayer.round + 1 };
           dispatch({ type: "ADD_ROUND", currentPlayer: newCurrentPlayer });
           setNextTetrimino(tetriminos[currentPlayer.round + 1]);
         }
@@ -208,6 +226,9 @@ const Tetris = ({ socket, room, playerCount }) => {
         setVictory(true);
         setDropTime(null);
         setStage(createStage());
+        // post score
+        let currentPlayer = store.getState().sock.currentPlayer;
+        postScore(player, currentPlayer);
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -221,7 +242,7 @@ const Tetris = ({ socket, room, playerCount }) => {
       onKeyUp={keyUp}
     >
       <StyledTetris>
-          <Stage stage={stage} currentPlayer={currentPlayer}/>
+        < Stage stage={stage} currentPlayer={currentPlayer} />
         {gameOver ? (
           <StyledGO>
             <Display text="Game Over" />
@@ -230,19 +251,20 @@ const Tetris = ({ socket, room, playerCount }) => {
           <StyledGO>
             <Display text="Winner !" />
           </StyledGO>
-          ) : (
+        ) : (
             <div></div>
         ))}
-            <StyledTetrisGameBar>
-              <DisplayTetrimino text={`NEXT`} tetro={nextTetrimino}/>
-              <Display text={`SCORE`} number={score} />
-              <Display text={`ROWS`} number={rows} />
-              <Display text={`LEVEL`} number={level} />
-          </StyledTetrisGameBar>
+        <StyledTetrisGameBar>
+          <DisplayTetrimino text={`NEXT`} tetro={nextTetrimino} />
+          <Display text={`SCORE`} number={score} />
+          <Display text={`ROWS`} number={rows} />
+          <Display text={`LEVEL`} number={level} />
+        </StyledTetrisGameBar>
       </StyledTetris>
       <StyledTetrisAside>
         {spectrum}
       </StyledTetrisAside>
+      {LB ? <StyledLeaderBoard><StyledLeaderBoardBar><StyledLeaderBoardCross onClick={() => { setLB(false); }}>-</StyledLeaderBoardCross></StyledLeaderBoardBar><LeaderBoard /></StyledLeaderBoard> : <div></div>}
     </StyledTetrisWrapper>
   );
 };

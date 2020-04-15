@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { StyledApp, StyledTitle } from '../components/styles/StyledApp';
 import '../components/styles/Style.css';
 
-import { HashRouter, Route, Switch, Redirect, Link } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect, Link } from 'react-router-dom';
+
 import { useDispatch } from 'react-redux';
 
 import Playground from '../components/Playground';
@@ -29,11 +30,11 @@ const App = () => {
     turnOffAlert(false);
     setIsRunning(false)
     dispatch({ type: "TOGGLE_RUNNING", isRunning: false });
-    return <Redirect to="/" />;
+    return <Redirect to="/tetris" />;
   };
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <StyledApp>
         <StyledTitle>
           <span style={{ color: 'red' }}>T</span>
@@ -43,19 +44,22 @@ const App = () => {
           <span style={{ color: 'blue' }}>I</span>
           <span style={{ color: 'purple' }}>S</span>
         </StyledTitle>
-        <Link to="/">
+        <Link to="/tetris">
           <StyledHomeButton onClick={() => { leaveRoom(); }}> T </StyledHomeButton>
         </Link>
-        {isAlert ? <Alert message={alertMessage} turnOffAlert={turnOffAlert}/> : <div></div> }
+        <Route exact path="/">
+          <Redirect to="/tetris" />
+        </Route>
+        {isAlert ? <Alert message={alertMessage} turnOffAlert={turnOffAlert} /> : <div></div>}
         <Switch>
-          <Route path="/" exact component={() => <Menu leaveRoom={() => { leaveRoom(); }} />}/>
-          <Route path="/room">
-            {isRunning ? <Redirect to="/" /> : <Playground setIsAlert={setIsAlert} setAlertMessage={setAlertMessage} setIsRunning={setIsRunning} />}
+          <Route exact path="/tetris" component={() => <Menu leaveRoom={() => { leaveRoom(); }} />} />
+          <Route path="/tetris/room">
+            {isRunning ? <Redirect to="/tetris" /> : <Playground setIsAlert={setIsAlert} setAlertMessage={setAlertMessage} setIsRunning={setIsRunning} />}
           </Route>
           <Route component={NotFound} />
         </Switch>
       </StyledApp>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 
