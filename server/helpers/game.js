@@ -25,8 +25,8 @@ class Game {
   }
 
   add_tetriminos() {
-    let tetromino = new Tetriminos().randomTetromino();
-    this.tetriminos.push(tetromino);
+    let tetrimino = new Tetriminos().randomTetrimino();
+    this.tetriminos.push(tetrimino);
   }
 
   init_players_tetriminos() {

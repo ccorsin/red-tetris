@@ -1,7 +1,7 @@
  import React from 'react';
 import { StyledStage, StyledRow } from './styles/StyledStage';
 import { useSelector } from 'react-redux'
-import { TETROMINOS } from "../utils/tetrominos-colors.js";
+import { TETRIMINOS } from "../utils/tetriminos-colors.js";
 
 import Cell from './Cell';
 
@@ -17,7 +17,7 @@ const Stage = ({ stage, currentPlayer }) => {
       color = '255, 255, 0'
     }
     else {
-      color = TETROMINOS[cell[0]].color;
+      color = TETRIMINOS[cell[0]].color;
     }
     return color;
   }

@@ -29,7 +29,7 @@ export const store = createStore(
     applyMiddleware(...middleware))
 
 describe('Testing <useStage/> hook', () => {
-    const player = {collided: false, pos: {x: 2, y: 2}, tetromino: [
+    const player = {collided: false, pos: {x: 2, y: 2}, tetrimino: [
         [0, "J", 0],
         [0, "J", 0],
         ["J", "J", 0]]};

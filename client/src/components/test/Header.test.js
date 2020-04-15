@@ -61,7 +61,7 @@ describe('<Header/> Component', () => {
   //   // const tetriminos = new Tetriminos
   //   // let tetro = []
   //   // for (let i = 0; i < 5; i++) {
-  //   //   tetro.push(tetriminos.randomTetromino())
+  //   //   tetro.push(tetriminos.randomTetrimino())
   //   // }
   //   let wrapper = shallow(
   //     <Header playerCount='1' commands='0'/>

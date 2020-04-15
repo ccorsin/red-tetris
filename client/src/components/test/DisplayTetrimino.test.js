@@ -1,13 +1,13 @@
 import React from 'react'
 import { shallow } from 'enzyme';
-import DisplayTetromino from '../DisplayTetromino';
+import DisplayTetrimino from '../DisplayTetrimino';
 import toJson from "enzyme-to-json"
 
-describe('<DisplayTetromino/> Component', () => {
-  it('rendering correctly DisplayTetromino', () => {
+describe('<DisplayTetrimino/> Component', () => {
+  it('rendering correctly DisplayTetrimino', () => {
     const tetro = { color: '255, 255, 0', shape: [["O", "0"],["O", "O"]]};
     let wrapper = shallow(
-      <DisplayTetromino text={'text'} tetro={tetro}/>
+      <DisplayTetrimino text={'text'} tetro={tetro}/>
     )
     expect(toJson(wrapper)).toMatchSnapshot()
   })

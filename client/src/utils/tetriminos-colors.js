@@ -1,5 +1,5 @@
 
-export const TETROMINOS = {
+export const TETRIMINOS = {
   0: { color: "0, 0, 0" },
   1: { color: "130, 130, 130" },
   I: { color: "0, 255, 255" },

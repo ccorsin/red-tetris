@@ -13,11 +13,11 @@ import { useGameStatus } from '../hooks/useGameStatus';
 // Components
 import Stage from './Stage';
 import Display from './Display';
-import DisplayTetromino from './DisplayTetromino';
+import DisplayTetrimino from './DisplayTetrimino';
 import Spectrum from './Spectrum';
 
 const Tetris = ({ socket, room, playerCount }) => {
-  const [nextTetromino, setNextTetromino] = useState([]);
+  const [nextTetrimino, setNextTetrimino] = useState([]);
   const [freezing, setFreezing] = useState([false, 0]);
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
@@ -104,7 +104,7 @@ const Tetris = ({ socket, room, playerCount }) => {
 
   const dropPlayer = () => {
     // We don't need to run the interval when we use the arrow down to
-    // move the tetromino downwards. So deactivate it for now.
+    // move the tetrimino downwards. So deactivate it for now.
     setDropTime(null);
     drop();
   };
@@ -153,7 +153,7 @@ const Tetris = ({ socket, room, playerCount }) => {
     const newCurrentPlayer = { ...currentPlayer, round: currentPlayer.round + 1 }
     dispatch({ type: "ADD_ROUND", currentPlayer: newCurrentPlayer });
     dispatch({ type: "COLLISION", player: playerData, room, socket })
-    setNextTetromino(tetriminos[currentPlayer.round + 1]);
+    setNextTetrimino(tetriminos[currentPlayer.round + 1]);
   };
 
   useEffect(() => {
@@ -185,7 +185,7 @@ const Tetris = ({ socket, room, playerCount }) => {
           startGame(currentPlayer, tetriminos);
           const newCurrentPlayer = {...currentPlayer, round: currentPlayer.round + 1};
           dispatch({ type: "ADD_ROUND", currentPlayer: newCurrentPlayer });
-          setNextTetromino(tetriminos[currentPlayer.round + 1]);
+          setNextTetrimino(tetriminos[currentPlayer.round + 1]);
         }
       });
       socket.on('restart_game', function (players) {
@@ -234,7 +234,7 @@ const Tetris = ({ socket, room, playerCount }) => {
             <div></div>
         ))}
             <StyledTetrisGameBar>
-              <DisplayTetromino text={`NEXT`} tetro={nextTetromino}/>
+              <DisplayTetrimino text={`NEXT`} tetro={nextTetrimino}/>
               <Display text={`SCORE`} number={score} />
               <Display text={`ROWS`} number={rows} />
               <Display text={`LEVEL`} number={level} />

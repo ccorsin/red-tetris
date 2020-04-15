@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { StyledDisplay, StyledDisplayCase } from './styles/StyledDisplay';
-import { StyledTetromino, StyledRow } from './styles/StyledTetromino';
+import { StyledTetrimino, StyledRow } from './styles/StyledTetrimino';
 import Cell from './Cell';
 
-import { TETROMINOS } from "../utils/tetrominos-colors.js";
+import { TETRIMINOS } from "../utils/tetriminos-colors.js";
 
 const color = (cell) => {
-  return TETROMINOS[cell].color;
+  return TETRIMINOS[cell].color;
 }
 
 const Display = ({ text, tetro }) => (
@@ -15,13 +15,13 @@ const Display = ({ text, tetro }) => (
     <StyledDisplayCase>
       <p>{text}</p>
       {tetro && tetro.shape ?
-        <StyledTetromino width={tetro.shape[0].length} height={tetro.shape.length}>
+        <StyledTetrimino width={tetro.shape[0].length} height={tetro.shape.length}>
           {tetro.shape.map((row, y) => (
             <StyledRow className="row" key={y}>
               {row.map((cell, x) => <Cell key={x} type={cell[0]} color={color(cell)} size={1.5} cell={true} />)}
             </StyledRow>
           ))}
-        </StyledTetromino> :
+        </StyledTetrimino> :
         <div></div>
       }
 

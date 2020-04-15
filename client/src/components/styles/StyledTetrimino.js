@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledTetromino = styled.div`
+export const StyledTetrimino = styled.div`
   display: flex;
   flex-direction: column;
   margin: auto;

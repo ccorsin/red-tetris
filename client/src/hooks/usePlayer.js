@@ -5,7 +5,7 @@ export const usePlayer = () => {
     const init = { shape: [[0]], color: '220, 220, 220' };
     const [player, setPlayer] = useState({
         pos: { x: 0, y: 0 },
-        tetromino: init.shape,
+        tetrimino: init.shape,
         collided: false
       });
 
@@ -21,15 +21,15 @@ export const usePlayer = () => {
 
       function playerRotate(stage, dir) {
         const clonedPlayer = JSON.parse(JSON.stringify(player));
-        clonedPlayer.tetromino = rotate(clonedPlayer.tetromino, dir);
+        clonedPlayer.tetrimino = rotate(clonedPlayer.tetrimino, dir);
 
         const pos = clonedPlayer.pos.x;
         let offset = 1;
         while (checkCollision(clonedPlayer, stage, { x: 0, y: 0 })) {
           clonedPlayer.pos.x += offset;
           offset = -(offset + (offset > 0 ? 1 : -1));
-          if (offset > clonedPlayer.tetromino[0].length) {
-            rotate(clonedPlayer.tetromino, -dir);
+          if (offset > clonedPlayer.tetrimino[0].length) {
+            rotate(clonedPlayer.tetrimino, -dir);
             clonedPlayer.pos.x = pos;
             return;
           }
@@ -48,7 +48,7 @@ export const usePlayer = () => {
       const resetPlayer = useCallback((currentPlayer, tetriminos) => {
         setPlayer({
           pos: { x: STAGE_WIDTH / 2 - 2, y: 0 },
-          tetromino: tetriminos[currentPlayer.round].shape,
+          tetrimino: tetriminos[currentPlayer.round].shape,
           collided: false
         });
       }, []);

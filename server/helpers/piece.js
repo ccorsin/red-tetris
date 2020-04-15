@@ -1,6 +1,6 @@
 class Piece {
     constructor() {
-        this.TETROMINOS = {
+        this.TETRIMINOS = {
             0: { shape: [[0]], color: "0, 0, 0" },
             I: {
                 shape: [
@@ -61,11 +61,11 @@ class Piece {
         };
     }
 
-    randomTetromino() {
-        const tetrominos = "IJLOSTZ";
-        const randTetromino =
-            tetrominos[Math.floor(Math.random() * tetrominos.length)];
-        return this.TETROMINOS[randTetromino];
+    randomTetrimino() {
+        const tetriminos = "IJLOSTZ";
+        const randTetrimino =
+            tetriminos[Math.floor(Math.random() * tetriminos.length)];
+        return this.TETRIMINOS[randTetrimino];
     }
 }
 

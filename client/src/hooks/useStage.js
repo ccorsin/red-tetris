@@ -58,8 +58,8 @@ export const useStage = (player, resetPlayer, gameOver) => {
         row.map(cell => (cell[1] === 'clear' ? [0, 'clear'] : cell))
       );
 
-      // Then draw the tetromino
-      player.tetromino.forEach((row, y) => {
+      // Then draw the tetrimino
+      player.tetrimino.forEach((row, y) => {
         row.forEach((value, x) => {
           if (value !== 0) {
             newStage[y + player.pos.y][x + player.pos.x] = [
@@ -88,7 +88,7 @@ export const useStage = (player, resetPlayer, gameOver) => {
     player.collided,
     player.pos.x,
     player.pos.y,
-    player.tetromino,
+    player.tetrimino,
     resetPlayer,
   ]);
 
