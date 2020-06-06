@@ -51,5 +51,5 @@ or
 $ npm run coverage:all
 ```
 
-![alt text](https://github.com/ccorsin/red-tetris/blob/master/Screenshot 2020-06-06 at 20.52.15.png?raw=true)
-![alt text](https://github.com/ccorsin/red-tetris/blob/master/Screenshot 2020-06-06 at 20.53.02.png?raw=true)
+![alt text](https://github.com/ccorsin/red-tetris/blob/master/Screenshot%202020-06-06%20at%2020.53.02.png?raw=true)
+![alt text](https://github.com/ccorsin/red-tetris/blob/master/Screenshot%202020-06-06%20at%2020.52.15.png?raw=true)
