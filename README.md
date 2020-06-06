@@ -1,5 +1,7 @@
 # Project
-Tetrisis a puzzle game (see Wikipedia), whose subject is to contain falling pieces aslong as possible in a Playground. The game is over when the field no longer offers enoughroom for a new piece to fall. When one or more lines of land are complete, they disappear, allowing to postpone the expiry of the game.
+Multiplayer Tetris - using React, NodeJs and websockets.
+
+Tetris is a puzzle game (see Wikipedia), whose subject is to contain falling pieces aslong as possible in a Playground. The game is over when the field no longer offers enoughroom for a new piece to fall. When one or more lines of land are complete, they disappear, allowing to postpone the expiry of the game.
 
 The game relies on a client / server architecture. The client runtime environment is a browser. The server is written with NodeJS.Clients and server communicate via http.
 The communication between the server and the clients is bi-directional, we used socket.io for its implementation.
