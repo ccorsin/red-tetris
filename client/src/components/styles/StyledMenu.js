@@ -5,10 +5,13 @@ export const StyledMenuWrapper = styled.div`
   flex-direction: column;
   flex-wrap: nowrap;
   margin: auto;
-  background: darkgrey;
+  background: black;
   min-width: 270px;
   min-height: 300px;
+  width: 45%;
+  height: fit-content;
   z-index: 1;
+  padding-top: 1em;
 `;
 
 export const StyledMenu = styled.div`
@@ -17,4 +20,6 @@ export const StyledMenu = styled.div`
   margin: auto;
   border: 1px solid black;
   width: 90%;
+  background: darkgrey;
+
 `;

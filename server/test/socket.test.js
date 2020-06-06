@@ -143,6 +143,17 @@ describe('Testing backend answer from front emit actions', () => {
     }, 50);
   });
 
+  it('socket on reset', (done) => {
+    ClientSocket.emit('room', '42', 'p1');
+    ClientSocket.emit('start', '42');
+    ClientSocket.emit('end', '42');
+    ClientSocket.emit('reset', '42');
+    setTimeout(() => {
+      expect(sockets.games.games[0].tetriminos).toEqual([]);
+      done();
+    }, 50);
+  });
+
   it('should return the room position in games array', (done) => {
     sockets.games.games.push(game)
     expect(sockets.isRoom(sockets.games.games, '42')).toBe(0)

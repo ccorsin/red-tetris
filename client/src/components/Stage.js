@@ -1,4 +1,4 @@
- import React from 'react';
+import React from 'react';
 import { StyledStage, StyledRow } from './styles/StyledStage';
 import { useSelector } from 'react-redux'
 import { TETRIMINOS } from "../utils/tetriminos-colors.js";
@@ -25,11 +25,11 @@ const Stage = ({ stage, currentPlayer }) => {
   return (
     <StyledStage width={stage[0].length} height={stage.length}>
       {stage.map((row, y) => (
-      <StyledRow className="row" key={y}>
-          {row.map((cell, x) => <Cell key={x} type={cell[0]} color={color(cell)} size={3} cell={true} />)}
-      </StyledRow>
-    ))}
-  </StyledStage>
+        <StyledRow className="row" key={y}>
+            {row.map((cell, x) => <Cell key={x} type={cell[0]} color={color(cell)} size={3} cell={true} />)}
+        </StyledRow>
+      ))}
+    </StyledStage>
   );
 }
 

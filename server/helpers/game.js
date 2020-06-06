@@ -41,9 +41,8 @@ class Game {
         this.players[i].add_line((player.smashed) - 1);
         this.players[i].add_freeze((player.smashed) - 1);
         this.players[i].smashed = 0;
-
       }
-      else {
+      else if (i == this.isPlayer(this.players, player)) {
         this.players[i].remove_line(player.smashed);
       }
     }

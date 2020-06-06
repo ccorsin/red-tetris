@@ -138,7 +138,7 @@ const Player = require("../helpers/player");
             rows: 0,
             score: 0,
             smashed: 0,
-            spectre: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20]
+            spectre: [19, 19, 19, 19, 19, 19, 19, 19, 19, 19]
         });
     });
 

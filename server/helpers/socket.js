@@ -43,7 +43,7 @@ class Socket {
                 }
                 if(this.io.sockets.adapter.rooms[room] !== undefined && this.io.sockets.adapter.rooms[room]['sockets'][socket.id] !== undefined) {
                     socket.on('disconnect', () => {
-                        process.stdout.write("Socket disconnected: " + socket.id + '\n');    
+                        process.stdout.write("Socket disconnected: " + socket.id + '\n');
                         socket.leave(room);
                         const { curGame, winner, ran } = this.games.player_leaving(this.isRoom(this.games.games, room), player);
                             if (curGame !== undefined && curGame.players.length > 0) {
@@ -63,7 +63,7 @@ class Socket {
                 }
                 else {
                     socket.on('disconnect', () => {
-                        process.stdout.write("Socket disconnected: " + socket.id + '\n');    
+                        process.stdout.write("Socket disconnected: " + socket.id + '\n');
                     });
                 }
                 socket.emit('player', player);

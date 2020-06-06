@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
+import LeaderBoard from "./LeaderBoard";
 import { StyledMenuWrapper, StyledMenu } from "./styles/StyledMenu";
 import "./styles/Style.css";
 
@@ -15,11 +16,11 @@ const Menu = ({ leaveRoom }) => {
 
   const checkRoom = value => {
     if (regex.room.exec(value)) {
-        setRoomIsValid(true);
-      } else {
-        setRoomIsValid(false);
-      }
-      setRoomNb(value);
+      setRoomIsValid(true);
+    } else {
+      setRoomIsValid(false);
+    }
+    setRoomNb(value);
   };
 
   const checkPlayer = value => {
@@ -33,7 +34,7 @@ const Menu = ({ leaveRoom }) => {
 
   const goToRoom = () => {
     if (playerIsValid && roomIsValid) {
-      history.push("/room/#" + roomNb + "[" + player + "]");
+      history.push("/tetris/room/#" + roomNb + "[" + player + "]");
       setPlayer("PLAYER");
       setRoomNb("");
       setRoomIsValid(false);
@@ -47,22 +48,23 @@ const Menu = ({ leaveRoom }) => {
       <StyledMenu>
         <span className="menu_label">TAKE A ROOM NUMBER</span>
         <div className="menu_input">
-            <input
-              value={player}
-              type="text"
-              placeholder="PLAYER"
-              onChange={e => checkPlayer(e.target.value)}
-            />
+          <input
+            maxLength="3"
+            value={player}
+            type="text"
+            placeholder="PLAYER"
+            onChange={e => checkPlayer(e.target.value)}
+          />
           <span className="error-char-required" test="player">ONLY LETTERS OR NUMBERS</span>
         </div>
         <div className="menu_input">
-            <input
+          <input
             value={roomNb}
             type="text"
-              placeholder="ROOM"
-              onChange={e => checkRoom(e.target.value)}
-            />
-            <span className="error-number-required">ONLY NUMBERS</span>
+            placeholder="ROOM"
+            onChange={e => checkRoom(e.target.value)}
+          />
+          <span className="error-number-required">ONLY NUMBERS</span>
         </div>
         <div className="menu_input">
           <button className="button-to-game" onClick={e => goToRoom(true)} disabled={!roomIsValid || !playerIsValid}>
@@ -70,6 +72,9 @@ const Menu = ({ leaveRoom }) => {
           </button>
         </div>
       </StyledMenu>
+      <div style={{ paddingTop: 2 + 'em' }}>
+        <LeaderBoard />
+      </div>
     </StyledMenuWrapper>
   );
 };

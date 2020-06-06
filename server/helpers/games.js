@@ -40,7 +40,7 @@ class Games {
             winner.win();
         }
         return { curGame: this.games[index], winner: winner }
-    }
+    } 
 
     collision(index, player) {
         this.games[index].update_player(player);

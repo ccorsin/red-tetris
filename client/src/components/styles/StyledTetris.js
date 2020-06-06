@@ -37,7 +37,7 @@ export const StyledTetrisAside = styled.div`
 export const StyledTetris = styled.div`
   display: flex;
   `;
-  // width: 100%;
+// width: 100%;
 
 export const StyledTetrisGameBar = styled.div`
   display: flex;
