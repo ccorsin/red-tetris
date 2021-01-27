@@ -33,7 +33,8 @@ export const StyledLeaderBoardTitle = styled.div`
 `;
 
 export const StyledLeaderBoardTable = styled.div`
-  width: 100%;
+  width: 80%;
+  margin: auto;
   min-height: 300px;
   height: min-content;
   display: flex;
@@ -48,26 +49,25 @@ export const StyledLeaderBoardTable = styled.div`
 
 export const StyledLeaderBoardBoard = styled.ul`
   display: flex;
-  flex-direction: colum;
   list-style: none;
   padding-left: 0 !important;
   flex-direction: column;
 `;
 
 export const StyledLeaderBoardDetail = styled.span`
-  width: 50px;
+  width: inherit;
 `;
 export const StyledLeaderBoardCross = styled.span`
   cursor: pointer;
 `;
 
 export const StyledLeaderBoardRank = styled.li`
-  font-size: 1.5em;
+  font-size: 4.5vw;
   margin: auto;
   background: black;
   color: red;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   width: 100%;
 `;

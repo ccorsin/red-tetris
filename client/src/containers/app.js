@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import Playground from '../components/Playground';
 import NotFound from '../components/NotFound';
 import Menu from '../components/Menu';
+import LeaderBoard from "../components/LeaderBoard";
 import Alert from '../components/Alert';
 import { StyledHomeButton } from '../components/styles/StyledHomeButton';
 
@@ -58,6 +59,9 @@ const App = () => {
           </Route>
           <Route component={NotFound} />
         </Switch>
+        <div style={{paddingTop: 2 + 'em; z-index: 1' }}>
+          <LeaderBoard />
+        </div>
       </StyledApp>
     </BrowserRouter>
   );
