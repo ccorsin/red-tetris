@@ -6,7 +6,13 @@ const socketIO = require('socket.io');
 class Socket {
     constructor(http) {
         this.games = new Games();
-        this.io = socketIO(http, { pingTimeout: 60000 });
+        this.io = socketIO(http, { 
+            cors: {
+                origin: "http://localhost:3005",
+                methods: ["GET", "POST"]
+              }, 
+              pingTimeout: 60000 
+            });
     }
 
     isRoom(games, room) {

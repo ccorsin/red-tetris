@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export const StyledLeaderBoardPadding = styled.div`
+  padding-top: 2em; 
+`;
+
 export const StyledLeaderBoard = styled.div`
   position: absolute;
   top: 36%; left: 50%;
@@ -33,7 +37,7 @@ export const StyledLeaderBoardTitle = styled.div`
 `;
 
 export const StyledLeaderBoardTable = styled.div`
-  width: 80%;
+  width: 60%;
   margin: auto;
   min-height: 300px;
   height: min-content;
@@ -62,7 +66,7 @@ export const StyledLeaderBoardCross = styled.span`
 `;
 
 export const StyledLeaderBoardRank = styled.li`
-  font-size: 4.5vw;
+  font-size: 4vw;
   margin: auto;
   background: black;
   color: red;
